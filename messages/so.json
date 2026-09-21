@@ -1,0 +1,26 @@
+{
+  "Metadata": {
+    "siteName": "M2B",
+    "title": "M2B — Adeegyada Software-ka iyo IT-ga",
+    "description": "M2B waxay dhisaysaa software gaar ah, abka mobilka, nidaamyada ERP, iyo websaydhyo."
+  },
+  "Common": {
+    "home": "Bogga hore",
+    "services": "Adeegyada",
+    "portfolio": "Shaqooyinka",
+    "placeholder": "Boggan waa meel-haye; waxaa la dhisayaa mawjado dambe."
+  },
+  "HomePage": {
+    "title": "Adeegyada software-ka iyo IT-ga",
+    "tagline": "Software gaar ah, abka mobilka, nidaamyada ERP, iyo websaydhyo."
+  },
+  "ServicesPage": {
+    "title": "Adeegyada"
+  },
+  "PortfolioPage": {
+    "title": "Shaqooyinka"
+  },
+  "ProjectPage": {
+    "title": "Mashruuc"
+  }
+}

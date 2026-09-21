@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
 :root {
+  --navy: #1e3a5f;
+  --navy-mid: #2a5082;
+  --navy-deep: #0a2850;
+  --navy-deeper: #082c56;
+  --gold: #d4af37;
+  --gold-highlight: #d2a032;
+  --gold-light: #fed863;
+  --gold-shadow: #be8c28;
+  --gold-deep: #8d6501;
+  --brand-gradient: linear-gradient(135deg, #1e3a5f 0%, #2a5082 55%, #d4af37 100%);
   --background: #ffffff;
-  --foreground: #171717;
+  --background-muted: #f6f7f9;
+  --foreground: #1e3a5f;
 }
 
 @theme inline {
+  --color-navy: var(--navy);
+  --color-navy-mid: var(--navy-mid);
+  --color-navy-deep: var(--navy-deep);
+  --color-navy-deeper: var(--navy-deeper);
+  --color-gold: var(--gold);
+  --color-gold-highlight: var(--gold-highlight);
+  --color-gold-light: var(--gold-light);
+  --color-gold-shadow: var(--gold-shadow);
+  --color-gold-deep: var(--gold-deep);
   --color-background: var(--background);
+  --color-background-muted: var(--background-muted);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-kamerik);
+  --font-arabic: var(--font-ibm-plex-arabic);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
