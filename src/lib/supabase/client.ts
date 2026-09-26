@@ -1,0 +1,11 @@
+import { createBrowserClient } from "@supabase/ssr";
+import { SUPABASE_SCHEMA } from "@/lib/supabase/constants";
+import { getSupabaseEnv } from "@/lib/supabase/env";
+import type { Database } from "@/lib/supabase/types";
+
+export function createClient() {
+  const { url, anonKey } = getSupabaseEnv();
+  return createBrowserClient<Database>(url, anonKey, {
+    db: { schema: SUPABASE_SCHEMA },
+  });
+}

@@ -1,5 +1,4 @@
 import localFont from "next/font/local";
-import { IBM_Plex_Sans_Arabic } from "next/font/google";
 
 export const kamerik = localFont({
   src: [
@@ -18,9 +17,29 @@ export const kamerik = localFont({
   display: "swap",
 });
 
-export const ibmPlexArabic = IBM_Plex_Sans_Arabic({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "600", "700"],
+export const ibmPlexArabic = localFont({
+  src: [
+    {
+      path: "../fonts/IBMPlexSansArabic-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/IBMPlexSansArabic-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../fonts/IBMPlexSansArabic-SemiBold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../fonts/IBMPlexSansArabic-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-ibm-plex-arabic",
   display: "swap",
 });

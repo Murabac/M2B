@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-arabic: 'Amiri', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Custom visual utilities for M2B cinematic design */
+.m2b-navy-gradient {
+  background: linear-gradient(135deg, #071C40 0%, #0B2F6B 50%, #0A3A7A 100%);
+}
+
+.m2b-navy-dark {
+  background: linear-gradient(180deg, #05142E 0%, #081B38 100%);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #E5C158 0%, #D4AF37 50%, #B8860B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #F0CF65 0%, #D4AF37 50%, #C9A227 100%);
+}
+
+.gold-border-glow {
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.3), 0 8px 30px rgba(11, 47, 107, 0.08);
+}
+
+.gold-border-glow-dark {
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.35), 0 12px 36px rgba(0, 0, 0, 0.5);
+}
+
+/* Subtle dot grid */
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(11, 47, 107, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-dot-pattern-dark {
+  background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Glass card styling */
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(11, 47, 107, 0.08);
+}
+
+.glass-panel-dark {
+  background: rgba(8, 27, 56, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(11, 47, 107, 0.2);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.5);
+}

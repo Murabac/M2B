@@ -26,6 +26,7 @@
 ## Languages and RTL
 
 - Locales: `en` (default), `so` (Somali, Latin script), `ar` (Arabic, RTL). Locale-prefixed routes: `/en`, `/so`, `/ar`.
+- Language switcher shows `en` and `ar` only for now; Somali stays routed and translated but the switcher button is hidden.
 - UI strings live in `messages/en.json`, `so.json`, `ar.json`. Write good Somali and Arabic translations for every UI string (a native speaker will review later).
 - CMS content (services, projects, testimonials) is English only. The interface around it is translated.
 - Arabic: set `dir="rtl"`, use logical CSS (Tailwind `ms-`/`me-`/`ps-`/`pe-`/`start`/`end`), mirror directional icons and animations.
@@ -43,18 +44,56 @@
 - Gold: `#D4AF37` (main), `#D2A032` (highlight), `#FED863` (light highlight), `#BE8C28` (shadow), `#8D6501` (deep shadow).
 - Brand gradient: `linear-gradient(135deg, #1E3A5F 0%, #2A5082 55%, #D4AF37 100%)`.
 - Usage: white and off-white backgrounds, navy for headings and body text, gold for accents, buttons and decoration. Never use gold as body text on white (about 2:1 contrast). Use navy text on gold buttons.
-- Fonts: **Kamerik 105** (Book 400 and Bold 700, via `next/font/local`) for English and Somali. **IBM Plex Sans Arabic** (via `next/font/google`) for Arabic, because Kamerik has no Arabic glyphs.
+- Fonts: **Kamerik 105** (Book 400 and Bold 700, via `next/font/local`) for English and Somali. **IBM Plex Sans Arabic** (via `next/font/local`, woff2 in `src/fonts/`) for Arabic, because Kamerik has no Arabic glyphs.
 - Define all colors as CSS variables and Tailwind theme tokens. Meet WCAG AA contrast.
 - Animation: bold hero (gradient, animated pixel squares) plus scroll-reveal animations on sections. Respect `prefers-reduced-motion`.
 
 ## Pages
 
-- `/` Home: hero, services overview, featured portfolio, trust strip, contact section.
+- `/` Home: Design Ref home composition (hero constellation, trust, featured, capabilities, bento, process, contact).
 - `/services`: full services list.
 - `/portfolio`: project grid with category filter.
 - `/portfolio/[slug]`: project details page.
 - `/admin/*`: single-admin CMS (see Admin).
 - Services to feature: Custom software / web apps; Mobile apps; ERP systems (NOT Odoo); Websites and e-commerce.
+
+## Home page target design
+
+Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cinematic navy/gold language and home section composition into the Next.js app. Keep Kamerik + IBM Plex Arabic. Reuse `ContactLink`, Supabase queries, and production routes.
+
+### Production IA (do not invent Design Ref routes)
+
+- Home sections only on `/` (see section order below).
+- Capabilities styling maps to `/services` (Supabase services).
+- Work / products styling maps to `/portfolio` + `/portfolio/[slug]`.
+- Do **not** add Studio, Products, or Capabilities as separate top-level routes in this pass.
+
+### Do not port from Design Ref
+
+- Contact form and Gemini API.
+- Dark/light theme toggle (dark navy bands for hero/process/footer are OK; no toggle).
+- Navbar viewport preview tools (1440 / 390 / fluid).
+- SPA `PageId` router and hardcoded `projectsData` as the live data source (may inform seed SQL only).
+- Outfit / Plus Jakarta / Amiri font stacks — keep Kamerik + IBM Plex Arabic.
+- About page.
+
+### Home section order (from Design Ref)
+
+1. Hero constellation (`HeroConstellation`) — dark cinematic; CTAs to `/portfolio` and `#contact`.
+2. Trust / sectors strip (`TrustStrip`).
+3. Featured cases (`FeaturedCases`) — Supabase featured projects.
+4. Capabilities band (`CapabilitiesBand`) — Supabase published services, link to `/services`.
+5. Products bento (`ProductsBento`) — published projects (limit 6–8), link to `/portfolio`.
+6. Process orbit (`ProcessOrbit`) — static 5-step “How we ship” copy in messages.
+7. Contact (`ContactView` visual only) — WhatsApp / email / phone via `ContactLink` (`home_section`); no form.
+
+### Shared setup
+
+1. UI strings in `messages/en.json`, `so.json`, `ar.json` (CMS titles stay English).
+2. Page shell fetches services + featured + published projects once.
+3. RTL (`ar`) and `prefers-reduced-motion` on animated sections.
+4. Header: dark cinematic bar (Design Ref) — brand lockup + Work / Products / Capabilities / Studio / Contact + EN/AR pill + Start a Project CTA; no theme toggle. Studio → home; Products → portfolio (no separate routes).
+5. Footer: Design Ref rhythm + studio cues; contact links only.
 
 ## Contact
 
@@ -65,12 +104,13 @@
 
 ## Data model (Supabase)
 
+- Schema: **`m2b`** (dedicated schema for multi-schema projects; expose it under Project Settings → API).
+- Storage bucket: `m2b-project-images` (public read, admin write).
 - `services`: id, slug, title, description, icon, sort_order, is_published.
 - `projects`: id, slug, title, tagline, description (markdown), category (web_app | mobile_app | erp | website_ecommerce), client_name, year, live_url, app_store_url, play_store_url, cover_image_url, is_featured, is_published, sort_order.
 - `project_images`: id, project_id, image_url, alt_text, sort_order.
 - `testimonials`: id, project_id, author_name, author_role, quote, sort_order, is_published.
 - `admin_users`: user_id (the single admin).
-- Storage bucket `project-images` (public read, admin write).
 - RLS: public can read published rows only; only the admin can insert, update, delete. Seed the 4 services.
 
 ## Admin (CMS)
@@ -92,7 +132,7 @@
 1. **Foundation**: project setup, folder structure, Tailwind tokens, fonts, next-intl with en/so/ar and RTL, `src/config/site.ts`, `.env.example`, placeholder pages, brand assets folder.
 2. **Layout and contact**: header (logo, nav, language switcher, mobile menu, mobile call button), footer, floating WhatsApp button, reusable contact link components with click-event hooks, translated UI strings.
 3. **Supabase backend**: SQL migrations in `supabase/migrations`, RLS, storage bucket, admin allow-list, seed data, server and browser clients, typed queries, setup README and env vars.
-4. **Home page**: bold hero with animated pixel squares, services overview, featured portfolio from Supabase, trust strip, contact section, scroll animations.
+4. **Home page**: bold hero, services overview, featured portfolio from Supabase, trust/value strip, contact section, scroll animations. Target layout documented under **Home page target design** (mock rebuild is a follow-up pass on this wave’s output).
 5. **Services and Portfolio pages**: `/services`, `/portfolio` with category filter, `/portfolio/[slug]` with description, gallery, client, year, links and testimonials; empty, loading and 404 states.
 6. **Admin and CMS**: login, protected routes, dashboard, CRUD for services, projects (image upload, gallery ordering, toggles) and testimonials.
 7. **SEO and Analytics**: metadata, hreflang, dynamic sitemap, robots, GA4 with consent mode, consent banner, contact click events.
@@ -103,9 +143,9 @@
 | Wave | Name | Status | Date | Notes |
 | ---- | ---- | ------ | ---- | ----- |
 | 1 | Foundation | Done | 2026-09-21 | Next.js 16.3 + Tailwind v4 + next-intl (en/so/ar, RTL). Tokens, Kamerik 105 + IBM Plex Arabic, site config, placeholder pages, logos copied from Logo assets. |
-| 2 | Layout and contact | Not started | | |
-| 3 | Supabase backend | Not started | | |
-| 4 | Home page | Not started | | |
+| 2 | Layout and contact | Done | 2026-09-26 | Header (logo, nav, language switcher, mobile menu, mobile call), footer, floating WhatsApp, ContactLink + trackContactClick hooks, en/so/ar strings. |
+| 3 | Supabase backend | Done | 2026-09-26 | Migration (schema, RLS, storage, seed 4 services), @supabase/ssr clients, typed queries, supabase/README.md, env vars. |
+| 4 | Home page | Done | 2026-09-26 | Rebuilt to mock target: 2-col hero + SVG visual, 2×2 service cards, featured work, 4-col value strip, #contact panels. |
 | 5 | Services and Portfolio pages | Not started | | |
 | 6 | Admin and CMS | Not started | | |
 | 7 | SEO and Analytics | Not started | | |
@@ -125,3 +165,14 @@
 - 2026-09-21: Copied the `Logo assets` pack into `public/brand` (`M2B` mark, lockup, icon). No Gold/Blue/gradient SVGs were in the pack.
 - 2026-09-21: Latin UI font is Kamerik 105 from the brand pack, not Plus Jakarta Sans. Arabic still uses IBM Plex Sans Arabic.
 - 2026-09-21: Brand lines from the lockup: “Technology | Innovation | Solutions” and “Connecting today, building tomorrow”.
+- 2026-09-26: Self-host IBM Plex Sans Arabic via `next/font/local` (woff2 in `src/fonts/`) instead of `next/font/google`, so builds work offline / without fonts.googleapis.com.
+- 2026-09-26: Contact click analytics stub pushes `whatsapp_click` / `email_click` / `phone_click` to `dataLayer` and a `m2b:contact_click` CustomEvent; GA4 wiring stays Wave 7.
+- 2026-09-26: Hide Somali (`so`) from the language switcher UI; keep `/so` routes and messages.
+- 2026-09-26: Supabase clients use `@supabase/ssr`. Typed public queries return `[]` / `null` when env vars are unset so builds work before a project is linked.
+- 2026-09-26: `admin_users` has no client insert policy — seed the single admin UUID via SQL after creating the Auth user.
+- 2026-09-26: M2B tables live in schema `m2b` (not `public`) for shared multi-schema Supabase projects; storage bucket is `m2b-project-images`.
+- 2026-09-26: Home hero brand signal uses the inverted mark on the dark gradient (full-bleed); CMS titles/descriptions stay English-only.
+- 2026-09-26: Approved home mock (navy/gold, 2-col hero with illustration, 2×2 service cards, featured work, 4-col value strip, contact panels). Documented under **Home page target design**. Still no About, forms, or theme toggle.
+- 2026-09-26: Home rebuild uses an inline SVG `HeroVisual` (devices/panels) until a custom 3D illustration is added under `public/`.
+- 2026-09-26: Design skills pass (Refero craft + Superdesign auth). Refero MCP styles unavailable (no subscription). Locked direction: CONTEXT mock + M2B navy/gold, light-first canvas, cards only for interactive grids, type scale tokens, less decorative chrome. Accent headline words kept because the approved mock uses them.
+- 2026-09-26: Locked visual reference to `Design Ref/` studio prototype. Port home composition + cinematic navy/gold system into Next.js; keep production IA (services/portfolio), no form/theme toggle/viewport tools; Kamerik + IBM Plex Arabic.

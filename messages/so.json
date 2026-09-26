@@ -1,24 +1,221 @@
 {
   "Metadata": {
     "siteName": "M2B",
-    "title": "M2B — Adeegyada Software-ka iyo IT-ga",
-    "description": "M2B waxay dhisaysaa software gaar ah, abka mobilka, nidaamyada ERP, iyo websaydhyo."
+    "title": "M2B — Software iyo Adeegyada IT-ga",
+    "description": "M2B waxay dhistaa software gaar ah, apps mobile, nidaamyada ERP, iyo websaydhyo."
   },
   "Common": {
-    "home": "Bogga hore",
+    "home": "Guriga",
     "services": "Adeegyada",
     "portfolio": "Shaqooyinka",
-    "placeholder": "Boggan waa meel-haye; waxaa la dhisayaa mawjado dambe."
+    "placeholder": "Boggan waa meel-haye; waxaa la dhisi doonaa mowjado dambe.",
+    "learnMore": "Wax badan ogow",
+    "viewAll": "Arag dhammaan"
+  },
+  "Nav": {
+    "openMenu": "Fur liiska",
+    "closeMenu": "Xir liiska",
+    "mainNavigation": "Hagaha ugu weyn"
+  },
+  "Header": {
+    "brandTagline": "Tiknoolaji · Hal-abuur",
+    "startProject": "Bilow Mashruuc",
+    "nav": {
+      "work": "Shaqada",
+      "products": "Alaabta",
+      "capabilities": "Xirfadaha",
+      "studio": "Xafiiska",
+      "contact": "Xidhiidh"
+    }
+  },
+  "Language": {
+    "label": "Luqadda",
+    "switchTo": "U beddel",
+    "en": "Ingiriis",
+    "so": "Soomaali",
+    "ar": "Carabi"
+  },
+  "Footer": {
+    "rights": "Dhammaan xuquuqdu waa la ilaaliyay.",
+    "tagline": "Ku Xidh Maanta, Dhis Berrito",
+    "contact": "Xidhiidh",
+    "navigation": "Hagaha",
+    "studioBlurb": "Xarun tiknoolaji oo madax-bannaan oo ku taalla Hargeysa, Somaliland. Waxaan dhisnaa nidaamyada dawliga ah, hawlaha goobaha, iyo barnaamijyada bulshada Geeska Afrika iyo qurbaha.",
+    "coordinates": "09°33'42\" N, 44°03'36\" E"
+  },
+  "Contact": {
+    "whatsapp": "WhatsApp",
+    "email": "Iimayl",
+    "phone": "Telefoon",
+    "whatsappMessage": "Salaan M2B, waxaan jeclaan lahaa inaan wax ka ogaado adeegyadiinna.",
+    "floatingWhatsApp": "Kula hadal WhatsApp",
+    "callUs": "Nala soo wac",
+    "whatsappHint": "Si degdeg ah nala hadal",
+    "emailHint": "Noo dir farriin",
+    "phoneHint": "Wac inta shaqada socoto"
+  },
+  "Categories": {
+    "web_app": "Web app",
+    "mobile_app": "Mobile app",
+    "erp": "ERP",
+    "website_ecommerce": "Website"
   },
   "HomePage": {
-    "title": "Adeegyada software-ka iyo IT-ga",
-    "tagline": "Software gaar ah, abka mobilka, nidaamyada ERP, iyo websaydhyo."
+    "eyebrow": "M2B · Xarunta Tiknoolajiyadda Hargeysa",
+    "eyebrowRegion": "Geeska & Qurbaha",
+    "headlineBefore": "Isku-xidhka maanta.",
+    "headlineAccent": "Dhismaha berri.",
+    "supporting": "M2B waxay naqshadaysaa oo dhistay nidaamyada dhabta ah ee hay’adaha iyo shirkadaha Geeska Afrika maalin kasta ku shaqeeyaan — laga bilaabo diiwaannada dawladda iyo ERP-yada dugsiyada, ilaa kormeerka goobaha iyo ganacsiga mobile money — Hargeysa ilaa qurbaha.",
+    "ctaPrimary": "Eeg Mashaariicda",
+    "ctaSecondary": "Bilow Mashruuc",
+    "proofLine": "Web · Mobile (Flutter) · Ops & ERPs · Labada luqadood EN / SO / AR",
+    "proofBilingual": "Labada luqadood EN / SO / AR",
+    "meshLabel": "M2B SYSTEMS LIVE MESH",
+    "meshActive": "FIRFIRCOON",
+    "meshEngines": "5 ACTIVE ENGINES",
+    "caseLink": "Case",
+    "stackLine": "Laravel · Filament · Flutter · .NET · Next.js · PostGIS",
+    "servicesLabel": "Adeegyadayada",
+    "servicesTitle": "Waxaan dhisnaa",
+    "servicesSupporting": "Laga bilaabo platform-yada ilaa dukaamada — nidaamyada hawlgalka ee Geeska.",
+    "viewAllServices": "Arag dhammaan adeegyada",
+    "workLabel": "NIDAAMYADA HORYAALKA AH",
+    "featuredTitleBefore": "Lafdhabarta hawlgalka ee",
+    "featuredTitleAccent": "gobolku dhab ahaan ku shaqeeyo.",
+    "portfolioTitle": "Shaqooyinka muuqda",
+    "portfolioSupporting": "Mashaariic la xushay oo muujinaya sida aan u dhisno.",
+    "portfolioEmpty": "Daraasado muuqda ayaa halkan ka soo muuqan doona marka la daabaco.",
+    "portfolioCta": "Sahami dhammaan kiisaska",
+    "caseDeepDive": "Si qoto dheer u eeg",
+    "capabilitiesLabel": "WAXA M2B KA DUWAN YAHAY",
+    "capabilitiesTitleBefore": "Ma samayno uun mareegaha xayeysiiska.",
+    "capabilitiesTitleAccent": "Waxaan dhisnaa lafdhabarta hawlgalka.",
+    "capabilitiesSupporting": "Laga bilaabo khariidadaha GIS, kormeerka goobaha, mushahaarka, iyo xaadirinta — ilaa mobile money, qulqulka codadka, iyo app-yada shaqaalaha.",
+    "bentoLabel": "ALAABTA AAN HIRGELINNO",
+    "bentoTitleBefore": "Qalab, dashboards,",
+    "bentoTitleAccent": "iyo engines mobile ee macaamiisha.",
+    "trust": {
+      "label": "QAYBAHA AAN U ADEEGNO",
+      "title": "Kaabayaasha la xaqiijiyay ee Dawladda ilaa Qoyska",
+      "proof": "Nidaamyada wax-soo-saarka ee Somaliland & Bariga Afrika",
+      "sectors": {
+        "government": {
+          "name": "Hay’adaha Dawladda",
+          "proof": "MoCIT TowerLine GIS",
+          "metric": "Diiwaanka Qaran"
+        },
+        "education": {
+          "name": "Waxbarashada",
+          "proof": "Dugsi ERP & ACU Portal",
+          "metric": "6,200+ Arday"
+        },
+        "health": {
+          "name": "Caafimaadka & NGO",
+          "proof": "ACFH & Liby Foundation",
+          "metric": "40 Xarumood Caafimaad"
+        },
+        "commerce": {
+          "name": "Ganacsiga & Hawlaha",
+          "proof": "NOVA Cleaning & Ekaadh",
+          "metric": "120+ Xarumood"
+        },
+        "media": {
+          "name": "Warbaahinta & Diinta",
+          "proof": "Qaari SL & Maqal",
+          "metric": "85k+ Dhageystayaal Bil kasta"
+        },
+        "community": {
+          "name": "Bulshada & Qoyska",
+          "proof": "Jimicso & Reer Sh Yoonis",
+          "metric": "Geeska & Qurbaha"
+        }
+      }
+    },
+    "process": {
+      "label": "HABKA SHAQADA",
+      "titleBefore": "Laga bilaabo fikirka hore ilaa",
+      "titleAccent": "maamulka joogtada ah ee goobta.",
+      "supporting": "5 tallaabo oo qotodheer oo hubinaya in nidaamku u adkaysto caqabadaha dhabta ah ee gobolka.",
+      "stageOf": "MARXALADDA {step} EE 05",
+      "deliverables": "Maxsulada & Tilmaamaha",
+      "cta": "Bilow mashruuc",
+      "steps": {
+        "01": {
+          "title": "Baadhis & Qorshayn",
+          "description": "Waxaan si qoto-dheer u dhuuxnaa caqabadaha dhabta ah ee shaqadaada: warqadaha goobaha, xisaabaadka lacagaha, iyo habka shaqada.",
+          "deliverables": [
+            "Qaabdhismeedka Nidaamka",
+            "Qaabka Xogta",
+            "Baadhitaanka Caqabadaha Maxalliga"
+          ]
+        },
+        "02": {
+          "title": "Naqshadayn & Tijaabo",
+          "description": "Waxaan samaynaa naqshad indhaha u roon, fudud, kuna qoran luqadaha aad u baahan tahay, una diyaarsan taleefan kasta.",
+          "deliverables": [
+            "Nidaamka Naqshadda Figma",
+            "Qoraal Labada Luqadood",
+            "Prototype-yo Is-dhexgal ah"
+          ]
+        },
+        "03": {
+          "title": "Dhisid & Isku-xidhid",
+          "description": "Waxaan ku dhisaa teknoolajiyada ugu adag uguna casrisan, annagoo toos ugu xidhayna ZAAD, eDahab, iyo nidaamyada kale.",
+          "deliverables": [
+            "Koodhka Wax-soo-saarka",
+            "Webhook-yada Lacag-bixinta",
+            "Tijaabooyin Otomaatik ah"
+          ]
+        },
+        "04": {
+          "title": "Furid & Tijaabada Goobta",
+          "description": "Waxaan tijaabinnaa annagoo adeegsanayna kormeerayaasha dhabta ah ee goobaha jooga xitaa internet-ka ugu liita, si aan u xaqiijino xawaaraha.",
+          "deliverables": [
+            "Daabacaadda Wax-soo-saarka",
+            "Wareejinta Xogta",
+            "Tababarka Shaqaalaha"
+          ]
+        },
+        "05": {
+          "title": "Maamul & Horumarin",
+          "description": "Barnaamijku wuu koraa. Waxaan la soconnaa caafimaadka nidaamka, ilaalada xogta, iyo kordhinta adeegyo cusub mar kasta.",
+          "deliverables": [
+            "La-socodka SLA",
+            "Dayactirka Amniga",
+            "Qorshaha Features"
+          ]
+        }
+      }
+    },
+    "contactLabel": "NALA SOO XIDHIIDH · HARGEYSA",
+    "contactTitleBefore": "Aan bilowno",
+    "contactTitleAccent": "dhismaha mashruucaaga xiga.",
+    "contactSupporting": "Si toos ah ula xiriir hoggaanka injineernimada ee Hargeysa. WhatsApp, iimayl, ama telefoon — foom ma jiro.",
+    "contactChannelsLabel": "Kanaalada injineernimada tooska ah",
+    "studioHq": "XARUNTA STUDIO",
+    "studioCity": "Hargeysa, Somaliland",
+    "studioCoords": "09°33'42\" N, 44°03'36\" E",
+    "studioBlurb": "Waxaan ka shaqeynaa caasimadda Somaliland, daqiiqado u jirta xarumaha wasaaradaha iyo isgaadhsiinta.",
+    "localTimeLabel": "WAKTIGA MAXALLIGA AH EE HARGEYSA (EAT · UTC+3)",
+    "studioActive": "Studio Firfircoon",
+    "hoursWeekdays": "Sabti – Khamiis:",
+    "hoursWeekdaysValue": "08:00 – 17:00 EAT",
+    "hoursFriday": "Jimce:",
+    "hoursFridayValue": "Xiran salaadda",
+    "timezoneNote": "Waqtiga Bariga Afrika · UTC+3"
   },
   "ServicesPage": {
-    "title": "Adeegyada"
+    "title": "Adeegyada",
+    "label": "XIRFADAHA",
+    "supporting": "Nidaamyada hawlgalka ee loogu talagalay dawladda, waxbarashada, ganacsiga, iyo qurbaha.",
+    "cta": "Bilow mashruuc"
   },
   "PortfolioPage": {
-    "title": "Shaqooyinka"
+    "title": "Shaqooyinka",
+    "label": "KIISASKA & SHAQADA",
+    "supporting": "Nidaamyada la daabacay ee ka shaqeeya Geeska Afrika iyo qurbaha.",
+    "empty": "Mashaariicdu waxay halkan ka soo muuqan doonaan marka la daabaco.",
+    "cta": "Bilow mashruuc"
   },
   "ProjectPage": {
     "title": "Mashruuc"

@@ -1,6 +1,9 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
+import { FloatingWhatsApp } from "@/components/contact/FloatingWhatsApp";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { ibmPlexArabic, kamerik } from "@/config/fonts";
 import { getLocaleFromParams } from "@/i18n/locale";
 import { isRtlLocale, routing } from "@/i18n/routing";
@@ -46,7 +49,10 @@ export default async function LocaleLayout({ children, params }: Props) {
         className={`flex min-h-full flex-col ${rtl ? "font-arabic" : "font-sans"}`}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <Header />
+          <div className="flex flex-1 flex-col">{children}</div>
+          <Footer />
+          <FloatingWhatsApp />
         </NextIntlClientProvider>
       </body>
     </html>

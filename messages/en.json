@@ -8,17 +8,214 @@
     "home": "Home",
     "services": "Services",
     "portfolio": "Portfolio",
-    "placeholder": "This page is a placeholder and will be built in a later wave."
+    "placeholder": "This page is a placeholder and will be built in a later wave.",
+    "learnMore": "Learn more",
+    "viewAll": "View all"
+  },
+  "Nav": {
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNavigation": "Main navigation"
+  },
+  "Header": {
+    "brandTagline": "Technology · Innovation",
+    "startProject": "Start a Project",
+    "nav": {
+      "work": "Work",
+      "products": "Products",
+      "capabilities": "Capabilities",
+      "studio": "Studio",
+      "contact": "Contact"
+    }
+  },
+  "Language": {
+    "label": "Language",
+    "switchTo": "Switch to",
+    "en": "English",
+    "so": "Somali",
+    "ar": "Arabic"
+  },
+  "Footer": {
+    "rights": "All rights reserved.",
+    "tagline": "Connecting Today, Building Tomorrow",
+    "contact": "Contact",
+    "navigation": "Navigation",
+    "studioBlurb": "Independent technology studio engineered in Hargeisa, Somaliland. Shipping sovereign systems, field operations, and consumer software for the Horn of Africa and the diaspora.",
+    "coordinates": "09°33'42\" N, 44°03'36\" E"
+  },
+  "Contact": {
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "phone": "Phone",
+    "whatsappMessage": "Hello M2B, I would like to learn more about your services.",
+    "floatingWhatsApp": "Chat on WhatsApp",
+    "callUs": "Call us",
+    "whatsappHint": "Chat with us instantly",
+    "emailHint": "Send us a message",
+    "phoneHint": "Call during business hours"
+  },
+  "Categories": {
+    "web_app": "Web app",
+    "mobile_app": "Mobile app",
+    "erp": "ERP",
+    "website_ecommerce": "Website"
   },
   "HomePage": {
-    "title": "Software and IT services",
-    "tagline": "Custom software, mobile apps, ERP systems, and websites."
+    "eyebrow": "M2B · Software Studio Hargeisa",
+    "eyebrowRegion": "Horn & Diaspora",
+    "headlineBefore": "Connecting today.",
+    "headlineAccent": "Building tomorrow.",
+    "supporting": "M2B designs and ships the systems Horn of Africa organisations actually run on — government registries, school ERPs, field operations, mobile money commerce, and community apps — from Hargeisa to the diaspora.",
+    "ctaPrimary": "See the Work",
+    "ctaSecondary": "Start a Project",
+    "proofLine": "Web · Mobile (Flutter) · Ops Platforms & ERPs · Bilingual EN / SO / AR",
+    "proofBilingual": "Bilingual EN / SO / AR",
+    "meshLabel": "M2B SYSTEMS LIVE MESH",
+    "meshActive": "ACTIVE",
+    "meshEngines": "5 ACTIVE ENGINES",
+    "caseLink": "Case",
+    "stackLine": "Engineered with Laravel · Filament · Flutter · .NET · Next.js · PostGIS",
+    "servicesLabel": "Our services",
+    "servicesTitle": "What we build",
+    "servicesSupporting": "From custom platforms to storefronts — operational systems built for the Horn.",
+    "viewAllServices": "View all services",
+    "workLabel": "FLAGSHIP SYSTEMS",
+    "featuredTitleBefore": "The operational backbones",
+    "featuredTitleAccent": "the region actually runs on.",
+    "portfolioTitle": "Featured work",
+    "portfolioSupporting": "Selected projects that show how we ship.",
+    "portfolioEmpty": "Featured case studies will appear here once published.",
+    "portfolioCta": "Explore all cases",
+    "caseDeepDive": "Deep dive",
+    "capabilitiesLabel": "WHAT MAKES M2B DIFFERENT",
+    "capabilitiesTitleBefore": "We don't just build marketing sites.",
+    "capabilitiesTitleAccent": "We engineer operational backbones.",
+    "capabilitiesSupporting": "From geospatial maps, field inspections, payroll, and attendance to mobile money checkout, audio pipelines, and staff companion apps.",
+    "bentoLabel": "PRODUCTS WE SHIP",
+    "bentoTitleBefore": "Tools, dashboards,",
+    "bentoTitleAccent": "and consumer mobile engines.",
+    "trust": {
+      "label": "SECTORS OPERATING ON M2B",
+      "title": "Proven infrastructure from sovereign ministries to grassroots",
+      "proof": "Production-verified systems across Somaliland & East Africa",
+      "sectors": {
+        "government": {
+          "name": "Government",
+          "proof": "MoCIT TowerLine GIS",
+          "metric": "National Registry"
+        },
+        "education": {
+          "name": "Education",
+          "proof": "Dugsi ERP & ACU Portal",
+          "metric": "6,200+ Students"
+        },
+        "health": {
+          "name": "Health & NGO",
+          "proof": "ACFH & Liby Foundation",
+          "metric": "40 Health Posts"
+        },
+        "commerce": {
+          "name": "Commerce & Ops",
+          "proof": "NOVA Cleaning & Ekaadh",
+          "metric": "120+ Facilities"
+        },
+        "media": {
+          "name": "Media & Culture",
+          "proof": "Qaari SL & Maqal",
+          "metric": "85k+ Monthly Streams"
+        },
+        "community": {
+          "name": "Community & Lineage",
+          "proof": "Jimicso & Reer Sh Yoonis",
+          "metric": "Horn & Diaspora"
+        }
+      }
+    },
+    "process": {
+      "label": "HOW WE SHIP",
+      "titleBefore": "From discovery to",
+      "titleAccent": "daily production operations.",
+      "supporting": "A structured 5-stage lifecycle engineered for high durability under harsh field conditions and bandwidth limits.",
+      "stageOf": "STAGE {step} OF 05",
+      "deliverables": "Deliverables & milestones",
+      "cta": "Start a project",
+      "steps": {
+        "01": {
+          "title": "Discover & Map",
+          "description": "We audit your real-world operational bottlenecks: field paper trails, payment reconciliation issues, and stakeholder constraints across Hargeisa and beyond.",
+          "deliverables": [
+            "System Architecture Blueprint",
+            "Data & Entity Schema",
+            "Local Constraints Audit"
+          ]
+        },
+        "02": {
+          "title": "Design & Prototype",
+          "description": "We craft high-density, ergonomic UIs with instant feedback. Every screen is designed for high sun visibility, bilingual typography, and 44px+ touch targets.",
+          "deliverables": [
+            "Figma Design System",
+            "Bilingual Microcopy",
+            "Interactive Prototypes"
+          ]
+        },
+        "03": {
+          "title": "Engineer & Integrate",
+          "description": "We build with modern frameworks (Laravel, Filament, Flutter, .NET, Next.js). We wire direct local APIs for ZAAD, eDahab, GIS maps, and offline caches.",
+          "deliverables": [
+            "Production Codebase",
+            "Local Payment Webhooks",
+            "Automated Testing"
+          ]
+        },
+        "04": {
+          "title": "Launch & Field-Test",
+          "description": "We test with actual field supervisors, remote teachers, or public users under poor 3G connections. We tune query performance to sub-100ms.",
+          "deliverables": [
+            "Production Deployment",
+            "Data Migration",
+            "Staff Hands-on Training"
+          ]
+        },
+        "05": {
+          "title": "Operate & Scale",
+          "description": "Software is a living asset. We monitor infrastructure health, handle ministerial compliance updates, patch security, and expand feature modules.",
+          "deliverables": [
+            "Uptime SLA Monitoring",
+            "Security Patches",
+            "Feature Roadmaps"
+          ]
+        }
+      }
+    },
+    "contactLabel": "START A CONVERSATION · HARGEISA",
+    "contactTitleBefore": "Let's engineer",
+    "contactTitleAccent": "your next sovereign system.",
+    "contactSupporting": "Direct access to senior software engineering leadership in Hargeisa. Reach us on WhatsApp, email, or phone — no forms.",
+    "contactChannelsLabel": "Direct engineering channels",
+    "studioHq": "STUDIO HEADQUARTERS",
+    "studioCity": "Hargeisa, Somaliland",
+    "studioCoords": "09°33'42\" N, 44°03'36\" E",
+    "studioBlurb": "Operating directly from the capital of Somaliland, minutes from ministerial headquarters and commercial telecom hubs.",
+    "localTimeLabel": "HARGEISA LOCAL TIME (EAT · UTC+3)",
+    "studioActive": "Studio Active",
+    "hoursWeekdays": "Saturday – Thursday:",
+    "hoursWeekdaysValue": "08:00 – 17:00 EAT",
+    "hoursFriday": "Friday (Jummah):",
+    "hoursFridayValue": "Closed for prayer",
+    "timezoneNote": "East Africa Time · UTC+3"
   },
   "ServicesPage": {
-    "title": "Services"
+    "title": "Services",
+    "label": "CAPABILITIES",
+    "supporting": "Operational systems engineered for government, education, commerce, and the diaspora.",
+    "cta": "Start a project"
   },
   "PortfolioPage": {
-    "title": "Portfolio"
+    "title": "Portfolio",
+    "label": "CASE STUDIES & WORK",
+    "supporting": "Published systems shipping across the Horn of Africa and diaspora.",
+    "empty": "Projects will appear here once published.",
+    "cta": "Start a project"
   },
   "ProjectPage": {
     "title": "Project"

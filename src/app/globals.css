@@ -1,19 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --navy: #1e3a5f;
-  --navy-mid: #2a5082;
-  --navy-deep: #0a2850;
-  --navy-deeper: #082c56;
+  /* Brand — aligned with Design Ref navy/gold */
+  --navy: #0b2f6b;
+  --navy-mid: #0a3a7a;
+  --navy-deep: #05142e;
+  --navy-deeper: #030b17;
   --gold: #d4af37;
-  --gold-highlight: #d2a032;
-  --gold-light: #fed863;
-  --gold-shadow: #be8c28;
-  --gold-deep: #8d6501;
-  --brand-gradient: linear-gradient(135deg, #1e3a5f 0%, #2a5082 55%, #d4af37 100%);
+  --gold-highlight: #e5be4a;
+  --gold-light: #f0cf65;
+  --gold-shadow: #c9a227;
+  --gold-deep: #b8860b;
+  --brand-gradient: linear-gradient(135deg, #071c40 0%, #0b2f6b 50%, #0a3a7a 100%);
+
+  /* Surfaces — light canvas + cinematic dark bands on home */
   --background: #ffffff;
-  --background-muted: #f6f7f9;
-  --foreground: #1e3a5f;
+  --background-muted: #fafbfd;
+  --background-subtle: #eef3f9;
+  --foreground: #0a1e3b;
+  --foreground-muted: #0b2f6b;
+  --foreground-subtle: rgba(10, 30, 59, 0.62);
+  --border-subtle: rgba(11, 47, 107, 0.1);
+  --border-strong: rgba(11, 47, 107, 0.18);
+
+  /* Type scale — minor third from 16px */
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.4375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.0625rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.5625rem;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-body: 1.6;
+  --measure: 65ch;
+  --radius-control: 0.75rem;
+  --radius-panel: 1rem;
 }
 
 @theme inline {
@@ -28,6 +55,7 @@
   --color-gold-deep: var(--gold-deep);
   --color-background: var(--background);
   --color-background-muted: var(--background-muted);
+  --color-background-subtle: var(--background-subtle);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-kamerik);
   --font-arabic: var(--font-ibm-plex-arabic);
@@ -36,6 +64,101 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--gold) 35%, white);
+  color: var(--navy-deep);
+}
+
+/* Design Ref cinematic utilities */
+.m2b-navy-gradient {
+  background: linear-gradient(135deg, #071c40 0%, #0b2f6b 50%, #0a3a7a 100%);
+}
+
+.m2b-navy-dark {
+  background: linear-gradient(180deg, #05142e 0%, #081b38 100%);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #e5c158 0%, #d4af37 50%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #f0cf65 0%, #d4af37 50%, #c9a227 100%);
+}
+
+.gold-border-glow {
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.3),
+    0 8px 30px rgba(11, 47, 107, 0.08);
+}
+
+.gold-border-glow-dark {
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.35),
+    0 12px 36px rgba(0, 0, 0, 0.5);
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(11, 47, 107, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-dot-pattern-dark {
+  background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(11, 47, 107, 0.08);
+}
+
+.glass-panel-dark {
+  background: rgba(8, 27, 56, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(11, 47, 107, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.5);
 }
 
 @media (prefers-reduced-motion: reduce) {
