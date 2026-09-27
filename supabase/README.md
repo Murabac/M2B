@@ -25,10 +25,15 @@ Until these are set, typed query helpers return empty data so the site still bui
 
 Without this, the JS client cannot query `m2b` tables.
 
-## Run the migration
+## Run the migrations
 
 1. Open **SQL Editor**
-2. Paste and run: `supabase/migrations/20260926000000_init.sql`
+2. Paste and run in order:
+   - `supabase/migrations/20260926000000_init.sql`
+   - `supabase/migrations/20260927000000_home_content.sql`
+   - `supabase/migrations/20260927000001_capabilities_bullets.sql`
+   - `supabase/migrations/20260927000002_products_bento.sql`
+   - `supabase/migrations/20260927000003_project_logo_urls.sql`
 
 Or with the CLI:
 
@@ -37,15 +42,17 @@ npx supabase link --project-ref <your-ref>
 npx supabase db push
 ```
 
-## After the migration
+## After the migrations
 
 Creates in schema `m2b`:
 
-- Tables: `services`, `projects`, `project_images`, `testimonials`, `admin_users`
+- Tables: `services`, `projects`, `project_images`, `testimonials`, `admin_users`, `trust_sectors`, `process_steps`
 - Enum: `project_category`
+- Extra project columns for hero mesh: `logo_url`, `mesh_preview`, `mesh_category`, `accent_color`, `show_in_hero`, `hero_sort_order`
+- Services `bullets` jsonb + 6 Design Ref capability seeds
 - RLS + `m2b.is_admin()`
 - Storage bucket: `m2b-project-images`
-- Seed: 4 published services
+- Seed: services, trust sectors, process steps, and hero project rows (when matching slugs exist)
 
 ## Add the single admin
 
@@ -62,6 +69,9 @@ values ('00000000-0000-0000-0000-000000000000'); -- replace with the auth user i
 
 ```sql
 select slug, title, is_published from m2b.services order by sort_order;
+select slug, show_in_hero, hero_sort_order from m2b.projects where show_in_hero order by hero_sort_order;
+select slug, name, is_published from m2b.trust_sectors order by sort_order;
+select step_key, title, is_published from m2b.process_steps order by sort_order;
 select m2b.is_admin(); -- false unless authenticated as the admin
 ```
 

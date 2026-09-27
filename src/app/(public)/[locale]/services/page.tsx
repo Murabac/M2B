@@ -37,7 +37,7 @@ export default async function ServicesPage({ params }: Props) {
 
       <section className="py-16 sm:py-20">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:px-6 md:grid-cols-2 lg:grid-cols-3 lg:px-8">
-          {services.map((service, index) => (
+                  {services.map((service, index) => (
             <Reveal key={service.id} delay={index * 0.04}>
               <article className="group flex h-full flex-col rounded-2xl border border-slate-200/80 bg-slate-50/80 p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-navy/30 hover:bg-white">
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-navy text-gold shadow-md transition-transform group-hover:scale-105">
@@ -49,6 +49,19 @@ export default async function ServicesPage({ params }: Props) {
                 <p className="text-sm leading-relaxed text-slate-600">
                   {service.description}
                 </p>
+                {service.bullets?.length ? (
+                  <ul className="mt-4 space-y-2 border-t border-slate-200 pt-4">
+                    {service.bullets.map((bullet) => (
+                      <li
+                        key={bullet}
+                        className="flex items-start gap-2 text-xs text-slate-500"
+                      >
+                        <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </article>
             </Reveal>
           ))}

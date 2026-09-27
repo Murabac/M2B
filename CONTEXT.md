@@ -28,7 +28,7 @@
 - Locales: `en` (default), `so` (Somali, Latin script), `ar` (Arabic, RTL). Locale-prefixed routes: `/en`, `/so`, `/ar`.
 - Language switcher shows `en` and `ar` only for now; Somali stays routed and translated but the switcher button is hidden.
 - UI strings live in `messages/en.json`, `so.json`, `ar.json`. Write good Somali and Arabic translations for every UI string (a native speaker will review later).
-- CMS content (services, projects, testimonials) is English only. The interface around it is translated.
+- CMS content (services, projects, trust sectors, process steps, testimonials) is English only. The interface around it is translated.
 - Arabic: set `dir="rtl"`, use logical CSS (Tailwind `ms-`/`me-`/`ps-`/`pe-`/`start`/`end`), mirror directional icons and animations.
 
 ## Brand and design system
@@ -106,19 +106,20 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 
 - Schema: **`m2b`** (dedicated schema for multi-schema projects; expose it under Project Settings → API).
 - Storage bucket: `m2b-project-images` (public read, admin write).
-- `services`: id, slug, title, description, icon, sort_order, is_published.
-- `projects`: id, slug, title, tagline, description (markdown), category (web_app | mobile_app | erp | website_ecommerce), client_name, year, live_url, app_store_url, play_store_url, cover_image_url, is_featured, is_published, sort_order.
+- `services`: id, slug, title, description, icon, bullets (jsonb string array), sort_order, is_published.
+- `projects`: id, slug, title, tagline, description (markdown), category (web_app | mobile_app | erp | website_ecommerce), client_name, year, live_url, app_store_url, play_store_url, cover_image_url, logo_url, mesh_preview, mesh_category, accent_color, stack_line, metric_label, show_in_hero, hero_sort_order, show_in_bento, bento_sort_order, is_featured, is_published, sort_order.
 - `project_images`: id, project_id, image_url, alt_text, sort_order.
 - `testimonials`: id, project_id, author_name, author_role, quote, sort_order, is_published.
+- `trust_sectors`: id, slug, name, proof, metric, icon, sort_order, is_published (home trust strip).
+- `process_steps`: id, step_key, title, description, deliverables (jsonb string array), sort_order, is_published (home process orbit).
 - `admin_users`: user_id (the single admin).
-- RLS: public can read published rows only; only the admin can insert, update, delete. Seed the 4 services.
+- RLS: public can read published rows only; only the admin can insert, update, delete. Seed the 4 services; home migration seeds trust sectors, process steps, and hero project fields.
 
 ## Admin (CMS)
 
 - One admin only. Supabase Auth email and password. Protect `/admin/*` with middleware.
 - Admin UI is English only, `noindex`, excluded from the sitemap and hreflang.
-- CMS scope: services descriptions, portfolio projects (all fields, cover image, gallery upload and ordering, publish and feature toggles) and testimonials per project. Nothing else is editable.
-- Contact details are NOT in the CMS; they are env vars.
+- CMS scope: services (with bullets), portfolio projects (all fields including hero/bento flags, cover image, gallery upload and ordering, publish and feature toggles), trust sectors, process steps, and testimonials per project. Contact details are NOT in the CMS; they are env vars.
 
 ## SEO and Analytics
 
@@ -176,3 +177,5 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - 2026-09-26: Home rebuild uses an inline SVG `HeroVisual` (devices/panels) until a custom 3D illustration is added under `public/`.
 - 2026-09-26: Design skills pass (Refero craft + Superdesign auth). Refero MCP styles unavailable (no subscription). Locked direction: CONTEXT mock + M2B navy/gold, light-first canvas, cards only for interactive grids, type scale tokens, less decorative chrome. Accent headline words kept because the approved mock uses them.
 - 2026-09-26: Locked visual reference to `Design Ref/` studio prototype. Port home composition + cinematic navy/gold system into Next.js; keep production IA (services/portfolio), no form/theme toggle/viewport tools; Kamerik + IBM Plex Arabic.
+- 2026-09-27: Home constellation, trust strip, and process steps are Supabase-backed (`show_in_hero` on projects; `trust_sectors`; `process_steps`). Section chrome stays in next-intl; CMS body copy stays English-only. Migration: `20260927000000_home_content.sql`.
+- 2026-09-27: Home Products bento is Supabase-driven (`show_in_bento`, `bento_sort_order`, `stack_line`, `metric_label`). Portfolio detail pages read from Supabase. Migration: `20260927000002_products_bento.sql`. UI chrome stays in next-intl; contact numbers stay env vars.

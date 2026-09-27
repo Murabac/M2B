@@ -90,46 +90,24 @@
     "capabilitiesLabel": "WHAT MAKES M2B DIFFERENT",
     "capabilitiesTitleBefore": "We don't just build marketing sites.",
     "capabilitiesTitleAccent": "We engineer operational backbones.",
-    "capabilitiesSupporting": "From geospatial maps, field inspections, payroll, and attendance to mobile money checkout, audio pipelines, and staff companion apps.",
+    "capabilitiesSupporting": "From geospatial maps, field inspections, payroll, and attendance to mobile money checkout, audio distribution pipelines, and staff companion apps.",
+    "capabilitiesEmpty": "Capabilities will appear here once published.",
+    "exploreCapability": "Explore Capability",
+    "regionLabel": "BUILT FOR THE REGION",
+    "regionTitle": "We speak the local stack fluently.",
+    "regionSupporting": "ZAAD Telesom, eDahab Somtel, Somali typography (longer labels requiring ergonomic text wrapping), RTL Arabic, USD dual currency pricing, Saturday–Wednesday school weeks, and satellite or intermittent cellular resilience.",
+    "regionCta": "Inspect Full Tech Matrix",
     "bentoLabel": "PRODUCTS WE SHIP",
     "bentoTitleBefore": "Tools, dashboards,",
     "bentoTitleAccent": "and consumer mobile engines.",
+    "bentoCta": "Open Product OS Index",
+    "bentoViewCase": "View Case →",
+    "bentoEmpty": "Products will appear here once published.",
     "trust": {
       "label": "SECTORS OPERATING ON M2B",
-      "title": "Proven infrastructure from sovereign ministries to grassroots",
+      "title": "Proven Infrastructure from Sovereign Ministries to Grassroots",
       "proof": "Production-verified systems across Somaliland & East Africa",
-      "sectors": {
-        "government": {
-          "name": "Government",
-          "proof": "MoCIT TowerLine GIS",
-          "metric": "National Registry"
-        },
-        "education": {
-          "name": "Education",
-          "proof": "Dugsi ERP & ACU Portal",
-          "metric": "6,200+ Students"
-        },
-        "health": {
-          "name": "Health & NGO",
-          "proof": "ACFH & Liby Foundation",
-          "metric": "40 Health Posts"
-        },
-        "commerce": {
-          "name": "Commerce & Ops",
-          "proof": "NOVA Cleaning & Ekaadh",
-          "metric": "120+ Facilities"
-        },
-        "media": {
-          "name": "Media & Culture",
-          "proof": "Qaari SL & Maqal",
-          "metric": "85k+ Monthly Streams"
-        },
-        "community": {
-          "name": "Community & Lineage",
-          "proof": "Jimicso & Reer Sh Yoonis",
-          "metric": "Horn & Diaspora"
-        }
-      }
+      "empty": "Sectors will appear here once published."
     },
     "process": {
       "label": "HOW WE SHIP",
@@ -137,55 +115,15 @@
       "titleAccent": "daily production operations.",
       "supporting": "A structured 5-stage lifecycle engineered for high durability under harsh field conditions and bandwidth limits.",
       "stageOf": "STAGE {step} OF 05",
-      "deliverables": "Deliverables & milestones",
-      "cta": "Start a project",
-      "steps": {
-        "01": {
-          "title": "Discover & Map",
-          "description": "We audit your real-world operational bottlenecks: field paper trails, payment reconciliation issues, and stakeholder constraints across Hargeisa and beyond.",
-          "deliverables": [
-            "System Architecture Blueprint",
-            "Data & Entity Schema",
-            "Local Constraints Audit"
-          ]
-        },
-        "02": {
-          "title": "Design & Prototype",
-          "description": "We craft high-density, ergonomic UIs with instant feedback. Every screen is designed for high sun visibility, bilingual typography, and 44px+ touch targets.",
-          "deliverables": [
-            "Figma Design System",
-            "Bilingual Microcopy",
-            "Interactive Prototypes"
-          ]
-        },
-        "03": {
-          "title": "Engineer & Integrate",
-          "description": "We build with modern frameworks (Laravel, Filament, Flutter, .NET, Next.js). We wire direct local APIs for ZAAD, eDahab, GIS maps, and offline caches.",
-          "deliverables": [
-            "Production Codebase",
-            "Local Payment Webhooks",
-            "Automated Testing"
-          ]
-        },
-        "04": {
-          "title": "Launch & Field-Test",
-          "description": "We test with actual field supervisors, remote teachers, or public users under poor 3G connections. We tune query performance to sub-100ms.",
-          "deliverables": [
-            "Production Deployment",
-            "Data Migration",
-            "Staff Hands-on Training"
-          ]
-        },
-        "05": {
-          "title": "Operate & Scale",
-          "description": "Software is a living asset. We monitor infrastructure health, handle ministerial compliance updates, patch security, and expand feature modules.",
-          "deliverables": [
-            "Uptime SLA Monitoring",
-            "Security Patches",
-            "Feature Roadmaps"
-          ]
-        }
-      }
+      "deliverables": "Deliverables & Milestones:",
+      "guaranteeTitle": "Guaranteed Delivery",
+      "guaranteeBody": "Led personally by senior engineering leadership with 9+ years in production.",
+      "guaranteeCta": "Start Discovery Phase",
+      "collabLabel": "START A COLLABORATION",
+      "collabTitle": "Have a ministry system, school ERP, or marketplace in mind?",
+      "collabSupporting": "Talk directly with M2B senior engineering leadership in Hargeisa. We turn complex regional operations into software that lasts.",
+      "collabPrimary": "Start a Project",
+      "collabSecondary": "See Case Studies"
     },
     "contactLabel": "START A CONVERSATION · HARGEISA",
     "contactTitleBefore": "Let's engineer",
@@ -218,6 +156,13 @@
     "cta": "Start a project"
   },
   "ProjectPage": {
-    "title": "Project"
+    "title": "Project",
+    "back": "All projects",
+    "liveSite": "Visit live site",
+    "cta": "Start a project",
+    "client": "Client",
+    "year": "Year",
+    "stack": "Stack",
+    "testimonials": "Testimonials"
   }
 }

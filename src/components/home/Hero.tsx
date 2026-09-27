@@ -8,88 +8,49 @@ import {
   CheckCircle2,
   ChevronRight,
   ExternalLink,
-  Flame,
-  MapPin,
-  QrCode,
-  Radio,
-  ShieldCheck,
   Sparkles,
-  type LucideIcon,
 } from "lucide-react";
+import type { Project } from "@/lib/supabase/types";
 import { Link } from "@/i18n/navigation";
 
-type ConstellationNode = {
-  id: string;
-  title: string;
-  client: string;
-  category: string;
-  icon: LucideIcon;
-  preview: string;
-  color: string;
-  slug?: string;
-  /** Project logo under /public/projects */
-  logo?: string;
+type Props = {
+  projects: Project[];
 };
 
-const CONSTELLATION_NODES: ConstellationNode[] = [
-  {
-    id: "towerline",
-    title: "TowerLine GIS",
-    client: "MoCIT Somaliland",
-    category: "Gov Registry",
-    icon: MapPin,
-    preview: "Tower #1420 · 6 Regions · Spectrum Active",
-    color: "#0B2F6B",
-    slug: "towerline",
-    logo: "/projects/towerline.jpg",
-  },
-  {
-    id: "qaari",
-    title: "Qaari SL Audio",
-    client: "85k+ Listeners",
-    category: "Sacred Audio",
-    icon: Radio,
-    preview: "Surah Al-Mulk · Ayah 14 Sync · 3G Edge",
-    color: "#D4AF37",
-    slug: "qaari",
-    logo: "/projects/qaari.svg",
-  },
-  {
-    id: "aragsan",
-    title: "NOVA / Dugsi ERP",
-    client: "120 Facilities",
-    category: "Daily Ops",
-    icon: ShieldCheck,
-    preview: "Form 1-4 · 99.4% Audit Ring · ZAAD Auto",
-    color: "#0A3A7A",
-    slug: "aragsan-dugsi",
-    logo: "/projects/aragsan-full.png",
-  },
-  {
-    id: "ekaadh",
-    title: "Ekaadh Ticketing",
-    client: "Horn Events",
-    category: "Mobile Money",
-    icon: QrCode,
-    preview: "QR Gate 0.8s · Offline Auth · ZAAD Pass",
-    color: "#0B2F6B",
-    logo: "/projects/ekaadh-logo.png",
-  },
-  {
-    id: "jimicso",
-    title: "Jimicso Community",
-    client: "14k Streaks",
-    category: "Somali Fitness",
-    icon: Flame,
-    preview: "Level 18 · Hargeisa Friends Board · XP +450",
-    color: "#D4AF37",
-    logo: "/projects/jimicso-logo.png",
-  },
-];
-
-export function Hero() {
+export function Hero({ projects }: Props) {
   const t = useTranslations("HomePage");
-  const [activeCard, setActiveCard] = useState("towerline");
+  const [activeCard, setActiveCard] = useState(projects[0]?.id ?? "");
+
+  if (projects.length === 0) {
+    return (
+      <section className="relative flex min-h-[60vh] items-center overflow-hidden border-b border-[#0B2F6B]/60 bg-[#051329] text-white">
+        <div className="relative mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+            {t("headlineBefore")}
+            <br />
+            <span className="gold-gradient-text">{t("headlineAccent")}</span>
+          </h1>
+          <p className="mt-5 max-w-2xl text-lg text-slate-300">{t("supporting")}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/portfolio"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#E5BE4A] to-[#C9A227] px-6 py-3 text-sm font-bold tracking-wider text-slate-950 uppercase"
+            >
+              {t("ctaPrimary")}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/#contact"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#0B2F6B] bg-[#06152F] px-6 py-3 text-sm font-bold tracking-wider text-slate-200 uppercase"
+            >
+              {t("ctaSecondary")}
+              <ChevronRight className="h-4 w-4 opacity-60" />
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative flex min-h-[92vh] items-center overflow-hidden border-b border-[#0B2F6B]/60 bg-[#051329] text-white">
@@ -172,25 +133,33 @@ export function Hero() {
                 </div>
                 <div className="flex items-center gap-1.5 font-mono text-[10px] text-[#D4AF37]">
                   <Sparkles className="h-3 w-3" />
-                  <span>5 ACTIVE ENGINES</span>
+                  <span>
+                    {projects.length} ACTIVE ENGINES
+                  </span>
                 </div>
               </div>
 
               <div className="space-y-3">
-                {CONSTELLATION_NODES.map((node) => {
-                  const isSelected = activeCard === node.id;
-                  const Icon = node.icon;
+                {projects.map((project) => {
+                  const isSelected = activeCard === project.id;
+                  const logo = project.logo_url ?? project.cover_image_url;
+                  const category =
+                    project.mesh_category ||
+                    project.category.replace(/_/g, " ");
+                  const preview =
+                    project.mesh_preview || project.tagline || project.description;
+                  const accent = project.accent_color || "#0B2F6B";
 
                   return (
                     <div
-                      key={node.id}
+                      key={project.id}
                       role="button"
                       tabIndex={0}
-                      onClick={() => setActiveCard(node.id)}
+                      onClick={() => setActiveCard(project.id)}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
-                          setActiveCard(node.id);
+                          setActiveCard(project.id);
                         }
                       }}
                       className={`relative cursor-pointer rounded-xl border p-3.5 transition-all ${
@@ -203,17 +172,13 @@ export function Hero() {
                         <div className="flex items-center gap-3">
                           <div
                             className={`relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg shadow-sm ${
-                              node.logo ? "bg-white p-1" : "text-white"
+                              logo ? "bg-white p-1" : ""
                             }`}
-                            style={
-                              node.logo
-                                ? undefined
-                                : { backgroundColor: node.color }
-                            }
+                            style={logo ? undefined : { backgroundColor: accent }}
                           >
-                            {node.logo ? (
+                            {logo ? (
                               <Image
-                                src={node.logo}
+                                src={logo}
                                 alt=""
                                 width={36}
                                 height={36}
@@ -221,51 +186,49 @@ export function Hero() {
                                 className="h-full w-full object-contain"
                               />
                             ) : (
-                              <Icon className="h-4 w-4 text-white" />
+                              <span className="font-mono text-[10px] font-bold text-white">
+                                {project.title.slice(0, 2).toUpperCase()}
+                              </span>
                             )}
                           </div>
                           <div>
                             <div className="flex flex-wrap items-center gap-2">
                               <h2 className="text-sm font-bold tracking-tight">
-                                {node.title}
+                                {project.title}
                               </h2>
                               <span className="rounded bg-slate-800 px-1.5 py-0.5 font-mono text-[10px] font-medium text-slate-300">
-                                {node.category}
+                                {category}
                               </span>
                             </div>
                             <p className="mt-0.5 font-mono text-[11px] text-slate-400">
-                              {node.client}
+                              {project.client_name ?? "M2B"}
                             </p>
                           </div>
                         </div>
 
-                        {node.slug ? (
-                          <Link
-                            href={`/portfolio/${node.slug}`}
-                            className="flex items-center gap-1 self-center text-[11px] font-bold text-[#D4AF37] hover:underline"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <span>{t("caseLink")}</span>
-                            <ExternalLink className="h-3 w-3" />
-                          </Link>
-                        ) : null}
+                        <Link
+                          href={`/portfolio/${project.slug}`}
+                          className="flex items-center gap-1 self-center text-[11px] font-bold text-[#D4AF37] hover:underline"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <span>{t("caseLink")}</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </Link>
                       </div>
 
                       {isSelected ? (
                         <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-800/80 pt-2.5 text-xs">
                           <span className="flex items-center gap-1.5 font-mono text-[11px] text-slate-300">
                             <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
-                            <span>{node.preview}</span>
+                            <span>{preview}</span>
                           </span>
-                          {node.slug ? (
-                            <Link
-                              href={`/portfolio/${node.slug}`}
-                              className="flex shrink-0 items-center gap-1 font-mono text-[10px] font-bold tracking-wider text-[#D4AF37] uppercase hover:text-[#E5BE4A]"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              {t("caseDeepDive")} →
-                            </Link>
-                          ) : null}
+                          <Link
+                            href={`/portfolio/${project.slug}`}
+                            className="flex shrink-0 items-center gap-1 font-mono text-[10px] font-bold tracking-wider text-[#D4AF37] uppercase hover:text-[#E5BE4A]"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {t("caseDeepDive")} →
+                          </Link>
                         </div>
                       ) : null}
                     </div>

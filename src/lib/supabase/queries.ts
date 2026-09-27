@@ -1,11 +1,13 @@
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import type {
+  ProcessStep,
   Project,
   ProjectCategory,
   ProjectImage,
   Service,
   Testimonial,
+  TrustSector,
 } from "@/lib/supabase/types";
 
 export type ProjectWithRelations = Project & {
@@ -13,15 +15,31 @@ export type ProjectWithRelations = Project & {
   testimonials: Testimonial[];
 };
 
-async function getServerClient() {
+function getPublicClient() {
   if (!isSupabaseConfigured()) {
     return null;
   }
-  return createClient();
+  return createPublicClient();
+}
+
+function normalizeStringArray(value: unknown): string[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === "string")
+    : [];
+}
+
+function normalizeProcessStep(
+  row: ProcessStep & { deliverables?: unknown },
+): ProcessStep {
+  return { ...row, deliverables: normalizeStringArray(row.deliverables) };
+}
+
+function normalizeService(row: Service & { bullets?: unknown }): Service {
+  return { ...row, bullets: normalizeStringArray(row.bullets) };
 }
 
 export async function getPublishedServices(): Promise<Service[]> {
-  const supabase = await getServerClient();
+  const supabase = getPublicClient();
   if (!supabase) return [];
 
   const { data, error } = await supabase
@@ -35,11 +53,13 @@ export async function getPublishedServices(): Promise<Service[]> {
     return [];
   }
 
-  return data ?? [];
+  return (data ?? []).map((row) =>
+    normalizeService(row as Service & { bullets?: unknown }),
+  );
 }
 
 export async function getFeaturedProjects(): Promise<Project[]> {
-  const supabase = await getServerClient();
+  const supabase = getPublicClient();
   if (!supabase) return [];
 
   const { data, error } = await supabase
@@ -57,10 +77,48 @@ export async function getFeaturedProjects(): Promise<Project[]> {
   return data ?? [];
 }
 
+export async function getHeroProjects(): Promise<Project[]> {
+  const supabase = getPublicClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("is_published", true)
+    .eq("show_in_hero", true)
+    .order("hero_sort_order", { ascending: true });
+
+  if (error) {
+    console.error("getHeroProjects:", error.message);
+    return [];
+  }
+
+  return data ?? [];
+}
+
+export async function getBentoProjects(): Promise<Project[]> {
+  const supabase = getPublicClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("is_published", true)
+    .eq("show_in_bento", true)
+    .order("bento_sort_order", { ascending: true });
+
+  if (error) {
+    console.error("getBentoProjects:", error.message);
+    return [];
+  }
+
+  return data ?? [];
+}
+
 export async function getPublishedProjects(
   category?: ProjectCategory,
 ): Promise<Project[]> {
-  const supabase = await getServerClient();
+  const supabase = getPublicClient();
   if (!supabase) return [];
 
   let query = supabase
@@ -83,10 +141,48 @@ export async function getPublishedProjects(
   return data ?? [];
 }
 
+export async function getPublishedTrustSectors(): Promise<TrustSector[]> {
+  const supabase = getPublicClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("trust_sectors")
+    .select("*")
+    .eq("is_published", true)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error("getPublishedTrustSectors:", error.message);
+    return [];
+  }
+
+  return data ?? [];
+}
+
+export async function getPublishedProcessSteps(): Promise<ProcessStep[]> {
+  const supabase = getPublicClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("process_steps")
+    .select("*")
+    .eq("is_published", true)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error("getPublishedProcessSteps:", error.message);
+    return [];
+  }
+
+  return (data ?? []).map((row) =>
+    normalizeProcessStep(row as ProcessStep & { deliverables?: unknown }),
+  );
+}
+
 export async function getProjectBySlug(
   slug: string,
 ): Promise<ProjectWithRelations | null> {
-  const supabase = await getServerClient();
+  const supabase = getPublicClient();
   if (!supabase) return null;
 
   const { data: project, error } = await supabase
@@ -125,7 +221,7 @@ export async function getProjectBySlug(
 }
 
 export async function getPublishedProjectSlugs(): Promise<string[]> {
-  const supabase = await getServerClient();
+  const supabase = getPublicClient();
   if (!supabase) return [];
 
   const { data, error } = await supabase

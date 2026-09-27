@@ -6,71 +6,74 @@ import {
   Radio,
   ShoppingBag,
   Users,
+  type LucideIcon,
 } from "lucide-react";
+import type { TrustSector } from "@/lib/supabase/types";
 
-const SECTOR_KEYS = [
-  "government",
-  "education",
-  "health",
-  "commerce",
-  "media",
-  "community",
-] as const;
+const ICON_MAP: Record<string, LucideIcon> = {
+  landmark: Landmark,
+  "graduation-cap": GraduationCap,
+  "heart-pulse": HeartPulse,
+  "shopping-bag": ShoppingBag,
+  radio: Radio,
+  users: Users,
+};
 
-const ICONS = {
-  government: Landmark,
-  education: GraduationCap,
-  health: HeartPulse,
-  commerce: ShoppingBag,
-  media: Radio,
-  community: Users,
-} as const;
+type Props = {
+  sectors: TrustSector[];
+};
 
-export async function TrustStrip() {
+export async function TrustStrip({ sectors }: Props) {
   const t = await getTranslations("HomePage.trust");
 
   return (
-    <section className="border-b border-slate-200 bg-white py-12">
+    <section className="border-b border-[#0B2F6B]/40 bg-[#040D1D] py-12 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div>
-            <span className="font-mono text-xs font-bold tracking-widest text-gold uppercase">
+            <span className="font-mono text-xs font-bold tracking-widest text-[#D4AF37] uppercase">
               {t("label")}
             </span>
-            <h2 className="mt-1 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+            <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">
               {t("title")}
             </h2>
           </div>
-          <div className="flex items-center gap-3 font-mono text-xs text-slate-500">
-            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
+          <div className="flex items-center gap-3 font-mono text-xs text-slate-400">
+            <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
             <span>{t("proof")}</span>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-          {SECTOR_KEYS.map((key) => {
-            const Icon = ICONS[key];
-            return (
-              <div
-                key={key}
-                className="group rounded-xl border border-slate-200/80 bg-slate-50 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-navy/30 hover:bg-white"
-              >
-                <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-navy/10 text-navy">
-                  <Icon className="h-4 w-4" />
+        {sectors.length === 0 ? (
+          <p className="rounded-xl border border-dashed border-white/15 bg-[#06152F]/50 px-4 py-10 text-center text-sm text-slate-400">
+            {t("empty")}
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+            {sectors.map((sector) => {
+              const Icon = ICON_MAP[sector.icon] ?? Landmark;
+              return (
+                <div
+                  key={sector.id}
+                  className="group rounded-xl border border-white/10 bg-[#06152F]/70 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#D4AF37]/50"
+                >
+                  <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-[#D4AF37]/10 text-[#D4AF37]">
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <div className="mb-1 text-sm font-bold tracking-tight text-white">
+                    {sector.name}
+                  </div>
+                  <div className="mb-2 font-mono text-xs text-slate-400">
+                    {sector.proof}
+                  </div>
+                  <div className="font-mono text-[10px] font-bold tracking-wider text-[#D4AF37]">
+                    {sector.metric}
+                  </div>
                 </div>
-                <div className="mb-1 text-sm font-bold tracking-tight text-foreground">
-                  {t(`sectors.${key}.name`)}
-                </div>
-                <div className="font-mono text-[10px] text-slate-500">
-                  {t(`sectors.${key}.proof`)}
-                </div>
-                <div className="mt-2 text-[11px] font-semibold text-gold">
-                  {t(`sectors.${key}.metric`)}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

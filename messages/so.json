@@ -90,102 +90,40 @@
     "capabilitiesLabel": "WAXA M2B KA DUWAN YAHAY",
     "capabilitiesTitleBefore": "Ma samayno uun mareegaha xayeysiiska.",
     "capabilitiesTitleAccent": "Waxaan dhisnaa lafdhabarta hawlgalka.",
-    "capabilitiesSupporting": "Laga bilaabo khariidadaha GIS, kormeerka goobaha, mushahaarka, iyo xaadirinta — ilaa mobile money, qulqulka codadka, iyo app-yada shaqaalaha.",
+    "capabilitiesSupporting": "Laga bilaabo kormeerka goobaha, khariidadaha GIS, xisaabinta mushahaarka iyo mobile money, ilaa qulqulka codadka iyo tikidhada QR koodhka ah.",
+    "capabilitiesEmpty": "Awoodaha waxay halkan ka muuqan doonaan marka la daabaco.",
+    "exploreCapability": "Faahfaahin",
+    "regionLabel": "FURSADDA MAXALLIGA AH",
+    "regionTitle": "Waxaan ku hadalnaa afka teknoolajiyadda maxalliga ah.",
+    "regionSupporting": "ZAAD Telesom, eDahab Somtel, qoraalka Soomaaliga, RTL Carabi, qiimaha labada lacagood USD, toddobaadka dugsiyada Sabti–Arbaca, iyo adkaysiga isgaarsiinta dayax-gacmeedka ama midka daciifka ah.",
+    "regionCta": "Eeg Dhammaan Farsamooyinka",
     "bentoLabel": "ALAABTA AAN HIRGELINNO",
     "bentoTitleBefore": "Qalab, dashboards,",
     "bentoTitleAccent": "iyo engines mobile ee macaamiisha.",
+    "bentoCta": "Eeg Dhammaan Alaabaha (Product OS)",
+    "bentoViewCase": "Eeg Kiiska →",
+    "bentoEmpty": "Alaabaha waxay halkan ka muuqan doonaan marka la daabaco.",
     "trust": {
       "label": "QAYBAHA AAN U ADEEGNO",
       "title": "Kaabayaasha la xaqiijiyay ee Dawladda ilaa Qoyska",
       "proof": "Nidaamyada wax-soo-saarka ee Somaliland & Bariga Afrika",
-      "sectors": {
-        "government": {
-          "name": "Hay’adaha Dawladda",
-          "proof": "MoCIT TowerLine GIS",
-          "metric": "Diiwaanka Qaran"
-        },
-        "education": {
-          "name": "Waxbarashada",
-          "proof": "Dugsi ERP & ACU Portal",
-          "metric": "6,200+ Arday"
-        },
-        "health": {
-          "name": "Caafimaadka & NGO",
-          "proof": "ACFH & Liby Foundation",
-          "metric": "40 Xarumood Caafimaad"
-        },
-        "commerce": {
-          "name": "Ganacsiga & Hawlaha",
-          "proof": "NOVA Cleaning & Ekaadh",
-          "metric": "120+ Xarumood"
-        },
-        "media": {
-          "name": "Warbaahinta & Diinta",
-          "proof": "Qaari SL & Maqal",
-          "metric": "85k+ Dhageystayaal Bil kasta"
-        },
-        "community": {
-          "name": "Bulshada & Qoyska",
-          "proof": "Jimicso & Reer Sh Yoonis",
-          "metric": "Geeska & Qurbaha"
-        }
-      }
+      "empty": "Qaybaha waxay halkan ka muuqan doonaan marka la daabaco."
     },
     "process": {
       "label": "HABKA SHAQADA",
       "titleBefore": "Laga bilaabo fikirka hore ilaa",
       "titleAccent": "maamulka joogtada ah ee goobta.",
-      "supporting": "5 tallaabo oo qotodheer oo hubinaya in nidaamku u adkaysto caqabadaha dhabta ah ee gobolka.",
+      "supporting": "Waxaan raacnaa 5 tallaabo oo qotodheer oo hubinaya in nidaamku u adkaysto caqabadaha dhabta ah ee gobolka.",
       "stageOf": "MARXALADDA {step} EE 05",
-      "deliverables": "Maxsulada & Tilmaamaha",
-      "cta": "Bilow mashruuc",
-      "steps": {
-        "01": {
-          "title": "Baadhis & Qorshayn",
-          "description": "Waxaan si qoto-dheer u dhuuxnaa caqabadaha dhabta ah ee shaqadaada: warqadaha goobaha, xisaabaadka lacagaha, iyo habka shaqada.",
-          "deliverables": [
-            "Qaabdhismeedka Nidaamka",
-            "Qaabka Xogta",
-            "Baadhitaanka Caqabadaha Maxalliga"
-          ]
-        },
-        "02": {
-          "title": "Naqshadayn & Tijaabo",
-          "description": "Waxaan samaynaa naqshad indhaha u roon, fudud, kuna qoran luqadaha aad u baahan tahay, una diyaarsan taleefan kasta.",
-          "deliverables": [
-            "Nidaamka Naqshadda Figma",
-            "Qoraal Labada Luqadood",
-            "Prototype-yo Is-dhexgal ah"
-          ]
-        },
-        "03": {
-          "title": "Dhisid & Isku-xidhid",
-          "description": "Waxaan ku dhisaa teknoolajiyada ugu adag uguna casrisan, annagoo toos ugu xidhayna ZAAD, eDahab, iyo nidaamyada kale.",
-          "deliverables": [
-            "Koodhka Wax-soo-saarka",
-            "Webhook-yada Lacag-bixinta",
-            "Tijaabooyin Otomaatik ah"
-          ]
-        },
-        "04": {
-          "title": "Furid & Tijaabada Goobta",
-          "description": "Waxaan tijaabinnaa annagoo adeegsanayna kormeerayaasha dhabta ah ee goobaha jooga xitaa internet-ka ugu liita, si aan u xaqiijino xawaaraha.",
-          "deliverables": [
-            "Daabacaadda Wax-soo-saarka",
-            "Wareejinta Xogta",
-            "Tababarka Shaqaalaha"
-          ]
-        },
-        "05": {
-          "title": "Maamul & Horumarin",
-          "description": "Barnaamijku wuu koraa. Waxaan la soconnaa caafimaadka nidaamka, ilaalada xogta, iyo kordhinta adeegyo cusub mar kasta.",
-          "deliverables": [
-            "La-socodka SLA",
-            "Dayactirka Amniga",
-            "Qorshaha Features"
-          ]
-        }
-      }
+      "deliverables": "Maxsulada & Tilmaamaha:",
+      "guaranteeTitle": "Ballan-qaad Sugan",
+      "guaranteeBody": "Waxaa si shaqsi ah u hoggaamiya hoggaanka injineernimada ee 9+ sano wax-soo-saarka.",
+      "guaranteeCta": "Bilow Mashruucaaga",
+      "collabLabel": "DIYAAR MA U TAHAY DHISMAHA?",
+      "collabTitle": "Ma haysaa nidaam dawladeed, dugsi, ama suuq ganacsi oo aad rabto inaad dhistid?",
+      "collabSupporting": "Nala soo xidhiidh maanta si aan u falanqayno nidaamkaaga, una bilowno naqshadeynta iyo dhismaha.",
+      "collabPrimary": "Bilow Mashruuc",
+      "collabSecondary": "Eeg Shaqooyinka"
     },
     "contactLabel": "NALA SOO XIDHIIDH · HARGEYSA",
     "contactTitleBefore": "Aan bilowno",
@@ -218,6 +156,13 @@
     "cta": "Bilow mashruuc"
   },
   "ProjectPage": {
-    "title": "Mashruuc"
+    "title": "Mashruuc",
+    "back": "Dhammaan mashaariicda",
+    "liveSite": "Booqo mareegaha",
+    "cta": "Bilow mashruuc",
+    "client": "Macmiil",
+    "year": "Sannad",
+    "stack": "Stack",
+    "testimonials": "Markhaatiyo"
   }
 }

@@ -1,16 +1,17 @@
 import { setRequestLocale } from "next-intl/server";
 import { CapabilitiesBand } from "@/components/home/CapabilitiesBand";
 import { ContactSection } from "@/components/home/ContactSection";
-import { FeaturedCases } from "@/components/home/FeaturedCases";
 import { Hero } from "@/components/home/Hero";
 import { ProcessOrbit } from "@/components/home/ProcessOrbit";
 import { ProductsBento } from "@/components/home/ProductsBento";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { getLocaleFromParams } from "@/i18n/locale";
 import {
-  getFeaturedProjects,
-  getPublishedProjects,
+  getBentoProjects,
+  getHeroProjects,
+  getPublishedProcessSteps,
   getPublishedServices,
+  getPublishedTrustSectors,
 } from "@/lib/supabase/queries";
 
 type Props = {
@@ -23,20 +24,22 @@ export default async function HomePage({ params }: Props) {
   const locale = await getLocaleFromParams(params);
   setRequestLocale(locale);
 
-  const [services, featured, published] = await Promise.all([
-    getPublishedServices(),
-    getFeaturedProjects(),
-    getPublishedProjects(),
-  ]);
+  const [services, heroProjects, bentoProjects, sectors, processSteps] =
+    await Promise.all([
+      getPublishedServices(),
+      getHeroProjects(),
+      getBentoProjects(),
+      getPublishedTrustSectors(),
+      getPublishedProcessSteps(),
+    ]);
 
   return (
     <main>
-      <Hero />
-      <TrustStrip />
-      <FeaturedCases projects={featured} />
+      <Hero projects={heroProjects} />
+      <TrustStrip sectors={sectors} />
       <CapabilitiesBand services={services} />
-      <ProductsBento projects={published} />
-      <ProcessOrbit />
+      <ProductsBento projects={bentoProjects} />
+      <ProcessOrbit steps={processSteps} />
       <ContactSection />
     </main>
   );
