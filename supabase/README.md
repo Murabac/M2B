@@ -34,6 +34,10 @@ Without this, the JS client cannot query `m2b` tables.
    - `supabase/migrations/20260927000001_capabilities_bullets.sql`
    - `supabase/migrations/20260927000002_products_bento.sql`
    - `supabase/migrations/20260927000003_project_logo_urls.sql`
+   - `supabase/migrations/20260927000004_work_page_fields.sql`
+   - `supabase/migrations/20260927000005_product_metrics.sql`
+   - `supabase/migrations/20260927000006_capability_pillars.sql`
+   - `supabase/migrations/20260927000007_contact_inquiries.sql`
 
 Or with the CLI:
 

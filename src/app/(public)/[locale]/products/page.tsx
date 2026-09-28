@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Sparkles } from "lucide-react";
-import { WorkGrid } from "@/components/portfolio/WorkGrid";
+import { ProductsGrid } from "@/components/products/ProductsGrid";
 import { getLocaleFromParams } from "@/i18n/locale";
 import { getPublishedProjects } from "@/lib/supabase/queries";
 
@@ -10,11 +10,11 @@ type Props = {
 
 export const revalidate = 60;
 
-export default async function PortfolioPage({ params }: Props) {
+export default async function ProductsPage({ params }: Props) {
   const locale = await getLocaleFromParams(params);
   setRequestLocale(locale);
 
-  const t = await getTranslations("PortfolioPage");
+  const t = await getTranslations("ProductsPage");
   const projects = await getPublishedProjects();
 
   return (
@@ -41,7 +41,7 @@ export default async function PortfolioPage({ params }: Props) {
             {t("empty")}
           </p>
         ) : (
-          <WorkGrid projects={projects} />
+          <ProductsGrid projects={projects} />
         )}
       </div>
     </main>

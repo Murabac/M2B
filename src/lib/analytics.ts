@@ -4,6 +4,7 @@ export type ContactLocation =
   | "floating_button"
   | "header"
   | "home_section"
+  | "contact_page"
   | "footer";
 
 type DataLayerWindow = Window & {

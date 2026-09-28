@@ -54,6 +54,51 @@
     "emailHint": "Noo dir farriin",
     "phoneHint": "Wac inta shaqada socoto"
   },
+  "ContactPage": {
+    "label": "NALA SOO XIDHIIDH · HARGEYSA",
+    "titleBefore": "Aan bilowno",
+    "titleAccent": "dhismaha mashruucaaga xiga.",
+    "supporting": "Haddii aad tahay wasaarad qaran, shirkad ganacsi, ama aasaase doonaya xal farsamo oo sugan, waxaan diyaar u nahay inaan falanqayno nidaamkaaga.",
+    "stepType": "1. Dooro Nooca Mashruuca",
+    "stepBudget": "2. Qiyaasta Maalgashiga (USD)",
+    "amountPlaceholder": "tusaale 15000",
+    "amountHint": "Geli lacagta aad maskaxda ku hayso — wax kasta oo USD ah.",
+    "fullName": "Magaca Buuxa",
+    "fullNamePlaceholder": "tusaale Mustafe Jamac",
+    "email": "Cinwaanka Iimaylka",
+    "emailPlaceholder": "you@organization.com",
+    "organization": "Hay’ad / Wasaarad",
+    "organizationPlaceholder": "tusaale MoCIT / Dahabshiil / Academy",
+    "phone": "WhatsApp / Telefoon",
+    "phonePlaceholder": "+252 63 XXXXXXX",
+    "brief": "Yoolalka Mashruuca & Hab-hawlaha Muhiimka ah",
+    "briefPlaceholder": "Sharax waxa hay’addaadu rabto inay gaadho, caqabadaha goobaha, ama jadwalka...",
+    "submit": "Dir Codsigaaga Mashruuca",
+    "submitting": "Waa la dirayaa…",
+    "successTitle": "Farriintaada waanu helnay!",
+    "successBody": "Waad ku mahadsan tahay nala soo xidhiidhkaaga. Kooxda M2B waxay kuugu soo jawaabi doonaan 24 saac gudahood.",
+    "successAgain": "Dir Codsi Kale",
+    "channelsLabel": "Kanaalada Injineernimada Tooska ah",
+    "whatsappTitle": "WhatsApp Toos ah",
+    "emailTitle": "Iimaylka Rasmiga ah",
+    "phoneTitle": "Wac Toos ah",
+    "emailSubject": "Codsi Mashruuc cusub via M2B Website",
+    "projectTypes": {
+      "ministry": "Nidaam Dawladeed",
+      "erp": "ERP & Hawlaha Ganacsiga",
+      "school": "Dugsi / Jaamacad",
+      "mobile": "App-ka Gacanta",
+      "commerce": "Ganacsi & Mobile Money",
+      "website": "Mareeg & Astaan"
+    },
+    "errors": {
+      "missing_fields": "Fadlan buuxi dhammaan goobaha loo baahan yahay.",
+      "invalid_email": "Fadlan geli cinwaan iimayl sax ah.",
+      "invalid_amount": "Geli qaddar sax ah oo ka weyn eber.",
+      "not_configured": "Foomku hadda ma shaqeynayo. Fadlan isticmaal WhatsApp ama iimayl.",
+      "submit_failed": "Wax baa khaldamay. Isku day mar kale ama nala soo xidhiidh WhatsApp."
+    }
+  },
   "Categories": {
     "web_app": "Web app",
     "mobile_app": "Mobile app",
@@ -142,18 +187,168 @@
     "hoursFridayValue": "Xiran salaadda",
     "timezoneNote": "Waqtiga Bariga Afrika · UTC+3"
   },
+  "StudioPage": {
+    "label": "M2B STUDIO · HARGEYSA",
+    "titleBefore": "Laga dhisay Hargeysa.",
+    "titleAccent": "Wax loogu adeego Geeska & Qurbaha.",
+    "supporting": "M2B waa xarun injineernimo oo ku takhasustay dhisidda barnaamijyada hawlgalka adag leh ee hay’adaha dawladda, dugsiyada, iyo shirkadaha ganacsigu ku shaqeeyaan.",
+    "hq": "XARUNTA GUUD HARGEYSA, SOMALILAND",
+    "stats": {
+      "years": {
+        "value": "9+ Sano",
+        "title": "Xirfadda",
+        "note": "Software wax-soosaar joogto ah"
+      },
+      "spectrum": {
+        "value": "Dawlad ilaa Bulsho",
+        "title": "Spectrum Buuxa",
+        "note": "Wasaarado, NGO-yo, iyo ganacsi"
+      },
+      "platforms": {
+        "value": "Web + Mobile",
+        "title": "Ops & ERPs",
+        "note": "Suuqyo multi-platform midaysan"
+      },
+      "languages": {
+        "value": "EN · SO · AR",
+        "title": "Luqado Diyaarsan",
+        "note": "Loogu talagalay qoraalka gobolka"
+      }
+    },
+    "philosophy": {
+      "title": "Studio ku dhisan adkaysi, ma aha ereyo buuxa.",
+      "p1": "Suuqyada soo koraya, software-ku inta badan wuu jabtaa: marka kormeeruhu galo doox aan shabakad lahayn, marka waalidiintu sugaan SMS-ka natiijada ardayga, ama marka wasaaradda isgaadhsiintu u baahato diiwaan la xisaabin karo.",
+      "p2": "M2B waxaa loo aasaasay inay dhisto heerka dahabka ee xirfada maxalliga ah. Ma dib u sumadayno Wordpress. Waxaan naqshadaynaa xalal gaar ah — Laravel, Filament, Flutter, .NET, Next.js, iyo PostGIS — loogu talagalay inay u adkaystaan tobanaan sano oo ballaarin."
+    },
+    "principles": {
+      "one": "Ma jiro subcontracting dibadda — 100% injineernimo iyo kormeer gudaha.",
+      "two": "Iskaashi qoto dheer oo wasaaradaha, teleco-yada, iyo ganacsiga Somaliland.",
+      "three": "Isku xidhka kartida injineernimada Hargeysa iyo shabakadaha qurba joogta Soomaaliyeed."
+    },
+    "team": {
+      "label": "KOOXDA STUDIO",
+      "title": "Saddex lammaane. Hal studio.",
+      "supporting": "Waxaan M2B u wada dhisaynaa si siman — lahaansho wadaag ah, go'aanno wadaag ah, ma jiro kala sarreyn.",
+      "focus": {
+        "abdirahmaan": "Injineernimo & Delivery",
+        "mohamed": "Injineernimo & Delivery",
+        "adnan": "Suuqgeyn, Iib & Koritaan"
+      },
+      "members": {
+        "abdirahmaan": {
+          "initials": "AM",
+          "name": "Abdirahmaan Mire",
+          "badge": "Injineernimo",
+          "bio": "Senior software developer iyo project manager leh 9+ sano oo nidaamyada wax-soosaarka. Diiradda: architecture, discovery farsamo, iyo delivery — diiwaanno dawladeed, ERP-yo waxbarasho, apps culeys badan, offline data, iyo mobile money maxalli ah.",
+          "skills": {
+            "one": "Software Architecture",
+            "two": "Laravel & Filament",
+            "three": "Flutter Systems",
+            "four": "Technical Project Management"
+          }
+        },
+        "mohamed": {
+          "initials": "MB",
+          "name": "Mohamed Bulbul",
+          "badge": "Injineernimo",
+          "bio": "Senior software developer iyo project manager oo leh isla qoto-dheeraanta farsamo — architecture, full-stack delivery, iyo nidaamyada hawlgal. Wada shaqeeya dhammaan geedi-socodka farsamo laga bilaabo discovery ilaa ship.",
+          "skills": {
+            "one": "Software Architecture",
+            "two": "Laravel & Filament",
+            "three": "Flutter Systems",
+            "four": "Technical Project Management"
+          }
+        },
+        "adnan": {
+          "initials": "AB",
+          "name": "Adnan Bille",
+          "badge": "Koritaan",
+          "bio": "Hoggaamiya suuqgeynta, iibka, iyo wax kasta oo aan farsamo ahayn — xiriirka macaamiisha, mawqifka brand-ka, iskaashiga, iyo go-to-market. Studio-ga wuxuu ku xiraa wasaaradaha, ganacsiga, iyo shabakadda qurbaha.",
+          "skills": {
+            "one": "Suuqgeyn & Brand",
+            "two": "Iib & Iskaashi",
+            "three": "Xiriirka Macaamiisha",
+            "four": "Horumarinta Ganacsiga"
+          }
+        }
+      }
+    }
+  },
   "ServicesPage": {
     "title": "Adeegyada",
-    "label": "XIRFADAHA",
-    "supporting": "Nidaamyada hawlgalka ee loogu talagalay dawladda, waxbarashada, ganacsiga, iyo qurbaha.",
-    "cta": "Bilow mashruuc"
+    "label": "KHARASHKA FARSAMO EE M2B",
+    "titleBefore": "Saddexda Tiir:",
+    "titleAccent": "Farsamo, Hawlgal, iyo Hoggaan.",
+    "supporting": "M2B waxay isku daraysaa injineernimo caalami ah iyo fahamka dhabta ah ee duruufaha maxalliga ah ee Geeska Afrika.",
+    "empty": "Awoodaha waxay halkan ka muuqan doonaan marka la daabaco.",
+    "commission": "La Xidhiidh Kooxda — {pillar}",
+    "cta": "Bilow mashruuc",
+    "local": {
+      "label": "Xaqiiqda Maxalliga Ah",
+      "title": "Waxaan ku hadalnaa afka teknoolajiyadda maxalliga ah.",
+      "supporting": "Nidaamyada reer galbeedku waxay u qaateen fiber, kaadhadh, Ingiriisi, iyo toddobaad Sabti-Jimce. M2B waxay ka bilowdaa xaqiiqda Geeska:",
+      "items": {
+        "money": {
+          "title": "ZAAD & eDahab Mobile Money",
+          "body": "Isku-xidhka tooska ah ee merchant API, xisaabaad otomaatik ah, iyo qiimaha labada lacagood USD/SLS."
+        },
+        "typography": {
+          "title": "Qoraalka Soomaali & Carabi",
+          "body": "Erayada Soomaaligu way ka dheer yihiin Ingiriisiga 20–35%. Waxaan naqshadeeynaa layouts aan jarin qoraalka."
+        },
+        "offline": {
+          "title": "Adkaysiga Goobaha Internet-la’aanta",
+          "body": "SQLite offline oo u adeega kormeerayaasha daaraadka iyo nadaafadda xarumaha."
+        },
+        "calendar": {
+          "title": "Toddobaadka Sabti–Arbaca",
+          "body": "Jadwalka dugsiyada iyo hawlaha dawliga ah oo si dabiici ah ugu habboon gobolka."
+        }
+      }
+    }
+  },
+  "ProductsPage": {
+    "label": "M2B PRODUCT OS · KAYDKA ALAAABTA",
+    "titleBefore": "Alaabaha iyo nidaamyada",
+    "titleAccent": "ku fadhiya goobta qaran.",
+    "supporting": "Baro alaabaha dhisan ee tooska u shaqaynaya, kuwa hadda dhismaha ku jira, iyo kuwa M2B Studio u gaarka ah.",
+    "empty": "Alaabaha waxay halkan ka muuqan doonaan marka la daabaco.",
+    "emptyFilter": "Ma jiraan alaabo u dhigma filter-kan.",
+    "liveService": "Adeeg Live",
+    "console": "Console Wax-soo-saarka",
+    "deepDive": "Faahfaahinta Kiiska",
+    "tabs": {
+      "all": "Dhammaan Alaabaha ({count})",
+      "live": "Kuwa Live ({count})",
+      "mobile": "Mobile & Flutter",
+      "ops": "Hawlaha & Dawladda"
+    }
   },
   "PortfolioPage": {
     "title": "Shaqooyinka",
-    "label": "KIISASKA & SHAQADA",
-    "supporting": "Nidaamyada la daabacay ee ka shaqeeya Geeska Afrika iyo qurbaha.",
+    "label": "KAYDKA MASHAARIICDA EE M2B",
+    "titleBefore": "Nidaamyada aan dhisnay,",
+    "titleAccent": "oo maalin kasta shaqeeya.",
+    "supporting": "Kama shaqayno shirkado mala-awaal ah. Dhammaan mashaariicdani waa kuwo dhab ah oo loogu adeego wasaaradaha, jaamacadaha, shirkadaha, iyo bulshada Soomaaliyeed.",
     "empty": "Mashaariicdu waxay halkan ka soo muuqan doonaan marka la daabaco.",
-    "cta": "Bilow mashruuc"
+    "searchPlaceholder": "Raadi mashaariicda, stack-ga...",
+    "noMatches": "Lama helin nidaam u dhigma \"{query}\". Isku day tab kale.",
+    "flagship": "KIISKA UGU WEYN",
+    "outcome": "Natiijada",
+    "visitLive": "Booqo Live",
+    "console": "Console Wax-soo-saarka",
+    "deepDive": "Faahfaahin",
+    "cta": "Bilow mashruuc",
+    "filters": {
+      "all": "Dhammaan",
+      "government": "Dawladda",
+      "operations": "Hawlaha & ERP",
+      "education": "Waxbarasho",
+      "faith": "Diinta & Suugaanta",
+      "commerce": "Ganacsiga",
+      "mobile": "Barnaamijyada Gacanta",
+      "websites": "Mareegaha & CMS"
+    }
   },
   "ProjectPage": {
     "title": "Mashruuc",

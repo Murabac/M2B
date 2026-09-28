@@ -8,13 +8,13 @@ import { BrandLogo } from "@/components/layout/BrandLogo";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { Link, usePathname } from "@/i18n/navigation";
 
-/** Design Ref header labels; Studio maps to home (no separate Studio page). */
+/** Design Ref header labels. */
 const navItems = [
   { href: "/portfolio", key: "work" as const },
-  { href: "/portfolio", key: "products" as const },
+  { href: "/products", key: "products" as const },
   { href: "/services", key: "capabilities" as const },
-  { href: "/", key: "studio" as const },
-  { href: "/#contact", key: "contact" as const },
+  { href: "/studio", key: "studio" as const },
+  { href: "/contact", key: "contact" as const },
 ];
 
 export function Header() {
@@ -45,9 +45,10 @@ export function Header() {
 
   function isActive(key: string) {
     if (key === "work") return pathname.startsWith("/portfolio");
-    if (key === "products") return false;
+    if (key === "products") return pathname.startsWith("/products");
     if (key === "capabilities") return pathname.startsWith("/services");
-    if (key === "studio") return pathname === "/";
+    if (key === "studio") return pathname.startsWith("/studio");
+    if (key === "contact") return pathname.startsWith("/contact");
     return false;
   }
 
@@ -93,7 +94,7 @@ export function Header() {
             </div>
 
             <Link
-              href="/#contact"
+              href="/contact"
               className="group relative hidden overflow-hidden rounded-full bg-gradient-to-r from-[#D4AF37] via-[#E5BE4A] to-[#C9A227] px-5 py-2.5 text-xs font-bold tracking-wider text-slate-950 uppercase shadow-md transition-all hover:shadow-lg hover:shadow-gold/25 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold sm:inline-flex"
             >
               <span className="relative z-10 flex items-center gap-1.5">
@@ -153,7 +154,7 @@ export function Header() {
                 <LanguageSwitcher compact variant="dark" />
               </div>
               <Link
-                href="/#contact"
+                href="/contact"
                 className="mt-2 w-full rounded-xl bg-gold py-3 text-center text-sm font-bold text-slate-950 shadow-md"
               >
                 {t("startProject")}

@@ -37,7 +37,7 @@ export async function ProductsBento({ projects }: Props) {
           </div>
 
           <Link
-            href="/portfolio"
+            href="/products"
             className="inline-flex items-center gap-2 self-start rounded-xl border border-[#D4AF37]/40 px-5 py-2.5 text-xs font-bold tracking-wider text-[#D4AF37] uppercase transition-all hover:bg-[#D4AF37]/10 md:self-auto"
           >
             <span>{t("bentoCta")}</span>

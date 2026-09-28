@@ -110,7 +110,7 @@ export function ProcessOrbit({ steps }: Props) {
                 {t("guaranteeBody")}
               </p>
               <Link
-                href="/#contact"
+                href="/contact"
                 className="w-full rounded-xl bg-[#D4AF37] py-2.5 text-center text-xs font-bold tracking-wider text-slate-950 uppercase transition-colors hover:bg-[#E5BE4A]"
               >
                 {t("guaranteeCta")}
@@ -137,7 +137,7 @@ export function ProcessOrbit({ steps }: Props) {
 
             <div className="flex shrink-0 flex-col items-stretch gap-3 sm:flex-row sm:items-center">
               <Link
-                href="/#contact"
+                href="/contact"
                 className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#E5BE4A] to-[#C9A227] px-7 py-3.5 text-xs font-bold tracking-wider text-slate-950 uppercase transition-all hover:shadow-lg"
               >
                 <span>{t("collabPrimary")}</span>

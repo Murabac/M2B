@@ -40,7 +40,7 @@ export function Hero({ projects }: Props) {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              href="/#contact"
+              href="/contact"
               className="inline-flex items-center gap-2 rounded-xl border border-[#0B2F6B] bg-[#06152F] px-6 py-3 text-sm font-bold tracking-wider text-slate-200 uppercase"
             >
               {t("ctaSecondary")}
@@ -98,7 +98,7 @@ export function Hero({ projects }: Props) {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
-                href="/#contact"
+                href="/contact"
                 className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#0B2F6B] bg-[#06152F] px-6 py-3.5 text-sm font-bold tracking-wider text-slate-200 uppercase transition-all hover:border-[#D4AF37] hover:text-white sm:w-auto"
               >
                 <span>{t("ctaSecondary")}</span>

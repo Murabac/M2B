@@ -54,6 +54,51 @@
     "emailHint": "Send us a message",
     "phoneHint": "Call during business hours"
   },
+  "ContactPage": {
+    "label": "START A CONVERSATION · HARGEISA",
+    "titleBefore": "Let's engineer",
+    "titleAccent": "your next sovereign system.",
+    "supporting": "Direct access to senior software engineering leadership in Hargeisa. We evaluate feasibility, data schemas, and architecture before committing to code.",
+    "stepType": "1. Select Project Type",
+    "stepBudget": "2. Estimated Investment (USD)",
+    "amountPlaceholder": "e.g. 15000",
+    "amountHint": "Enter the amount you have in mind — any figure in USD.",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "e.g. Mustafe Jamac",
+    "email": "Email Address",
+    "emailPlaceholder": "you@organization.com",
+    "organization": "Organization / Ministry",
+    "organizationPlaceholder": "e.g. MoCIT / Dahabshiil / Academy",
+    "phone": "WhatsApp / Phone",
+    "phonePlaceholder": "+252 63 XXXXXXX",
+    "brief": "Project Goals & Key Workflows",
+    "briefPlaceholder": "Describe what your organization is trying to accomplish, current field challenges, or target timeline...",
+    "submit": "Submit Project Inquiry",
+    "submitting": "Sending…",
+    "successTitle": "Inquiry Received",
+    "successBody": "Thank you for reaching out. The M2B team will review your project requirements and respond within 24 hours.",
+    "successAgain": "Submit Another Inquiry",
+    "channelsLabel": "Direct Engineering Channels",
+    "whatsappTitle": "WhatsApp Direct",
+    "emailTitle": "Official Email",
+    "phoneTitle": "Call Direct",
+    "emailSubject": "New Project Inquiry via M2B Website",
+    "projectTypes": {
+      "ministry": "Ministry / Gov System",
+      "erp": "ERP / Operations",
+      "school": "School / University",
+      "mobile": "Mobile App (Flutter)",
+      "commerce": "Commerce & ZAAD",
+      "website": "Website & Digital Brand"
+    },
+    "errors": {
+      "missing_fields": "Please fill in all required fields.",
+      "invalid_email": "Please enter a valid email address.",
+      "invalid_amount": "Enter a valid investment amount greater than zero.",
+      "not_configured": "Contact form is temporarily unavailable. Please use WhatsApp or email.",
+      "submit_failed": "Something went wrong. Please try again or reach us on WhatsApp."
+    }
+  },
   "Categories": {
     "web_app": "Web app",
     "mobile_app": "Mobile app",
@@ -142,18 +187,168 @@
     "hoursFridayValue": "Closed for prayer",
     "timezoneNote": "East Africa Time · UTC+3"
   },
+  "StudioPage": {
+    "label": "M2B STUDIO · HARGEISA",
+    "titleBefore": "Built in Hargeisa.",
+    "titleAccent": "Shipping for the Horn & Diaspora.",
+    "supporting": "M2B is an independent technology innovation studio based in Hargeisa, Somaliland. We operate at the intersection of sovereign infrastructure, enterprise operations, and community culture.",
+    "hq": "HEADQUARTERED IN HARGEISA, SOMALILAND",
+    "stats": {
+      "years": {
+        "value": "9+ Years",
+        "title": "Craftsmanship",
+        "note": "Continuous production software"
+      },
+      "spectrum": {
+        "value": "Gov to Grassroots",
+        "title": "Full Spectrum",
+        "note": "Ministries, NGOs, and commerce"
+      },
+      "platforms": {
+        "value": "Web + Mobile",
+        "title": "Ops & ERPs",
+        "note": "Unified multi-platform suites"
+      },
+      "languages": {
+        "value": "EN · SO · AR",
+        "title": "Bilingual Ready",
+        "note": "Engineered for regional typography"
+      }
+    },
+    "philosophy": {
+      "title": "A studio built on rigor, not buzzwords.",
+      "p1": "In developing markets, software often breaks at the seams: when a field inspector enters a mountain valley with no cellular reception, when parents wait for critical student SMS transcripts, or when a telecommunications ministry needs an auditable record of spectrum rights.",
+      "p2": "M2B was founded to establish a gold standard of local craftsmanship. We don't rebrand cookie-cutter WordPress templates. We architect tailored solutions using industry-proven stacks — Laravel, Filament, Flutter, .NET, Next.js, and PostGIS — built to withstand decades of operational expansion."
+    },
+    "principles": {
+      "one": "Zero offshore subcontracting — 100% in-house engineering and oversight.",
+      "two": "Deep local partnerships with Somaliland ministries, telecos, and enterprises.",
+      "three": "Bridging Hargeisa engineering talent with Somali diaspora networks globally."
+    },
+    "team": {
+      "label": "STUDIO TEAM",
+      "title": "Three partners. One studio.",
+      "supporting": "We build and run M2B as equals — shared ownership, shared decisions, no hierarchy.",
+      "focus": {
+        "abdirahmaan": "Engineering & Delivery",
+        "mohamed": "Engineering & Delivery",
+        "adnan": "Marketing, Sales & Growth"
+      },
+      "members": {
+        "abdirahmaan": {
+          "initials": "AM",
+          "name": "Abdirahmaan Mire",
+          "badge": "Engineering",
+          "bio": "Senior software developer and project manager with 9+ years in production systems. Focuses on architecture, technical discovery, and delivery across government registries, education ERPs, and high-load consumer apps — offline-ready data models and local mobile money flows.",
+          "skills": {
+            "one": "Software Architecture",
+            "two": "Laravel & Filament",
+            "three": "Flutter Systems",
+            "four": "Technical Project Management"
+          }
+        },
+        "mohamed": {
+          "initials": "MB",
+          "name": "Mohamed Bulbul",
+          "badge": "Engineering",
+          "bio": "Senior software developer and project manager with the same engineering depth — architecture, full-stack delivery, and operational systems. Partners on every technical milestone from discovery through ship.",
+          "skills": {
+            "one": "Software Architecture",
+            "two": "Laravel & Filament",
+            "three": "Flutter Systems",
+            "four": "Technical Project Management"
+          }
+        },
+        "adnan": {
+          "initials": "AB",
+          "name": "Adnan Bille",
+          "badge": "Growth",
+          "bio": "Heads marketing, sales, and everything non-technical — client relationships, positioning, partnerships, and go-to-market. Keeps the studio connected to ministries, enterprises, and the diaspora network.",
+          "skills": {
+            "one": "Marketing & Brand",
+            "two": "Sales & Partnerships",
+            "three": "Client Relations",
+            "four": "Business Development"
+          }
+        }
+      }
+    }
+  },
   "ServicesPage": {
     "title": "Services",
-    "label": "CAPABILITIES",
-    "supporting": "Operational systems engineered for government, education, commerce, and the diaspora.",
-    "cta": "Start a project"
+    "label": "FULL STUDIO CAPABILITIES",
+    "titleBefore": "Three Pillars:",
+    "titleAccent": "Engineer, Operate, and Lead.",
+    "supporting": "We don't rely on third-party offshore subcontractors. Every operational layer — from database schemas to field mobile apps — is designed, coded, and delivered in-house.",
+    "empty": "Capabilities will appear here once published.",
+    "commission": "Commission {pillar}",
+    "cta": "Start a project",
+    "local": {
+      "label": "THE LOCAL REALITY BENCHMARK",
+      "title": "We speak the local stack fluently.",
+      "supporting": "Western frameworks assume fiber optics, credit cards, English UI, and Monday-to-Friday schedules. M2B designs from first principles for the realities of the Horn:",
+      "items": {
+        "money": {
+          "title": "ZAAD & eDahab Mobile Money",
+          "body": "Direct merchant API integrations, automated reconciliation, and dual USD/SLS currency pricing."
+        },
+        "typography": {
+          "title": "Somali & Arabic Typography",
+          "body": "Somali labels are 20-35% longer than English. We design dynamic layouts that never clip or hyphenate awkwardly."
+        },
+        "offline": {
+          "title": "Zero-Cellular Field Resilience",
+          "body": "Offline SQLite synchronization for inspectors auditing telecom towers or cleaning supervisors in basement parking."
+        },
+        "calendar": {
+          "title": "Saturday–Wednesday Cycles",
+          "body": "Academic calendars and governmental shifts natively follow regional workweeks without messy calendar hacks."
+        }
+      }
+    }
+  },
+  "ProductsPage": {
+    "label": "M2B PRODUCT OS · SHIPPED ENGINES",
+    "titleBefore": "Each M2B system",
+    "titleAccent": "engineered on a pedestal.",
+    "supporting": "Every system is treated as a high-durability operational engine: cloud APIs, field offline databases, mobile money checkout, and localized typography.",
+    "empty": "Products will appear here once published.",
+    "emptyFilter": "No products match this filter.",
+    "liveService": "Live Service",
+    "console": "Production Console",
+    "deepDive": "Case Deep Dive",
+    "tabs": {
+      "all": "All Products ({count})",
+      "live": "Live Deployments ({count})",
+      "mobile": "Mobile & Flutter First",
+      "ops": "Operations & Government"
+    }
   },
   "PortfolioPage": {
     "title": "Portfolio",
-    "label": "CASE STUDIES & WORK",
-    "supporting": "Published systems shipping across the Horn of Africa and diaspora.",
+    "label": "PRODUCTION WORK & CASE STUDIES",
+    "titleBefore": "Sovereign systems, ERPs,",
+    "titleAccent": "and consumer platforms.",
+    "supporting": "Every case study here represents active, production codebases deployed for sovereign ministries, universities, local enterprises, and the diaspora.",
     "empty": "Projects will appear here once published.",
-    "cta": "Start a project"
+    "searchPlaceholder": "Filter by client, stack, sector...",
+    "noMatches": "No matching systems found for \"{query}\". Try selecting another category tab.",
+    "flagship": "FLAGSHIP CASE",
+    "outcome": "Outcome",
+    "visitLive": "Visit Live",
+    "console": "Production Console",
+    "deepDive": "Deep Dive",
+    "cta": "Start a project",
+    "filters": {
+      "all": "All Work",
+      "government": "Government",
+      "operations": "Operations & ERP",
+      "education": "Education",
+      "faith": "Faith & Media",
+      "commerce": "Commerce",
+      "mobile": "Mobile Apps",
+      "websites": "Websites & CMS"
+    }
   },
   "ProjectPage": {
     "title": "Project",

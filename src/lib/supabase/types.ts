@@ -4,6 +4,39 @@ export type ProjectCategory =
   | "erp"
   | "website_ecommerce";
 
+export type WorkCategory =
+  | "government"
+  | "operations"
+  | "education"
+  | "faith"
+  | "commerce"
+  | "mobile"
+  | "websites";
+
+export type ProjectStatus =
+  | "Live"
+  | "In Production"
+  | "Studio Product"
+  | "Coming Soon";
+
+export type CapabilityTech = {
+  name: string;
+  desc: string;
+};
+
+export type CapabilityPillar = {
+  id: string;
+  slug: string;
+  title: string;
+  tagline: string;
+  icon: string;
+  technologies: CapabilityTech[];
+  sort_order: number;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Service = {
   id: string;
   slug: string;
@@ -17,6 +50,11 @@ export type Service = {
   updated_at: string;
 };
 
+export type ProjectMetric = {
+  label: string;
+  value: string;
+};
+
 export type Project = {
   id: string;
   slug: string;
@@ -24,6 +62,12 @@ export type Project = {
   tagline: string;
   description: string;
   category: ProjectCategory;
+  work_category: WorkCategory;
+  sector: string;
+  status: ProjectStatus | string;
+  outcome: string;
+  stack: string[];
+  metrics: ProjectMetric[];
   client_name: string | null;
   year: number | null;
   live_url: string | null;
@@ -97,6 +141,19 @@ export type AdminUser = {
   created_at: string;
 };
 
+export type ContactInquiry = {
+  id: string;
+  project_type: string;
+  estimated_amount_usd: number;
+  full_name: string;
+  email: string;
+  organization: string;
+  phone: string;
+  project_brief: string;
+  locale: string;
+  created_at: string;
+};
+
 type TableDef<Row, Insert, Update, Relationships = []> = {
   Row: Row;
   Insert: Insert;
@@ -137,6 +194,12 @@ export type Database = {
           tagline?: string;
           description?: string;
           category: ProjectCategory;
+          work_category?: WorkCategory | string;
+          sector?: string;
+          status?: string;
+          outcome?: string;
+          stack?: string[];
+          metrics?: ProjectMetric[];
           client_name?: string | null;
           year?: number | null;
           live_url?: string | null;
@@ -235,6 +298,38 @@ export type Database = {
           updated_at?: string;
         },
         Partial<ProcessStep>
+      >;
+      capability_pillars: TableDef<
+        CapabilityPillar,
+        {
+          id?: string;
+          slug: string;
+          title: string;
+          tagline?: string;
+          icon?: string;
+          technologies?: CapabilityTech[];
+          sort_order?: number;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        },
+        Partial<CapabilityPillar>
+      >;
+      contact_inquiries: TableDef<
+        ContactInquiry,
+        {
+          id?: string;
+          project_type: string;
+          estimated_amount_usd: number;
+          full_name: string;
+          email: string;
+          organization?: string;
+          phone: string;
+          project_brief?: string;
+          locale?: string;
+          created_at?: string;
+        },
+        Partial<ContactInquiry>
       >;
     };
     Views: Record<string, never>;

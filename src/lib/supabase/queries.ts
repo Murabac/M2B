@@ -1,10 +1,13 @@
 import { createPublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import type {
+  CapabilityPillar,
+  CapabilityTech,
   ProcessStep,
   Project,
   ProjectCategory,
   ProjectImage,
+  ProjectMetric,
   Service,
   Testimonial,
   TrustSector,
@@ -36,6 +39,95 @@ function normalizeProcessStep(
 
 function normalizeService(row: Service & { bullets?: unknown }): Service {
   return { ...row, bullets: normalizeStringArray(row.bullets) };
+}
+
+function normalizeTechnologies(value: unknown): CapabilityTech[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => {
+      if (!item || typeof item !== "object") return null;
+      const row = item as { name?: unknown; desc?: unknown };
+      if (typeof row.name !== "string" || typeof row.desc !== "string") {
+        return null;
+      }
+      return { name: row.name, desc: row.desc };
+    })
+    .filter((item): item is CapabilityTech => item !== null);
+}
+
+function normalizeCapabilityPillar(
+  row: CapabilityPillar & { technologies?: unknown },
+): CapabilityPillar {
+  return {
+    ...row,
+    technologies: normalizeTechnologies(row.technologies),
+  };
+}
+
+export async function getPublishedCapabilityPillars(): Promise<
+  CapabilityPillar[]
+> {
+  const supabase = getPublicClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("capability_pillars")
+    .select("*")
+    .eq("is_published", true)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error("getPublishedCapabilityPillars:", error.message);
+    return [];
+  }
+
+  return (data ?? []).map((row) =>
+    normalizeCapabilityPillar(
+      row as CapabilityPillar & { technologies?: unknown },
+    ),
+  );
+}
+
+function normalizeMetrics(value: unknown): ProjectMetric[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => {
+      if (!item || typeof item !== "object") return null;
+      const row = item as { label?: unknown; value?: unknown };
+      if (typeof row.label !== "string" || typeof row.value !== "string") {
+        return null;
+      }
+      return { label: row.label, value: row.value };
+    })
+    .filter((item): item is ProjectMetric => item !== null);
+}
+
+function normalizeProject(
+  row: Project & { stack?: unknown; stack_line?: string; metrics?: unknown },
+): Project {
+  const stack = normalizeStringArray(row.stack);
+  const fromLine =
+    stack.length === 0 && row.stack_line
+      ? row.stack_line
+          .split(/[·|,]/)
+          .map((part) => part.trim())
+          .filter(Boolean)
+      : stack;
+  return {
+    ...row,
+    work_category: (row.work_category || "operations") as Project["work_category"],
+    sector: row.sector || row.mesh_category || "",
+    status: row.status || "Live",
+    outcome: row.outcome || "",
+    stack: fromLine,
+    metrics: normalizeMetrics(row.metrics),
+  };
+}
+
+function mapProjects(data: unknown[] | null): Project[] {
+  return (data ?? []).map((row) =>
+    normalizeProject(row as Project & { stack?: unknown }),
+  );
 }
 
 export async function getPublishedServices(): Promise<Service[]> {
@@ -74,7 +166,7 @@ export async function getFeaturedProjects(): Promise<Project[]> {
     return [];
   }
 
-  return data ?? [];
+  return mapProjects(data);
 }
 
 export async function getHeroProjects(): Promise<Project[]> {
@@ -93,7 +185,7 @@ export async function getHeroProjects(): Promise<Project[]> {
     return [];
   }
 
-  return data ?? [];
+  return mapProjects(data);
 }
 
 export async function getBentoProjects(): Promise<Project[]> {
@@ -112,7 +204,7 @@ export async function getBentoProjects(): Promise<Project[]> {
     return [];
   }
 
-  return data ?? [];
+  return mapProjects(data);
 }
 
 export async function getPublishedProjects(
@@ -138,7 +230,7 @@ export async function getPublishedProjects(
     return [];
   }
 
-  return data ?? [];
+  return mapProjects(data);
 }
 
 export async function getPublishedTrustSectors(): Promise<TrustSector[]> {
@@ -214,7 +306,7 @@ export async function getProjectBySlug(
   ]);
 
   return {
-    ...project,
+    ...normalizeProject(project as Project & { stack?: unknown }),
     project_images: images ?? [],
     testimonials: testimonials ?? [],
   };

@@ -6,8 +6,10 @@ import {
   Layers,
   MapPin,
   Radio,
+  Settings2,
   ShieldCheck,
   Smartphone,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 
@@ -19,6 +21,9 @@ const ICON_MAP: Record<string, LucideIcon> = {
   radio: Radio,
   "shield-check": ShieldCheck,
   code: Code2,
+  "code-2": Code2,
+  "settings-2": Settings2,
+  users: Users,
   building: Building2,
   globe: Globe2,
 };

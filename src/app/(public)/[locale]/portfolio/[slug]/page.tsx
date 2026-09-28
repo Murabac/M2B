@@ -74,7 +74,7 @@ export default async function ProjectPage({ params }: Props) {
                   </a>
                 ) : null}
                 <Link
-                  href="/#contact"
+                  href="/contact"
                   className="inline-flex items-center gap-2 rounded-xl border border-[#D4AF37]/40 px-5 py-3 text-xs font-bold tracking-wider text-[#D4AF37] uppercase"
                 >
                   {t("cta")}

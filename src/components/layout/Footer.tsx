@@ -20,7 +20,7 @@ const navItems = [
   { href: "/", key: "home" as const },
   { href: "/services", key: "services" as const },
   { href: "/portfolio", key: "portfolio" as const },
-  { href: "/#contact", key: "contact" as const },
+  { href: "/contact", key: "contact" as const },
 ];
 
 export async function Footer() {

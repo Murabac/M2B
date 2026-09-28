@@ -5,9 +5,9 @@ export const siteConfig = {
   tagline: "Connecting today, building tomorrow",
   positioning: "Technology | Innovation | Solutions",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "252000000000",
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "252637744447",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@example.com",
-  contactPhone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "+252000000000",
+  contactPhone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "(252) 63-7744447",
   gaId: process.env.NEXT_PUBLIC_GA_ID ?? "",
   logos: {
     mark: "/brand/M2B.svg",
