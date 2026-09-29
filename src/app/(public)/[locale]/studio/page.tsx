@@ -85,17 +85,17 @@ export default async function StudioPage({ params }: Props) {
           </p>
         </div>
 
-        <div className="mb-16 grid grid-cols-2 gap-6 lg:grid-cols-4">
+        <div className="mb-16 grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
           {stats.map((stat) => (
             <div
               key={stat.title}
-              className="rounded-2xl border border-slate-800 bg-[#081B38] p-6"
+              className="min-w-0 rounded-2xl border border-slate-800 bg-[#081B38] p-4 sm:p-6"
             >
-              <div className="mb-1 text-3xl font-black text-[#D4AF37] sm:text-4xl">
+              <div className="mb-1 text-xl leading-tight font-black break-words text-[#D4AF37] sm:text-3xl lg:text-4xl">
                 {stat.value}
               </div>
-              <div className="text-sm font-bold">{stat.title}</div>
-              <div className="mt-0.5 font-mono text-xs text-slate-500">
+              <div className="text-sm font-bold break-words">{stat.title}</div>
+              <div className="mt-0.5 font-mono text-[10px] leading-snug break-words text-slate-500 sm:text-xs">
                 {stat.note}
               </div>
             </div>

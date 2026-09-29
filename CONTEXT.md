@@ -209,5 +209,6 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - 2026-09-29: Lock public site to `color-scheme: light only` so OS/browser dark mode cannot invert form controls or UA chrome; admin stays dark.
 - 2026-09-29: Android Chrome Auto Dark was muddying gold text — declare `color-scheme: light dark` and mirror brand tokens under `prefers-color-scheme: dark` so the browser skips forced recoloring. Design stays identical.
 - 2026-09-29: Samsung Internet force-dark also muddies gold — use solid `#e5be4a` for `.gold-gradient-text` (no transparent clip), set `color-scheme: dark` under prefers-dark, and emit color-scheme meta tags.
+- 2026-09-29: Renamed **Reer Sh Yoonis** → **Cilmi Foundation**; logo from `cilmi-tree-view/public/logo.png`; family count **328** from live `reer_sh_yoonis.profiles`. Migration `20260927000016_cilmi_foundation_rebrand.sql` (slug stays `reer-sh-yoonis`).
 
 
