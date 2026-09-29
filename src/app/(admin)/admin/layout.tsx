@@ -14,7 +14,7 @@ export default function AdminLayout({
 }) {
   return (
     <html lang="en" className={`${kamerik.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+      <body className="min-h-full bg-[#030914] font-sans text-white">{children}</body>
     </html>
   );
 }

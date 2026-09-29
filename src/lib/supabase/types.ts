@@ -141,6 +141,16 @@ export type AdminUser = {
   created_at: string;
 };
 
+export type InquiryStatus =
+  | "new"
+  | "reviewing"
+  | "contacted"
+  | "proposal_sent"
+  | "won"
+  | "archived";
+
+export type InquiryPriority = "high" | "medium" | "normal";
+
 export type ContactInquiry = {
   id: string;
   project_type: string;
@@ -151,7 +161,73 @@ export type ContactInquiry = {
   phone: string;
   project_brief: string;
   locale: string;
+  status: InquiryStatus;
+  priority: InquiryPriority;
+  notes: string;
   created_at: string;
+};
+
+export type AnnouncementTone = "gold" | "navy" | "emerald";
+
+export type SiteSettings = {
+  id: number;
+  studio_name: string;
+  company_legal_name: string;
+  pillars: string;
+  tagline: string;
+  founder_name: string;
+  founder_role: string;
+  founder_bio: string;
+  founder_experience_years: number;
+  city: string;
+  country: string;
+  office_address: string;
+  coordinates: string;
+  email: string;
+  phone_primary: string;
+  phone_secondary: string;
+  whatsapp: string;
+  business_hours_weekdays: string;
+  business_hours_friday: string;
+  timezone: string;
+  stats_towers_inspected: string;
+  stats_listeners_count: string;
+  stats_schools_managed: string;
+  stats_mobile_money_processed: string;
+  announcement_enabled: boolean;
+  announcement_text_en: string;
+  announcement_text_so: string;
+  announcement_action_en: string;
+  announcement_action_so: string;
+  announcement_action_url: string;
+  announcement_tone: AnnouncementTone;
+  updated_at: string;
+};
+
+export type ActivityLogType = "project" | "inquiry" | "system" | "setting";
+
+export type ActivityLogItem = {
+  id: string;
+  type: ActivityLogType;
+  message: string;
+  actor_id: string | null;
+  created_at: string;
+};
+
+export type StudioTeamMember = {
+  id: string;
+  slug: string;
+  initials: string;
+  name: string;
+  badge: string;
+  role: string;
+  bio: string;
+  skills: string[];
+  photo_url: string | null;
+  sort_order: number;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
 };
 
 type TableDef<Row, Insert, Update, Relationships = []> = {
@@ -327,9 +403,47 @@ export type Database = {
           phone: string;
           project_brief?: string;
           locale?: string;
+          status?: InquiryStatus;
+          priority?: InquiryPriority;
+          notes?: string;
           created_at?: string;
         },
         Partial<ContactInquiry>
+      >;
+      site_settings: TableDef<
+        SiteSettings,
+        Partial<SiteSettings> & { id?: number },
+        Partial<SiteSettings>
+      >;
+      activity_log: TableDef<
+        ActivityLogItem,
+        {
+          id?: string;
+          type?: ActivityLogType;
+          message: string;
+          actor_id?: string | null;
+          created_at?: string;
+        },
+        Partial<ActivityLogItem>
+      >;
+      studio_team: TableDef<
+        StudioTeamMember,
+        {
+          id?: string;
+          slug: string;
+          initials?: string;
+          name: string;
+          badge?: string;
+          role?: string;
+          bio?: string;
+          skills?: string[];
+          photo_url?: string | null;
+          sort_order?: number;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        },
+        Partial<StudioTeamMember>
       >;
     };
     Views: Record<string, never>;

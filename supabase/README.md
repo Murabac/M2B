@@ -38,6 +38,11 @@ Without this, the JS client cannot query `m2b` tables.
    - `supabase/migrations/20260927000005_product_metrics.sql`
    - `supabase/migrations/20260927000006_capability_pillars.sql`
    - `supabase/migrations/20260927000007_contact_inquiries.sql`
+   - `supabase/migrations/20260927000008_admin_cms.sql`
+   - `supabase/migrations/20260927000009_studio_team.sql`
+   - `supabase/migrations/20260927000010_studio_team_photo.sql`
+   - `supabase/migrations/20260927000011_worldwide_positioning.sql`
+   - `supabase/migrations/20260927000012_murabac_portfolio_projects.sql`
 
 Or with the CLI:
 
@@ -85,7 +90,18 @@ select m2b.is_admin(); -- false unless authenticated as the admin
 | ---- | ---- |
 | `src/lib/supabase/client.ts` | Browser client (`db.schema = m2b`) |
 | `src/lib/supabase/server.ts` | Server Components / Route Handlers |
-| `src/lib/supabase/middleware.ts` | Session refresh helper (Wave 6) |
+| `src/lib/supabase/middleware.ts` | Session refresh + `/admin` auth guard |
+| `src/lib/supabase/admin-auth.ts` | `requireAdmin` / session helpers |
+| `src/lib/supabase/admin-queries.ts` | Admin list/read helpers |
+| `src/lib/admin/actions.ts` | CMS server actions (CRUD) |
 | `src/lib/supabase/types.ts` | Database TypeScript types |
-| `src/lib/supabase/queries.ts` | Public typed reads |
+| `src/lib/supabase/queries.ts` | Public typed reads (incl. site_settings) |
 | `src/lib/supabase/constants.ts` | Schema + bucket names |
+| `src/lib/contact/channels.ts` | Contact channels from site_settings + env fallback |
+
+## Admin CMS (Wave 6)
+
+1. Run `20260927000008_admin_cms.sql`
+2. Create Auth user + insert into `m2b.admin_users`
+3. Sign in at `/admin/login`
+4. Edit Studio contact channels under `/admin/studio` (becomes public site source of truth)

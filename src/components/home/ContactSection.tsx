@@ -8,16 +8,21 @@ import {
 } from "@/components/contact/icons";
 import { EatClock } from "@/components/layout/EatClock";
 import {
-  getMailtoUrl,
-  getTelUrl,
-  getWhatsAppUrl,
-  siteConfig,
-} from "@/config/site";
+  buildMailtoUrl,
+  buildTelUrl,
+  buildWhatsAppUrl,
+  formatLocation,
+  getContactChannels,
+} from "@/lib/contact/channels";
 
 export async function ContactSection() {
   const t = await getTranslations("HomePage");
   const tContact = await getTranslations("Contact");
-  const whatsappHref = getWhatsAppUrl(tContact("whatsappMessage"));
+  const channelsConfig = await getContactChannels();
+  const whatsappHref = buildWhatsAppUrl(
+    channelsConfig.whatsapp,
+    tContact("whatsappMessage"),
+  );
 
   const channels = [
     {
@@ -25,7 +30,7 @@ export async function ContactSection() {
       href: whatsappHref,
       title: tContact("whatsapp"),
       hint: tContact("whatsappHint"),
-      detail: siteConfig.contactPhone,
+      detail: channelsConfig.phone,
       icon: IconWhatsApp,
       className:
         "border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20",
@@ -33,10 +38,10 @@ export async function ContactSection() {
     },
     {
       channel: "email" as const,
-      href: getMailtoUrl(),
+      href: buildMailtoUrl(channelsConfig.email),
       title: tContact("email"),
       hint: tContact("emailHint"),
-      detail: siteConfig.contactEmail,
+      detail: channelsConfig.email,
       icon: IconEmail,
       className:
         "border-[#0B2F6B]/50 bg-[#0B2F6B]/20 text-blue-300 hover:bg-[#0B2F6B]/30",
@@ -44,10 +49,10 @@ export async function ContactSection() {
     },
     {
       channel: "phone" as const,
-      href: getTelUrl(),
+      href: buildTelUrl(channelsConfig.phone),
       title: tContact("phone"),
       hint: tContact("phoneHint"),
-      detail: siteConfig.contactPhone,
+      detail: channelsConfig.phone,
       icon: IconPhone,
       className:
         "border-[#D4AF37]/40 bg-[#D4AF37]/10 text-[#E5BE4A] hover:bg-[#D4AF37]/20",
@@ -125,11 +130,15 @@ export async function ContactSection() {
                 <span>{t("studioHq")}</span>
               </div>
               <h3 className="mb-2 text-2xl font-extrabold tracking-tight">
-                {t("studioCity")}
+                {formatLocation(channelsConfig.city, channelsConfig.country)}
               </h3>
-              <div className="mb-4 font-mono text-xs text-slate-400">
-                GPS: {t("studioCoords")}
-              </div>
+              {channelsConfig.coordinates ? (
+                <div className="mb-4 font-mono text-xs text-slate-400">
+                  GPS: {channelsConfig.coordinates}
+                </div>
+              ) : (
+                <div className="mb-4" />
+              )}
               <p className="mb-6 text-sm leading-relaxed text-slate-300">
                 {t("studioBlurb")}
               </p>
@@ -155,18 +164,18 @@ export async function ContactSection() {
                 <div className="flex justify-between gap-4">
                   <span>{t("hoursWeekdays")}</span>
                   <span className="font-bold text-slate-300">
-                    {t("hoursWeekdaysValue")}
+                    {channelsConfig.hoursWeekdays}
                   </span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span>{t("hoursFriday")}</span>
-                  <span>{t("hoursFridayValue")}</span>
+                  <span>{channelsConfig.hoursFriday}</span>
                 </div>
               </div>
 
               <div className="mt-4 flex items-center gap-2 text-xs text-slate-400">
                 <Clock className="h-3.5 w-3.5" />
-                <span>{t("timezoneNote")}</span>
+                <span>{channelsConfig.timezone}</span>
               </div>
             </div>
           </div>

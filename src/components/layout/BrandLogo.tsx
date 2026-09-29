@@ -28,7 +28,7 @@ export function BrandLogo({ className = "", variant = "dark" }: Props) {
         }`}
       >
         <Image
-          src={siteConfig.logos.mark}
+          src={siteConfig.logos.markPng}
           alt=""
           width={52}
           height={52}

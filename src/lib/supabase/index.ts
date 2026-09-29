@@ -1,10 +1,15 @@
 export { PROJECT_IMAGES_BUCKET, SUPABASE_SCHEMA } from "@/lib/supabase/constants";
 export type {
   AdminUser,
+  ActivityLogItem,
+  ActivityLogType,
+  AnnouncementTone,
   CapabilityPillar,
   CapabilityTech,
   ContactInquiry,
   Database,
+  InquiryPriority,
+  InquiryStatus,
   ProcessStep,
   Project,
   ProjectCategory,
@@ -12,6 +17,8 @@ export type {
   ProjectMetric,
   ProjectStatus,
   Service,
+  SiteSettings,
+  StudioTeamMember,
   Testimonial,
   TrustSector,
   WorkCategory,
@@ -32,5 +39,7 @@ export {
   getPublishedProjects,
   getPublishedServices,
   getPublishedTrustSectors,
+  getSiteSettings,
+  getPublishedStudioTeam,
   type ProjectWithRelations,
 } from "@/lib/supabase/queries";

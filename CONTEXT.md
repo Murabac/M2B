@@ -13,6 +13,7 @@
 ## Company and goals
 
 - Company: **M2B**, a software / IT services company.
+- Positioning: **worldwide** engineering studio — do not brand HQ as Hargeisa-only in public UI. City/country in `site_settings` are optional CMS fields; public defaults are “Worldwide” with no city GPS.
 - Goals: showcase portfolio and case studies, generate client leads, build brand credibility.
 - Look and feel: corporate and trustworthy, warm and local, modern and bold, minimal and clean. Light theme only.
 - Leads: WhatsApp, email, phone via `ContactLink`, plus the `/contact` project inquiry form (stored in Supabase `contact_inquiries`).
@@ -54,8 +55,9 @@
 - `/services`: full services list.
 - `/portfolio`: Work / case studies grid with sector filters and search.
 - `/products`: Product OS pedestal grid (live / mobile / ops filters).
-- `/portfolio/[slug]`: project details page.
-- `/studio`: studio story, stats, and team (Design Ref StudioView).
+- `/portfolio/[slug]`: project case study — hero, metrics, detailed story, screenshot carousel, stack, links, and project testimonials.
+- Admin projects editor: full field set (story, links/stores, display, gallery screenshots, testimonials) to feed that page.
+- `/studio`: studio story, name origin (M2B = Mire + Bulbul + Bille), stats, and team (Design Ref StudioView).
 - `/contact`: project inquiry form (custom investment amount) + HQ / channels (Design Ref ContactView).
 - `/admin/*`: single-admin CMS (see Admin).
 - Services to feature: Custom software / web apps; Mobile apps; ERP systems (NOT Odoo); Websites and e-commerce.
@@ -104,9 +106,9 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 
 - Floating WhatsApp button on every public page (`wa.me` link with a prefilled message translated per locale).
 - Contact section on Home with WhatsApp, email and phone cards (`ContactLink`).
-- Full inquiry form on `/contact`: project type, custom estimated investment (USD amount the user types), name, email, org, WhatsApp/phone, brief. Submissions go to `m2b.contact_inquiries` (anon insert; admin read).
+- Full inquiry form on `/contact`: project type, custom estimated investment (USD amount the user types), name, email, org, WhatsApp/phone, brief. Submissions go to `m2b.contact_inquiries` (anon insert; admin read/update/delete).
 - Call button in the header on mobile.
-- Values come from env vars via `src/config/site.ts`: `NEXT_PUBLIC_WHATSAPP_NUMBER` (digits only, international format), `NEXT_PUBLIC_CONTACT_EMAIL`, `NEXT_PUBLIC_CONTACT_PHONE`. Use placeholders.
+- **Source of truth:** `m2b.site_settings` (email, phone_primary, phone_secondary, whatsapp). Env vars (`NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_CONTACT_EMAIL`, `NEXT_PUBLIC_CONTACT_PHONE`) are bootstrap fallbacks only until settings are seeded.
 
 ## Data model (Supabase)
 
@@ -119,15 +121,20 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - `capability_pillars`: id, slug, title, tagline, icon, technologies (jsonb `{name, desc}` array), sort_order, is_published — Services page Engineer/Operate/Lead columns.
 - `trust_sectors`: id, slug, name, proof, metric, icon, sort_order, is_published (home trust strip).
 - `process_steps`: id, step_key, title, description, deliverables (jsonb string array), sort_order, is_published (home process orbit).
-- `contact_inquiries`: id, project_type, estimated_amount_usd, full_name, email, organization, phone, project_brief, locale, created_at — public insert; admin select/delete.
+- `contact_inquiries`: id, project_type, estimated_amount_usd, full_name, email, organization, phone, project_brief, locale, status, priority, notes, created_at — public insert; admin select/update/delete.
+- `site_settings`: singleton row — studio/founder/HQ/hours/proof stats, contact channels, announcement bar. Public select; admin update.
+- `studio_team`: id, slug, initials, name, badge, role, bio, skills (jsonb), photo_url, sort_order, is_published — public `/studio` partners; admin CRUD with photo upload.
+- `activity_log`: admin audit feed (type, message, actor_id, created_at).
 - `admin_users`: user_id (the single admin).
 - RLS: public can read published rows only; only the admin can insert, update, delete. Seed the 4 services; home migration seeds trust sectors, process steps, and hero project fields.
 
 ## Admin (CMS)
 
-- One admin only. Supabase Auth email and password. Protect `/admin/*` with middleware.
-- Admin UI is English only, `noindex`, excluded from the sitemap and hreflang.
-- CMS scope: services (with bullets), portfolio projects (all fields including hero/bento flags, cover image, gallery upload and ordering, publish and feature toggles), trust sectors, process steps, and testimonials per project. Contact details are NOT in the CMS; they are env vars.
+- One admin only. Supabase Auth email and password. Protect `/admin/*` with middleware (`updateSession` + `admin_users` check).
+- Admin UI is English only, `noindex`, excluded from the sitemap and hreflang. Visual reference: `backend design refrence/`.
+- Routes: `/admin` (dashboard), `/admin/projects`, `/admin/inquiries`, `/admin/products`, `/admin/studio`, `/admin/settings`, `/admin/services`, `/admin/content`, `/admin/login`.
+- CMS scope: Design Ref shell + dashboard; projects (all fields, cover/logo/gallery file upload & order, publish/feature/hero/bento, testimonials); inquiries CRM (status/priority/notes/CSV); products proof stats; studio team (`studio_team` + photo upload), HQ & announcement via `site_settings`; services (+ bullets); trust sectors, process steps, capability pillars. Image uploads go to `m2b-project-images` via `uploadCmsAsset`.
+- Contact channels and studio HQ live in `site_settings` (CMS), not env-only.
 
 ## SEO and Analytics
 
@@ -143,7 +150,7 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 3. **Supabase backend**: SQL migrations in `supabase/migrations`, RLS, storage bucket, admin allow-list, seed data, server and browser clients, typed queries, setup README and env vars.
 4. **Home page**: bold hero, services overview, featured portfolio from Supabase, trust/value strip, contact section, scroll animations. Target layout documented under **Home page target design** (mock rebuild is a follow-up pass on this wave’s output).
 5. **Services and Portfolio pages**: `/services`, `/portfolio` with category filter, `/portfolio/[slug]` with description, gallery, client, year, links and testimonials; empty, loading and 404 states.
-6. **Admin and CMS**: login, protected routes, dashboard, CRUD for services, projects (image upload, gallery ordering, toggles) and testimonials.
+6. **Admin and CMS**: login, protected routes, Design Ref CMS shell, dashboard, projects/inquiries/products/studio/settings, services + home content CRUD, site_settings.
 7. **SEO and Analytics**: metadata, hreflang, dynamic sitemap, robots, GA4 with consent mode, consent banner, contact click events.
 8. **Polish and deploy**: responsive and RTL QA, accessibility pass, performance (next/image, lazy loading), `netlify.toml`, env var checklist, deployment steps, final QA checklist.
 
@@ -155,8 +162,8 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 | 2 | Layout and contact | Done | 2026-09-26 | Header (logo, nav, language switcher, mobile menu, mobile call), footer, floating WhatsApp, ContactLink + trackContactClick hooks, en/so/ar strings. |
 | 3 | Supabase backend | Done | 2026-09-26 | Migration (schema, RLS, storage, seed 4 services), @supabase/ssr clients, typed queries, supabase/README.md, env vars. |
 | 4 | Home page | Done | 2026-09-26 | Rebuilt to mock target: 2-col hero + SVG visual, 2×2 service cards, featured work, 4-col value strip, #contact panels. |
-| 5 | Services and Portfolio pages | Not started | | |
-| 6 | Admin and CMS | Not started | | |
+| 5 | Services and Portfolio pages | Done | 2026-09-28 | Public services/portfolio/products/studio/contact pages. |
+| 6 | Admin and CMS | Done | 2026-09-29 | Design Ref CMS shell; projects/inquiries/products/studio/settings/services/content; site_settings owns contact. Migration `20260927000008_admin_cms.sql`. |
 | 7 | SEO and Analytics | Not started | | |
 | 8 | Polish and deploy | Not started | | |
 
@@ -190,3 +197,9 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - 2026-09-28: Products `/products` rebuilt as Design Ref ProductsView (pedestal cards, live/mobile/ops filters). Projects gained `metrics` jsonb. Migration: `20260927000005_product_metrics.sql`.
 - 2026-09-28: Allowed `/contact` inquiry form (Design Ref ContactView). Estimated investment is a custom USD amount field (not preset ranges). Submissions stored in `m2b.contact_inquiries`. Nav Contact + Start a Project → `/contact`. Migration: `20260927000007_contact_inquiries.sql`.
 - 2026-09-28: Studio team section: Abdirahmaan Mire, Mohamed Bulbul (engineering equals), Adnan Bille (marketing/sales/non-technical). Equal partners framing — no hierarchy.
+- 2026-09-29: Wave 6 Admin CMS from `backend design refrence/`. Contact/studio/announcement owned by `m2b.site_settings` (env = fallback). Inquiries gain status/priority/notes. English-only admin; no bilingual SO project fields.
+- 2026-09-29: CMS image upload via shared `uploadCmsAsset` + `ImageUploadField` for project cover/logo and studio team photos (storage bucket `m2b-project-images`). Services/content keep lucide icon keys (not raster images).
+- 2026-09-29: Public brand positioning is worldwide — remove Hargeisa HQ branding from UI chrome. Project case studies may still name real client geographies.
+- 2026-09-29: Studio page includes a poetic name-origin section: **M2B** = **M**ire + **B**ulbul + **B**ille (written as M + 2B).
+- 2026-09-29: Project case pages get full detail layout (hero, metrics, story, screenshot carousel, testimonials). Admin project editor expanded with the same fields + multi-upload gallery.
+- 2026-09-29: Seeded remaining MurabacApps product folders into `m2b.projects` (Design Ref portfolio parity). Skipped learning/tooling folders (ASP.NET, Blazor, Flutter samples, M2B itself). Logos copied into `public/projects/`. Migration `20260927000012_murabac_portfolio_projects.sql`.

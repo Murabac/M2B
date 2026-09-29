@@ -7,6 +7,10 @@ import { Header } from "@/components/layout/Header";
 import { ibmPlexArabic, kamerik } from "@/config/fonts";
 import { getLocaleFromParams } from "@/i18n/locale";
 import { isRtlLocale, routing } from "@/i18n/routing";
+import {
+  buildWhatsAppUrl,
+  getContactChannels,
+} from "@/lib/contact/channels";
 import "../../globals.css";
 
 type Props = {
@@ -38,6 +42,12 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   const messages = await getMessages();
   const rtl = isRtlLocale(locale);
+  const tContact = await getTranslations({ locale, namespace: "Contact" });
+  const channels = await getContactChannels();
+  const whatsappHref = buildWhatsAppUrl(
+    channels.whatsapp,
+    tContact("whatsappMessage"),
+  );
 
   return (
     <html
@@ -52,7 +62,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           <Header />
           <div className="flex flex-1 flex-col">{children}</div>
           <Footer />
-          <FloatingWhatsApp />
+          <FloatingWhatsApp href={whatsappHref} />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -4,13 +4,14 @@ import { ContactInquiryForm } from "@/components/contact/ContactInquiryForm";
 import { ContactLink } from "@/components/contact/ContactLink";
 import { IconEmail, IconPhone, IconWhatsApp } from "@/components/contact/icons";
 import { EatClock } from "@/components/layout/EatClock";
-import {
-  getMailtoUrl,
-  getTelUrl,
-  getWhatsAppUrl,
-  siteConfig,
-} from "@/config/site";
 import { getLocaleFromParams } from "@/i18n/locale";
+import {
+  buildMailtoUrl,
+  buildTelUrl,
+  buildWhatsAppUrl,
+  formatLocation,
+  getContactChannels,
+} from "@/lib/contact/channels";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -23,10 +24,14 @@ export default async function ContactPage({ params }: Props) {
   const t = await getTranslations("ContactPage");
   const tContact = await getTranslations("Contact");
   const tHome = await getTranslations("HomePage");
+  const channels = await getContactChannels();
 
-  const whatsappHref = getWhatsAppUrl(tContact("whatsappMessage"));
-  const mailtoHref = `${getMailtoUrl()}?subject=${encodeURIComponent(t("emailSubject"))}`;
-  const telHref = getTelUrl();
+  const whatsappHref = buildWhatsAppUrl(
+    channels.whatsapp,
+    tContact("whatsappMessage"),
+  );
+  const mailtoHref = buildMailtoUrl(channels.email, t("emailSubject"));
+  const telHref = buildTelUrl(channels.phone);
 
   return (
     <main className="min-h-screen bg-[#051329] text-white">
@@ -62,12 +67,16 @@ export default async function ContactPage({ params }: Props) {
               </div>
 
               <h2 className="mb-2 text-2xl font-extrabold tracking-tight">
-                {tHome("studioCity")}
+                {formatLocation(channels.city, channels.country)}
               </h2>
 
-              <div className="mb-4 font-mono text-xs text-slate-400">
-                GPS: {tHome("studioCoords")}
-              </div>
+              {channels.coordinates ? (
+                <div className="mb-4 font-mono text-xs text-slate-400">
+                  GPS: {channels.coordinates}
+                </div>
+              ) : (
+                <div className="mb-4" />
+              )}
 
               <p className="mb-6 text-sm leading-relaxed text-slate-300">
                 {tHome("studioBlurb")}
@@ -94,12 +103,12 @@ export default async function ContactPage({ params }: Props) {
                 <div className="flex justify-between gap-4">
                   <span>{tHome("hoursWeekdays")}</span>
                   <span className="font-bold text-slate-300">
-                    {tHome("hoursWeekdaysValue")}
+                    {channels.hoursWeekdays}
                   </span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span>{tHome("hoursFriday")}</span>
-                  <span>{tHome("hoursFridayValue")}</span>
+                  <span>{channels.hoursFriday}</span>
                 </div>
               </div>
             </div>
@@ -124,7 +133,7 @@ export default async function ContactPage({ params }: Props) {
                       {t("whatsappTitle")}
                     </span>
                     <span className="font-mono text-xs opacity-80">
-                      {siteConfig.contactPhone}
+                      {channels.phone}
                     </span>
                   </div>
                 </div>
@@ -146,7 +155,7 @@ export default async function ContactPage({ params }: Props) {
                       {t("emailTitle")}
                     </span>
                     <span className="font-mono text-xs opacity-80">
-                      {siteConfig.contactEmail}
+                      {channels.email}
                     </span>
                   </div>
                 </div>
@@ -168,7 +177,7 @@ export default async function ContactPage({ params }: Props) {
                       {t("phoneTitle")}
                     </span>
                     <span className="font-mono text-xs opacity-80">
-                      {siteConfig.contactPhone}
+                      {channels.phone}
                     </span>
                   </div>
                 </div>

@@ -8,13 +8,15 @@ import {
   IconWhatsApp,
 } from "@/components/contact/icons";
 import { EatClock } from "@/components/layout/EatClock";
-import {
-  getMailtoUrl,
-  getTelUrl,
-  getWhatsAppUrl,
-  siteConfig,
-} from "@/config/site";
+import { siteConfig } from "@/config/site";
 import { Link } from "@/i18n/navigation";
+import {
+  buildMailtoUrl,
+  buildTelUrl,
+  buildWhatsAppUrl,
+  formatLocation,
+  getContactChannels,
+} from "@/lib/contact/channels";
 
 const navItems = [
   { href: "/", key: "home" as const },
@@ -28,7 +30,11 @@ export async function Footer() {
   const tFooter = await getTranslations("Footer");
   const tContact = await getTranslations("Contact");
   const year = new Date().getFullYear();
-  const whatsappHref = getWhatsAppUrl(tContact("whatsappMessage"));
+  const channels = await getContactChannels();
+  const whatsappHref = buildWhatsAppUrl(
+    channels.whatsapp,
+    tContact("whatsappMessage"),
+  );
 
   const contactItems = [
     {
@@ -39,14 +45,14 @@ export async function Footer() {
     },
     {
       channel: "email" as const,
-      href: getMailtoUrl(),
-      label: siteConfig.contactEmail,
+      href: buildMailtoUrl(channels.email),
+      label: channels.email,
       icon: IconEmail,
     },
     {
       channel: "phone" as const,
-      href: getTelUrl(),
-      label: siteConfig.contactPhone,
+      href: buildTelUrl(channels.phone),
+      label: channels.phone,
       icon: IconPhone,
     },
   ];
@@ -62,7 +68,7 @@ export async function Footer() {
             >
               <span className="inline-flex rounded-lg bg-white p-1.5">
                 <Image
-                  src={siteConfig.logos.mark}
+                  src={siteConfig.logos.markPng}
                   alt=""
                   width={40}
                   height={34}
@@ -91,7 +97,10 @@ export async function Footer() {
             <div className="flex flex-wrap items-center gap-3 pt-2 font-mono text-[11px] text-slate-400">
               <div className="flex items-center gap-1.5 rounded-lg border border-slate-700/60 bg-slate-800/80 px-3 py-1.5">
                 <MapPin className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
-                <span>{tFooter("coordinates")}</span>
+                <span>
+                  {formatLocation(channels.city, channels.country) ||
+                    "Worldwide"}
+                </span>
               </div>
               <div className="flex items-center gap-1.5 rounded-lg border border-slate-700/60 bg-slate-800/80 px-3 py-1.5">
                 <Clock

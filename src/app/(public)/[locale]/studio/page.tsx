@@ -1,20 +1,23 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { CheckCircle2, Sparkles } from "lucide-react";
+import { StudioNameOrigin } from "@/components/studio/StudioNameOrigin";
 import { siteConfig } from "@/config/site";
 import { getLocaleFromParams } from "@/i18n/locale";
+import { getPublishedStudioTeam } from "@/lib/supabase/queries";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
 
-const teamIds = ["abdirahmaan", "mohamed", "adnan"] as const;
+export const revalidate = 60;
 
 export default async function StudioPage({ params }: Props) {
   const locale = await getLocaleFromParams(params);
   setRequestLocale(locale);
 
   const t = await getTranslations("StudioPage");
+  const team = await getPublishedStudioTeam();
 
   const stats = [
     {
@@ -45,20 +48,23 @@ export default async function StudioPage({ params }: Props) {
     t("principles.three"),
   ];
 
-  const team = teamIds.map((id) => ({
-    id,
-    initials: t(`team.members.${id}.initials`),
-    name: t(`team.members.${id}.name`),
-    role: t(`team.focus.${id}`),
-    badge: t(`team.members.${id}.badge`),
-    bio: t(`team.members.${id}.bio`),
-    skills: [
-      t(`team.members.${id}.skills.one`),
-      t(`team.members.${id}.skills.two`),
-      t(`team.members.${id}.skills.three`),
-      t(`team.members.${id}.skills.four`),
-    ],
-  }));
+  const nameParts = [
+    {
+      glyph: t("nameOrigin.parts.mire.glyph"),
+      surname: t("nameOrigin.parts.mire.surname"),
+      line: t("nameOrigin.parts.mire.line"),
+    },
+    {
+      glyph: t("nameOrigin.parts.bulbul.glyph"),
+      surname: t("nameOrigin.parts.bulbul.surname"),
+      line: t("nameOrigin.parts.bulbul.line"),
+    },
+    {
+      glyph: t("nameOrigin.parts.bille.glyph"),
+      surname: t("nameOrigin.parts.bille.surname"),
+      line: t("nameOrigin.parts.bille.line"),
+    },
+  ];
 
   return (
     <main className="min-h-screen bg-[#051329] text-white">
@@ -122,7 +128,7 @@ export default async function StudioPage({ params }: Props) {
               <div className="mx-auto my-4 flex justify-center">
                 <span className="inline-flex items-center justify-center rounded-2xl border border-gold/25 bg-white p-4 shadow-sm">
                   <Image
-                    src={siteConfig.logos.lockup}
+                    src={siteConfig.logos.lockupPng}
                     alt={siteConfig.name}
                     width={220}
                     height={120}
@@ -138,6 +144,15 @@ export default async function StudioPage({ params }: Props) {
             </div>
           </div>
         </div>
+
+        <StudioNameOrigin
+          label={t("nameOrigin.label")}
+          title={t("nameOrigin.title")}
+          verse={t("nameOrigin.verse")}
+          closing={t("nameOrigin.closing")}
+          equation={t("nameOrigin.equation")}
+          parts={nameParts}
+        />
 
         <div className="rounded-3xl border border-slate-800 bg-[#081B38] p-8 shadow-xl sm:p-12">
           <div className="mx-auto max-w-6xl">
@@ -158,15 +173,24 @@ export default async function StudioPage({ params }: Props) {
                   className="flex flex-col rounded-2xl border border-slate-800 bg-[#051329]/60 p-6"
                 >
                   <div className="mb-5 flex flex-col items-center text-center">
-                    <div className="mb-4 flex h-28 w-28 items-center justify-center rounded-3xl border-2 border-[#D4AF37] bg-gradient-to-br from-[#0B2F6B] via-[#0A3A7A] to-[#071C40] p-1 shadow-xl">
-                      <div className="flex h-full w-full flex-col items-center justify-center rounded-2xl bg-[#081B38] text-white">
-                        <span className="text-3xl font-black text-[#D4AF37]">
-                          {member.initials}
-                        </span>
-                        <span className="mt-1 font-mono text-[9px] tracking-widest text-blue-200 uppercase">
-                          {member.badge}
-                        </span>
-                      </div>
+                    <div className="mb-4 flex h-32 w-32 items-center justify-center overflow-hidden rounded-3xl border-2 border-[#D4AF37] bg-gradient-to-br from-[#0B2F6B] via-[#0A3A7A] to-[#071C40] p-1 shadow-xl sm:h-36 sm:w-36">
+                      {member.photo_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={member.photo_url}
+                          alt={member.name}
+                          className="h-full w-full rounded-2xl object-cover object-[center_12%]"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full flex-col items-center justify-center rounded-2xl bg-[#081B38] text-white">
+                          <span className="text-3xl font-black text-[#D4AF37]">
+                            {member.initials}
+                          </span>
+                          <span className="mt-1 font-mono text-[9px] tracking-widest text-blue-200 uppercase">
+                            {member.badge}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <h3 className="text-lg font-extrabold tracking-tight">
                       {member.name}
@@ -193,6 +217,9 @@ export default async function StudioPage({ params }: Props) {
                 </div>
               ))}
             </div>
+            {team.length === 0 ? (
+              <p className="text-sm text-slate-500">{t("team.empty")}</p>
+            ) : null}
           </div>
         </div>
       </div>

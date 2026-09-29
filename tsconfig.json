@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "Design Ref"]
+  "exclude": ["node_modules", "Design Ref", "backend design refrence"]
 }

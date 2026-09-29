@@ -9,6 +9,8 @@ import type {
   ProjectImage,
   ProjectMetric,
   Service,
+  SiteSettings,
+  StudioTeamMember,
   Testimonial,
   TrustSector,
 } from "@/lib/supabase/types";
@@ -327,4 +329,45 @@ export async function getPublishedProjectSlugs(): Promise<string[]> {
   }
 
   return (data ?? []).map((row) => row.slug);
+}
+
+export async function getSiteSettings(): Promise<SiteSettings | null> {
+  const supabase = getPublicClient();
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from("site_settings")
+    .select("*")
+    .eq("id", 1)
+    .maybeSingle();
+
+  if (error) {
+    console.error("getSiteSettings:", error.message);
+    return null;
+  }
+
+  return data;
+}
+
+export async function getPublishedStudioTeam(): Promise<StudioTeamMember[]> {
+  const supabase = getPublicClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("studio_team")
+    .select("*")
+    .eq("is_published", true)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error("getPublishedStudioTeam:", error.message);
+    return [];
+  }
+
+  return (data ?? []).map((row) => ({
+    ...row,
+    skills: Array.isArray(row.skills)
+      ? row.skills.filter((s): s is string => typeof s === "string")
+      : [],
+  }));
 }

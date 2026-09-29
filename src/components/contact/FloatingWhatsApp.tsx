@@ -3,11 +3,13 @@
 import { useTranslations } from "next-intl";
 import { ContactLink } from "@/components/contact/ContactLink";
 import { IconWhatsApp } from "@/components/contact/icons";
-import { getWhatsAppUrl } from "@/config/site";
 
-export function FloatingWhatsApp() {
+type Props = {
+  href: string;
+};
+
+export function FloatingWhatsApp({ href }: Props) {
   const t = useTranslations("Contact");
-  const href = getWhatsAppUrl(t("whatsappMessage"));
 
   return (
     <ContactLink
