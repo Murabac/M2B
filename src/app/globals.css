@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  /* Force our designed palette — ignore OS dark mode for form controls / UA styles */
-  color-scheme: light only;
+  /*
+   * Declare BOTH schemes so Android Chrome / Samsung "Auto Dark" does not
+   * invent a forced palette (that muddy brown gold). We keep one designed look.
+   */
+  color-scheme: light dark;
+  forced-color-adjust: none;
 
   /* Brand — aligned with Design Ref navy/gold */
   --navy: #0b2f6b;
@@ -46,6 +50,44 @@
   --radius-panel: 1rem;
 }
 
+/*
+ * Opt into dark preference with the SAME brand tokens.
+ * Chrome Auto Dark Mode skips pages that already handle prefers-color-scheme.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light dark;
+    forced-color-adjust: none;
+    --navy: #0b2f6b;
+    --navy-mid: #0a3a7a;
+    --navy-deep: #05142e;
+    --navy-deeper: #030b17;
+    --gold: #d4af37;
+    --gold-highlight: #e5be4a;
+    --gold-light: #f0cf65;
+    --gold-shadow: #c9a227;
+    --gold-deep: #b8860b;
+    --brand-gradient: linear-gradient(135deg, #071c40 0%, #0b2f6b 50%, #0a3a7a 100%);
+    --background: #ffffff;
+    --background-muted: #fafbfd;
+    --background-subtle: #eef3f9;
+    --foreground: #0a1e3b;
+    --foreground-muted: #0b2f6b;
+    --foreground-subtle: rgba(10, 30, 59, 0.62);
+    --border-subtle: rgba(11, 47, 107, 0.1);
+    --border-strong: rgba(11, 47, 107, 0.18);
+  }
+
+  .gold-gradient-text {
+    background: linear-gradient(135deg, #e5c158 0%, #d4af37 50%, #b8860b 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: #d4af37 !important;
+    forced-color-adjust: none;
+  }
+}
+
 @theme inline {
   --color-navy: var(--navy);
   --color-navy-mid: var(--navy-mid);
@@ -67,6 +109,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  forced-color-adjust: none;
   font-size: var(--text-base);
   line-height: var(--leading-body);
   text-rendering: optimizeLegibility;
@@ -103,7 +146,11 @@ p {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: transparent;
+  /* Solid fallback if a browser strips background-clip */
+  color: #d4af37;
+  forced-color-adjust: none;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .gold-gradient-bg {

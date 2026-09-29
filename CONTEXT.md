@@ -207,4 +207,5 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - 2026-09-29: Hero mesh order = TowerLine → **Ekaadh** → Qaari → Aragsan → Dugsi ERP → **ACU** (Jimicso removed). Dugsi logo: `/projects/dugsi-erp-logo.png` (also in DugsiERP `public/images/`). Migration `20260927000014_hero_ekaadh_acu_dugsi_logo.sql`.
 - 2026-09-29: Renamed hero/portfolio **Qaari SL** → **Xulka Qur'aada**; logos from `QaariSL/_brand` → `public/projects/xulka-quraada*.png`. Migration `20260927000015_xulka_quraada_rebrand.sql` (slug stays `qaari`).
 - 2026-09-29: Lock public site to `color-scheme: light only` so OS/browser dark mode cannot invert form controls or UA chrome; admin stays dark.
+- 2026-09-29: Android Chrome Auto Dark was muddying gold text — declare `color-scheme: light dark` and mirror brand tokens under `prefers-color-scheme: dark` so the browser skips forced recoloring. Design stays identical.
 

@@ -23,8 +23,12 @@ export function generateStaticParams() {
 }
 
 export const viewport: Viewport = {
-  colorScheme: "light",
-  themeColor: "#ffffff",
+  // light dark = we handle both; stops Android Chrome Auto Dark from rewriting colors
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#05142e" },
+  ],
 };
 
 export async function generateMetadata({
@@ -59,7 +63,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       lang={locale}
       dir={rtl ? "rtl" : "ltr"}
       className={`${kamerik.variable} ${ibmPlexArabic.variable} h-full antialiased`}
-      style={{ colorScheme: "light" }}
+      style={{ colorScheme: "light dark" }}
     >
       <body
         className={`flex min-h-full flex-col ${rtl ? "font-arabic" : "font-sans"}`}
