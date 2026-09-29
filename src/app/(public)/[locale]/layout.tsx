@@ -42,6 +42,10 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    other: {
+      "color-scheme": "light dark",
+      "supported-color-schemes": "light dark",
+    },
   };
 }
 

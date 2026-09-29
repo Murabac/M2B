@@ -52,21 +52,22 @@
 
 /*
  * Opt into dark preference with the SAME brand tokens.
- * Chrome Auto Dark Mode skips pages that already handle prefers-color-scheme.
+ * Chrome + Samsung Internet skip algorithmic force-dark when the page
+ * already handles prefers-color-scheme (and color-scheme: dark).
  */
 @media (prefers-color-scheme: dark) {
   :root {
-    color-scheme: light dark;
+    color-scheme: dark;
     forced-color-adjust: none;
     --navy: #0b2f6b;
     --navy-mid: #0a3a7a;
     --navy-deep: #05142e;
     --navy-deeper: #030b17;
-    --gold: #d4af37;
-    --gold-highlight: #e5be4a;
-    --gold-light: #f0cf65;
-    --gold-shadow: #c9a227;
-    --gold-deep: #b8860b;
+    --gold: #e5be4a;
+    --gold-highlight: #f0cf65;
+    --gold-light: #f5d978;
+    --gold-shadow: #d4af37;
+    --gold-deep: #c9a227;
     --brand-gradient: linear-gradient(135deg, #071c40 0%, #0b2f6b 50%, #0a3a7a 100%);
     --background: #ffffff;
     --background-muted: #fafbfd;
@@ -78,13 +79,23 @@
     --border-strong: rgba(11, 47, 107, 0.18);
   }
 
+  html {
+    color-scheme: dark;
+    background-color: #ffffff;
+  }
+
+  /*
+   * Samsung Internet force-dark often turns transparent clipped text muddy brown.
+   * Force an opaque bright gold under dark preference.
+   */
   .gold-gradient-text {
-    background: linear-gradient(135deg, #e5c158 0%, #d4af37 50%, #b8860b 100%) !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    color: #d4af37 !important;
-    forced-color-adjust: none;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    -webkit-text-fill-color: #e5be4a !important;
+    color: #e5be4a !important;
+    forced-color-adjust: none !important;
   }
 }
 
@@ -142,12 +153,15 @@ p {
 }
 
 .gold-gradient-text {
-  background: linear-gradient(135deg, #e5c158 0%, #d4af37 50%, #b8860b 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  /* Solid fallback if a browser strips background-clip */
-  color: #d4af37;
+  /*
+   * Solid brand gold — Samsung Internet / Android force-dark routinely
+   * ruins background-clip + transparent fill (muddy brown headlines).
+   * Slightly brighter than --gold so accents stay readable on navy bands.
+   */
+  color: #e5be4a;
+  -webkit-text-fill-color: #e5be4a;
+  background: none;
+  background-image: none;
   forced-color-adjust: none;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
