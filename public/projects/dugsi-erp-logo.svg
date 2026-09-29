@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Dugsi ERP logo">
+  <!-- Text wordmark logo  navy on transparent for light chips -->
+  <rect width="160" height="160" rx="28" fill="#F4F7FB"/>
+  <text
+    x="80"
+    y="72"
+    text-anchor="middle"
+    font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+    font-size="36"
+    font-weight="800"
+    letter-spacing="-0.5"
+    fill="#0B2F6B"
+  >Dugsi</text>
+  <text
+    x="80"
+    y="108"
+    text-anchor="middle"
+    font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+    font-size="18"
+    font-weight="700"
+    letter-spacing="4"
+    fill="#D4AF37"
+  >ERP</text>
+  <rect x="48" y="122" width="64" height="3" rx="1.5" fill="#0B2F6B" opacity="0.35"/>
+</svg>

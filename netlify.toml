@@ -1,0 +1,14 @@
+# Netlify — Next.js App Router
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # Supabase URL + anon key are intentionally public (RLS protects data).
+  # NEXT_PUBLIC_* values are inlined into the client bundle by Next.js.
+  # Do NOT mark them as "Secret" in the Netlify UI — only the service role key is secret.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
