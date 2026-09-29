@@ -1,6 +1,7 @@
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { SUPABASE_SCHEMA } from "@/lib/supabase/constants";
 import { getSupabaseEnv } from "@/lib/supabase/env";
+import { createTimedFetch } from "@/lib/supabase/fetch";
 import type { Database } from "@/lib/supabase/types";
 
 /**
@@ -16,6 +17,9 @@ export function createPublicClient() {
       persistSession: false,
       autoRefreshToken: false,
       detectSessionInUrl: false,
+    },
+    global: {
+      fetch: createTimedFetch(),
     },
   });
 }

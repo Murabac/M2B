@@ -1,6 +1,6 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { FloatingWhatsApp } from "@/components/contact/FloatingWhatsApp";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -21,6 +21,11 @@ type Props = {
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#ffffff",
+};
 
 export async function generateMetadata({
   params,
@@ -54,6 +59,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       lang={locale}
       dir={rtl ? "rtl" : "ltr"}
       className={`${kamerik.variable} ${ibmPlexArabic.variable} h-full antialiased`}
+      style={{ colorScheme: "light" }}
     >
       <body
         className={`flex min-h-full flex-col ${rtl ? "font-arabic" : "font-sans"}`}

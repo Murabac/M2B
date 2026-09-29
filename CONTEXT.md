@@ -204,4 +204,7 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - 2026-09-29: Project case pages get full detail layout (hero, metrics, story, screenshot carousel, testimonials). Admin project editor expanded with the same fields + multi-upload gallery.
 - 2026-09-29: Seeded remaining MurabacApps product folders into `m2b.projects` (Design Ref portfolio parity). Skipped learning/tooling folders (ASP.NET, Blazor, Flutter samples, M2B itself). Logos copied into `public/projects/`. Migration `20260927000012_murabac_portfolio_projects.sql`.
 - 2026-09-29: Split combined `aragsan-dugsi` into **Aragsan / NOVA Ops** (`aragsan`) and **Dugsi ERP** (`dugsi-erp`). Migration `20260927000013_split_aragsan_dugsi.sql`.
-- 2026-09-29: Hero mesh order = TowerLine → **Ekaadh** → Qaari → Aragsan → Dugsi ERP → **ACU** (Jimicso removed). Dugsi uses text wordmark `/projects/dugsi-erp-logo.svg`. Migration `20260927000014_hero_ekaadh_acu_dugsi_logo.sql`.
+- 2026-09-29: Hero mesh order = TowerLine → **Ekaadh** → Qaari → Aragsan → Dugsi ERP → **ACU** (Jimicso removed). Dugsi logo: `/projects/dugsi-erp-logo.png` (also in DugsiERP `public/images/`). Migration `20260927000014_hero_ekaadh_acu_dugsi_logo.sql`.
+- 2026-09-29: Renamed hero/portfolio **Qaari SL** → **Xulka Qur'aada**; logos from `QaariSL/_brand` → `public/projects/xulka-quraada*.png`. Migration `20260927000015_xulka_quraada_rebrand.sql` (slug stays `qaari`).
+- 2026-09-29: Lock public site to `color-scheme: light only` so OS/browser dark mode cannot invert form controls or UA chrome; admin stays dark.
+

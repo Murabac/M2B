@@ -4,8 +4,8 @@
 -- Dugsi ERP uses a styled text wordmark (not the NOVA/Aragsan logo)
 update m2b.projects
 set
-  logo_url = '/projects/dugsi-erp-logo.svg',
-  cover_image_url = '/projects/dugsi-erp-logo.svg',
+  logo_url = '/projects/dugsi-erp-logo.png',
+  cover_image_url = '/projects/dugsi-erp-logo.png',
   show_in_hero = true,
   updated_at = now()
 where slug = 'dugsi-erp';

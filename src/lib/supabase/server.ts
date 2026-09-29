@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { SUPABASE_SCHEMA } from "@/lib/supabase/constants";
 import { getSupabaseEnv } from "@/lib/supabase/env";
+import { createTimedFetch } from "@/lib/supabase/fetch";
 import type { Database } from "@/lib/supabase/types";
 
 export async function createClient() {
@@ -10,6 +11,9 @@ export async function createClient() {
 
   return createServerClient<Database>(url, anonKey, {
     db: { schema: SUPABASE_SCHEMA },
+    global: {
+      fetch: createTimedFetch(),
+    },
     cookies: {
       getAll() {
         return cookieStore.getAll();

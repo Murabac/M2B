@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 :root {
+  /* Force our designed palette — ignore OS dark mode for form controls / UA styles */
+  color-scheme: light only;
+
   /* Brand — aligned with Design Ref navy/gold */
   --navy: #0b2f6b;
   --navy-mid: #0a3a7a;

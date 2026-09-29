@@ -27,6 +27,28 @@ function getPublicClient() {
   return createPublicClient();
 }
 
+/** Catch aborted/network throws so SSR pages never hang on a dead gateway. */
+async function softQuery<T>(
+  label: string,
+  fallback: T,
+  run: () => PromiseLike<{ data: T | null; error: { message: string } | null }>,
+): Promise<T> {
+  try {
+    const { data, error } = await run();
+    if (error) {
+      console.error(`${label}:`, error.message);
+      return fallback;
+    }
+    return data ?? fallback;
+  } catch (err) {
+    console.error(
+      `${label}:`,
+      err instanceof Error ? err.message : "request failed",
+    );
+    return fallback;
+  }
+}
+
 function normalizeStringArray(value: unknown): string[] {
   return Array.isArray(value)
     ? value.filter((item): item is string => typeof item === "string")
@@ -72,18 +94,18 @@ export async function getPublishedCapabilityPillars(): Promise<
   const supabase = getPublicClient();
   if (!supabase) return [];
 
-  const { data, error } = await supabase
-    .from("capability_pillars")
-    .select("*")
-    .eq("is_published", true)
-    .order("sort_order", { ascending: true });
+  const data = await softQuery(
+    "getPublishedCapabilityPillars",
+    [] as CapabilityPillar[],
+    () =>
+      supabase
+        .from("capability_pillars")
+        .select("*")
+        .eq("is_published", true)
+        .order("sort_order", { ascending: true }),
+  );
 
-  if (error) {
-    console.error("getPublishedCapabilityPillars:", error.message);
-    return [];
-  }
-
-  return (data ?? []).map((row) =>
+  return data.map((row) =>
     normalizeCapabilityPillar(
       row as CapabilityPillar & { technologies?: unknown },
     ),
@@ -136,18 +158,18 @@ export async function getPublishedServices(): Promise<Service[]> {
   const supabase = getPublicClient();
   if (!supabase) return [];
 
-  const { data, error } = await supabase
-    .from("services")
-    .select("*")
-    .eq("is_published", true)
-    .order("sort_order", { ascending: true });
+  const data = await softQuery(
+    "getPublishedServices",
+    [] as Service[],
+    () =>
+      supabase
+        .from("services")
+        .select("*")
+        .eq("is_published", true)
+        .order("sort_order", { ascending: true }),
+  );
 
-  if (error) {
-    console.error("getPublishedServices:", error.message);
-    return [];
-  }
-
-  return (data ?? []).map((row) =>
+  return data.map((row) =>
     normalizeService(row as Service & { bullets?: unknown }),
   );
 }
@@ -156,17 +178,17 @@ export async function getFeaturedProjects(): Promise<Project[]> {
   const supabase = getPublicClient();
   if (!supabase) return [];
 
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("is_published", true)
-    .eq("is_featured", true)
-    .order("sort_order", { ascending: true });
-
-  if (error) {
-    console.error("getFeaturedProjects:", error.message);
-    return [];
-  }
+  const data = await softQuery(
+    "getFeaturedProjects",
+    [] as Project[],
+    () =>
+      supabase
+        .from("projects")
+        .select("*")
+        .eq("is_published", true)
+        .eq("is_featured", true)
+        .order("sort_order", { ascending: true }),
+  );
 
   return mapProjects(data);
 }
@@ -175,17 +197,17 @@ export async function getHeroProjects(): Promise<Project[]> {
   const supabase = getPublicClient();
   if (!supabase) return [];
 
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("is_published", true)
-    .eq("show_in_hero", true)
-    .order("hero_sort_order", { ascending: true });
-
-  if (error) {
-    console.error("getHeroProjects:", error.message);
-    return [];
-  }
+  const data = await softQuery(
+    "getHeroProjects",
+    [] as Project[],
+    () =>
+      supabase
+        .from("projects")
+        .select("*")
+        .eq("is_published", true)
+        .eq("show_in_hero", true)
+        .order("hero_sort_order", { ascending: true }),
+  );
 
   return mapProjects(data);
 }
@@ -194,17 +216,17 @@ export async function getBentoProjects(): Promise<Project[]> {
   const supabase = getPublicClient();
   if (!supabase) return [];
 
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("is_published", true)
-    .eq("show_in_bento", true)
-    .order("bento_sort_order", { ascending: true });
-
-  if (error) {
-    console.error("getBentoProjects:", error.message);
-    return [];
-  }
+  const data = await softQuery(
+    "getBentoProjects",
+    [] as Project[],
+    () =>
+      supabase
+        .from("projects")
+        .select("*")
+        .eq("is_published", true)
+        .eq("show_in_bento", true)
+        .order("bento_sort_order", { ascending: true }),
+  );
 
   return mapProjects(data);
 }
@@ -239,36 +261,34 @@ export async function getPublishedTrustSectors(): Promise<TrustSector[]> {
   const supabase = getPublicClient();
   if (!supabase) return [];
 
-  const { data, error } = await supabase
-    .from("trust_sectors")
-    .select("*")
-    .eq("is_published", true)
-    .order("sort_order", { ascending: true });
-
-  if (error) {
-    console.error("getPublishedTrustSectors:", error.message);
-    return [];
-  }
-
-  return data ?? [];
+  return softQuery(
+    "getPublishedTrustSectors",
+    [] as TrustSector[],
+    () =>
+      supabase
+        .from("trust_sectors")
+        .select("*")
+        .eq("is_published", true)
+        .order("sort_order", { ascending: true }),
+  );
 }
 
 export async function getPublishedProcessSteps(): Promise<ProcessStep[]> {
   const supabase = getPublicClient();
   if (!supabase) return [];
 
-  const { data, error } = await supabase
-    .from("process_steps")
-    .select("*")
-    .eq("is_published", true)
-    .order("sort_order", { ascending: true });
+  const data = await softQuery(
+    "getPublishedProcessSteps",
+    [] as ProcessStep[],
+    () =>
+      supabase
+        .from("process_steps")
+        .select("*")
+        .eq("is_published", true)
+        .order("sort_order", { ascending: true }),
+  );
 
-  if (error) {
-    console.error("getPublishedProcessSteps:", error.message);
-    return [];
-  }
-
-  return (data ?? []).map((row) =>
+  return data.map((row) =>
     normalizeProcessStep(row as ProcessStep & { deliverables?: unknown }),
   );
 }

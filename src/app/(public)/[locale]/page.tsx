@@ -26,11 +26,11 @@ export default async function HomePage({ params }: Props) {
 
   const [services, heroProjects, bentoProjects, sectors, processSteps] =
     await Promise.all([
-      getPublishedServices(),
-      getHeroProjects(),
-      getBentoProjects(),
-      getPublishedTrustSectors(),
-      getPublishedProcessSteps(),
+      getPublishedServices().catch(() => []),
+      getHeroProjects().catch(() => []),
+      getBentoProjects().catch(() => []),
+      getPublishedTrustSectors().catch(() => []),
+      getPublishedProcessSteps().catch(() => []),
     ]);
 
   return (
