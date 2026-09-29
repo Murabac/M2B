@@ -203,3 +203,4 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - 2026-09-29: Studio page includes a poetic name-origin section: **M2B** = **M**ire + **B**ulbul + **B**ille (written as M + 2B).
 - 2026-09-29: Project case pages get full detail layout (hero, metrics, story, screenshot carousel, testimonials). Admin project editor expanded with the same fields + multi-upload gallery.
 - 2026-09-29: Seeded remaining MurabacApps product folders into `m2b.projects` (Design Ref portfolio parity). Skipped learning/tooling folders (ASP.NET, Blazor, Flutter samples, M2B itself). Logos copied into `public/projects/`. Migration `20260927000012_murabac_portfolio_projects.sql`.
+- 2026-09-29: Split combined `aragsan-dugsi` into **Aragsan / NOVA Ops** (`aragsan`) and **Dugsi ERP** (`dugsi-erp`). Migration `20260927000013_split_aragsan_dugsi.sql`.
