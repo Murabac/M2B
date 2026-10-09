@@ -1,26 +1,9 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { CheckCircle2, Send } from "lucide-react";
-import {
-  submitContactInquiry,
-  type ContactInquiryResult,
-} from "@/lib/contact/submit-inquiry";
-
-const ERROR_KEYS = [
-  "missing_fields",
-  "invalid_email",
-  "invalid_amount",
-  "not_configured",
-  "submit_failed",
-] as const;
-
-type ErrorKey = (typeof ERROR_KEYS)[number];
-
-function isErrorKey(value: string): value is ErrorKey {
-  return (ERROR_KEYS as readonly string[]).includes(value);
-}
+import { buildWhatsAppWebUrl } from "@/lib/contact/channels";
 
 const PROJECT_TYPE_IDS = [
   "ministry",
@@ -33,18 +16,52 @@ const PROJECT_TYPE_IDS = [
 
 type ProjectTypeId = (typeof PROJECT_TYPE_IDS)[number];
 
+type FieldError =
+  | "missing_fields"
+  | "invalid_name"
+  | "invalid_email"
+  | "invalid_phone"
+  | "invalid_brief"
+  | "no_whatsapp";
 
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-[#051329] p-3 text-xs text-white transition-all focus:border-[#D4AF37] focus:outline-none";
+const inputErrorClass =
+  "w-full rounded-xl border border-red-500/50 bg-[#051329] p-3 text-xs text-white transition-all focus:border-red-400 focus:outline-none";
 
-export function ContactInquiryForm() {
+type Props = {
+  whatsappDigits: string;
+};
+
+function isValidName(value: string) {
+  // Letters (incl. Latin extended), spaces, apostrophe, hyphen — at least 2 letters
+  if (value.length < 2 || value.length > 80) return false;
+  if (!/[\p{L}]{2,}/u.test(value)) return false;
+  if (/^\d+$/.test(value)) return false;
+  return /^[\p{L}\p{M}\s'.-]+$/u.test(value);
+}
+
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value) && value.length <= 120;
+}
+
+function isValidPhone(value: string) {
+  const digits = value.replace(/\D/g, "");
+  // International-ish: 8–15 digits (E.164 max)
+  return digits.length >= 8 && digits.length <= 15;
+}
+
+export function ContactInquiryForm({ whatsappDigits }: Props) {
   const t = useTranslations("ContactPage");
-  const locale = useLocale();
-  const [pending, startTransition] = useTransition();
   const [submitted, setSubmitted] = useState(false);
-  const [errorKey, setErrorKey] = useState<ErrorKey | null>(null);
+  const [errorKey, setErrorKey] = useState<FieldError | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{
+    fullName?: boolean;
+    email?: boolean;
+    phone?: boolean;
+    brief?: boolean;
+  }>({});
   const [projectType, setProjectType] = useState<ProjectTypeId>("ministry");
-  const [amount, setAmount] = useState("");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [organization, setOrganization] = useState("");
@@ -54,8 +71,8 @@ export function ContactInquiryForm() {
   function resetForm() {
     setSubmitted(false);
     setErrorKey(null);
+    setFieldErrors({});
     setProjectType("ministry");
-    setAmount("");
     setFullName("");
     setEmail("");
     setOrganization("");
@@ -67,24 +84,71 @@ export function ContactInquiryForm() {
     event.preventDefault();
     setErrorKey(null);
 
-    startTransition(async () => {
-      const result: ContactInquiryResult = await submitContactInquiry({
-        projectType: t(`projectTypes.${projectType}` as `projectTypes.${ProjectTypeId}`),
-        estimatedAmountUsd: amount,
-        fullName,
-        email,
-        organization,
-        phone,
-        projectBrief: brief,
-        locale,
-      });
+    const name = fullName.trim().replace(/\s+/g, " ");
+    const mail = email.trim().toLowerCase();
+    const tel = phone.trim();
+    const org = organization.trim().slice(0, 120);
+    const goals = brief.trim();
+    const typeLabel = t(
+      `projectTypes.${projectType}` as `projectTypes.${ProjectTypeId}`,
+    );
 
-      if (!result.ok) {
-        setErrorKey(isErrorKey(result.error) ? result.error : "submit_failed");
-        return;
-      }
-      setSubmitted(true);
-    });
+    const nextFieldErrors: typeof fieldErrors = {};
+    let nextError: FieldError | null = null;
+
+    if (!name || !mail || !tel) {
+      nextError = "missing_fields";
+      if (!name) nextFieldErrors.fullName = true;
+      if (!mail) nextFieldErrors.email = true;
+      if (!tel) nextFieldErrors.phone = true;
+    } else if (!isValidName(name)) {
+      nextError = "invalid_name";
+      nextFieldErrors.fullName = true;
+    } else if (!isValidEmail(mail)) {
+      nextError = "invalid_email";
+      nextFieldErrors.email = true;
+    } else if (!isValidPhone(tel)) {
+      nextError = "invalid_phone";
+      nextFieldErrors.phone = true;
+    } else if (goals.length > 0 && goals.length < 12) {
+      nextError = "invalid_brief";
+      nextFieldErrors.brief = true;
+    } else if (goals.length > 2000) {
+      nextError = "invalid_brief";
+      nextFieldErrors.brief = true;
+    }
+
+    if (nextError) {
+      setFieldErrors(nextFieldErrors);
+      setErrorKey(nextError);
+      return;
+    }
+
+    const digits = whatsappDigits.replace(/\D/g, "");
+    if (!digits) {
+      setErrorKey("no_whatsapp");
+      return;
+    }
+
+    setFieldErrors({});
+
+    const lines = [
+      "*New project inquiry*",
+      "m2btek.com/contact",
+      "────────────────",
+      `*Type:* ${typeLabel}`,
+      `*Name:* ${name}`,
+      `*Email:* ${mail}`,
+      `*Phone:* ${tel}`,
+    ];
+    if (org) lines.push(`*Org:* ${org}`);
+    if (goals) {
+      lines.push("────────────────", "*Brief:*", goals);
+    }
+
+    const href = buildWhatsAppWebUrl(digits, lines.join("\n"));
+    window.location.assign(href);
+    setSubmitted(true);
   }
 
   if (submitted) {
@@ -109,7 +173,7 @@ export function ContactInquiryForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-8">
+    <form onSubmit={onSubmit} className="space-y-8" noValidate>
       <div>
         <label className="mb-3 block font-mono text-xs font-bold tracking-wider text-slate-400 uppercase">
           {t("stepType")}
@@ -135,70 +199,63 @@ export function ContactInquiryForm() {
         </div>
       </div>
 
-      <div>
-        <label
-          htmlFor="estimated-amount"
-          className="mb-3 block font-mono text-xs font-bold tracking-wider text-slate-400 uppercase"
-        >
-          {t("stepBudget")}
-        </label>
-        <div className="relative max-w-xs">
-          <span className="pointer-events-none absolute inset-y-0 start-3 flex items-center font-mono text-xs font-bold text-[#D4AF37]">
-            USD
-          </span>
-          <input
-            id="estimated-amount"
-            type="text"
-            inputMode="decimal"
-            required
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder={t("amountPlaceholder")}
-            className={`${inputClass} ps-14`}
-            aria-describedby="amount-hint"
-          />
-        </div>
-        <p id="amount-hint" className="mt-2 font-mono text-[11px] text-slate-500">
-          {t("amountHint")}
-        </p>
-      </div>
-
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="full-name" className="mb-1 block font-mono text-xs font-semibold text-slate-400">
+          <label
+            htmlFor="full-name"
+            className="mb-1 block font-mono text-xs font-semibold text-slate-400"
+          >
             {t("fullName")} *
           </label>
           <input
             id="full-name"
             type="text"
-            required
+            autoComplete="name"
+            maxLength={80}
             value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            onChange={(e) => {
+              setFullName(e.target.value);
+              setFieldErrors((f) => ({ ...f, fullName: false }));
+            }}
             placeholder={t("fullNamePlaceholder")}
-            className={inputClass}
+            className={fieldErrors.fullName ? inputErrorClass : inputClass}
+            aria-invalid={fieldErrors.fullName || undefined}
           />
         </div>
         <div>
-          <label htmlFor="email" className="mb-1 block font-mono text-xs font-semibold text-slate-400">
+          <label
+            htmlFor="email"
+            className="mb-1 block font-mono text-xs font-semibold text-slate-400"
+          >
             {t("email")} *
           </label>
           <input
             id="email"
             type="email"
-            required
+            autoComplete="email"
+            maxLength={120}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setFieldErrors((f) => ({ ...f, email: false }));
+            }}
             placeholder={t("emailPlaceholder")}
-            className={inputClass}
+            className={fieldErrors.email ? inputErrorClass : inputClass}
+            aria-invalid={fieldErrors.email || undefined}
           />
         </div>
         <div>
-          <label htmlFor="organization" className="mb-1 block font-mono text-xs font-semibold text-slate-400">
+          <label
+            htmlFor="organization"
+            className="mb-1 block font-mono text-xs font-semibold text-slate-400"
+          >
             {t("organization")}
           </label>
           <input
             id="organization"
             type="text"
+            autoComplete="organization"
+            maxLength={120}
             value={organization}
             onChange={(e) => setOrganization(e.target.value)}
             placeholder={t("organizationPlaceholder")}
@@ -206,47 +263,66 @@ export function ContactInquiryForm() {
           />
         </div>
         <div>
-          <label htmlFor="phone" className="mb-1 block font-mono text-xs font-semibold text-slate-400">
+          <label
+            htmlFor="phone"
+            className="mb-1 block font-mono text-xs font-semibold text-slate-400"
+          >
             {t("phone")} *
           </label>
           <input
             id="phone"
-            type="text"
-            required
+            type="tel"
+            autoComplete="tel"
+            inputMode="tel"
+            maxLength={20}
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => {
+              setPhone(e.target.value);
+              setFieldErrors((f) => ({ ...f, phone: false }));
+            }}
             placeholder={t("phonePlaceholder")}
-            className={inputClass}
+            className={fieldErrors.phone ? inputErrorClass : inputClass}
+            aria-invalid={fieldErrors.phone || undefined}
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="brief" className="mb-1 block font-mono text-xs font-semibold text-slate-400">
+        <label
+          htmlFor="brief"
+          className="mb-1 block font-mono text-xs font-semibold text-slate-400"
+        >
           {t("brief")}
         </label>
         <textarea
           id="brief"
           rows={4}
+          maxLength={2000}
           value={brief}
-          onChange={(e) => setBrief(e.target.value)}
+          onChange={(e) => {
+            setBrief(e.target.value);
+            setFieldErrors((f) => ({ ...f, brief: false }));
+          }}
           placeholder={t("briefPlaceholder")}
-          className={inputClass}
+          className={fieldErrors.brief ? inputErrorClass : inputClass}
+          aria-invalid={fieldErrors.brief || undefined}
         />
       </div>
 
       {errorKey ? (
-        <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs text-red-300" role="alert">
-          {t(`errors.${errorKey}` as `errors.${ErrorKey}`)}
+        <p
+          className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs text-red-300"
+          role="alert"
+        >
+          {t(`errors.${errorKey}`)}
         </p>
       ) : null}
 
       <button
         type="submit"
-        disabled={pending}
-        className="group flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#E5BE4A] to-[#C9A227] py-4 text-xs font-bold tracking-wider text-slate-950 uppercase transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
+        className="group flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#E5BE4A] to-[#C9A227] py-4 text-xs font-bold tracking-wider text-slate-950 uppercase transition-all hover:shadow-xl"
       >
-        <span>{pending ? t("submitting") : t("submit")}</span>
+        <span>{t("submit")}</span>
         <Send className="h-4 w-4 transition-transform group-hover:translate-x-1" />
       </button>
     </form>

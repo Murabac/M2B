@@ -142,7 +142,7 @@ export function Hero({ projects }: Props) {
               <div className="space-y-3">
                 {projects.map((project) => {
                   const isSelected = activeCard === project.id;
-                  const logo = project.logo_url ?? project.cover_image_url;
+                  const logo = project.logo_url || project.cover_image_url;
                   const category =
                     project.mesh_category ||
                     project.category.replace(/_/g, " ");

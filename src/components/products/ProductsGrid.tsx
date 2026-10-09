@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import {
   ArrowRight,
@@ -104,40 +105,58 @@ export function ProductsGrid({ projects }: Props) {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((item) => {
             const metrics = item.metrics.slice(0, 2);
+            const cover = item.cover_image_url || item.logo_url;
 
             return (
               <Link
                 key={item.id}
                 href={`/portfolio/${item.slug}`}
-                className="group relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-[#0B2F6B]/60 bg-[#081B38] p-7 shadow-2xl shadow-black/50 transition-all duration-300 hover:-translate-y-2 hover:border-[#D4AF37]"
+                className="group relative flex min-h-[360px] cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-[#0B2F6B]/60 bg-[#081B38] p-7 shadow-2xl shadow-black/50 transition-all duration-300 hover:-translate-y-2 hover:border-[#D4AF37]"
               >
-                <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                {cover ? (
+                  <Image
+                    src={cover}
+                    alt=""
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                ) : null}
+                <div
+                  className="pointer-events-none absolute inset-0 bg-[#040D1D]/78"
+                  aria-hidden
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#040D1D] via-[#051329]/70 to-[#051329]/40"
+                  aria-hidden
+                />
+                <div className="absolute top-0 right-0 left-0 z-10 h-1 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
-                <div>
+                <div className="relative z-10">
                   <div className="mb-4 flex items-center justify-between gap-3">
                     <span
                       className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-wider uppercase ${statusClass(item.status)}`}
                     >
                       {item.status}
                     </span>
-                    <span className="font-mono text-[11px] text-slate-400">
+                    <span className="font-mono text-[11px] text-slate-200 drop-shadow">
                       {item.sector || item.mesh_category}
                     </span>
                   </div>
 
-                  <div className="relative my-4 rounded-2xl border border-blue-950 bg-gradient-to-b from-[#06152F] to-[#040D1D] p-5 text-center transition-shadow group-hover:shadow-inner">
-                    <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#0B2F6B] text-[#D4AF37] shadow-lg">
+                  <div className="relative my-4 rounded-2xl border border-white/10 bg-[#051329]/55 p-5 text-center backdrop-blur-sm transition-shadow group-hover:border-[#D4AF37]/30">
+                    <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#0B2F6B]/90 text-[#D4AF37] shadow-lg">
                       <PedestalIcon project={item} />
                     </div>
-                    <h2 className="text-2xl font-extrabold tracking-tight">
+                    <h2 className="text-2xl font-extrabold tracking-tight text-white drop-shadow-md">
                       {item.title}
                     </h2>
-                    <span className="mt-0.5 block font-mono text-xs text-slate-400">
+                    <span className="mt-0.5 block font-mono text-xs text-slate-200 drop-shadow">
                       {item.client_name ?? "M2B"}
                     </span>
 
                     {metrics.length > 0 ? (
-                      <div className="mt-3 flex justify-around border-t border-slate-800 pt-2 font-mono text-[10px] text-[#D4AF37]">
+                      <div className="mt-3 flex justify-around border-t border-white/10 pt-2 font-mono text-[10px] text-[#D4AF37]">
                         {metrics.map((metric) => (
                           <span key={`${metric.label}-${metric.value}`}>
                             {metric.label}:{" "}
@@ -150,7 +169,7 @@ export function ProductsGrid({ projects }: Props) {
                     ) : null}
                   </div>
 
-                  <p className="mb-6 text-sm leading-relaxed text-slate-300">
+                  <p className="mb-6 text-sm leading-relaxed text-slate-100 drop-shadow">
                     {item.tagline}
                   </p>
 
@@ -159,7 +178,7 @@ export function ProductsGrid({ projects }: Props) {
                       {item.stack.map((tech) => (
                         <span
                           key={tech}
-                          className="rounded bg-slate-800 px-2 py-0.5 font-mono text-[10px] text-slate-400"
+                          className="rounded bg-[#051329]/80 px-2 py-0.5 font-mono text-[10px] text-slate-200"
                         >
                           {tech}
                         </span>
@@ -168,7 +187,7 @@ export function ProductsGrid({ projects }: Props) {
                   ) : null}
                 </div>
 
-                <div className="flex items-center justify-between border-t border-slate-800 pt-4 font-mono text-xs">
+                <div className="relative z-10 flex items-center justify-between border-t border-white/10 pt-4 font-mono text-xs">
                   {item.live_url ? (
                     <span
                       role="link"
@@ -199,7 +218,7 @@ export function ProductsGrid({ projects }: Props) {
                       <ExternalLink className="h-3 w-3" />
                     </span>
                   ) : (
-                    <span className="text-slate-400">{t("console")}</span>
+                    <span className="text-slate-300">{t("console")}</span>
                   )}
 
                   <span className="flex items-center gap-1 font-bold text-[#D4AF37] transition-transform group-hover:translate-x-1">

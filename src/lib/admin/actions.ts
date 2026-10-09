@@ -38,9 +38,30 @@ function sanitizeStorageFolder(folder: string) {
     .slice(0, 80) || "uploads";
 }
 
+/** Turbopack / Server Action File instances may fail `instanceof File`. */
+function asUploadFile(
+  value: FormDataEntryValue | null,
+): { name: string; type: string; size: number; arrayBuffer: () => Promise<ArrayBuffer> } | null {
+  if (!value || typeof value === "string") return null;
+  if (
+    typeof value === "object" &&
+    "arrayBuffer" in value &&
+    typeof (value as File).arrayBuffer === "function" &&
+    "size" in value
+  ) {
+    return value as File;
+  }
+  return null;
+}
+
 async function uploadImageFile(
   folder: string,
-  file: File,
+  file: {
+    name: string;
+    type: string;
+    size: number;
+    arrayBuffer: () => Promise<ArrayBuffer>;
+  },
 ): Promise<UploadResult> {
   const { supabase } = await requireAdmin();
   if (file.size <= 0) return { ok: false, error: "No file provided." };
@@ -76,8 +97,8 @@ async function uploadImageFile(
 /** Upload any CMS image (cover, logo, team photo, etc.) and return its public URL. */
 export async function uploadCmsAsset(formData: FormData): Promise<UploadResult> {
   const { user } = await requireAdmin();
-  const file = formData.get("file");
-  if (!(file instanceof File)) return { ok: false, error: "No file provided." };
+  const file = asUploadFile(formData.get("file"));
+  if (!file) return { ok: false, error: "No file provided." };
   const folder = String(formData.get("folder") || "uploads");
   const result = await uploadImageFile(folder, file);
   if (!result.ok) return result;
@@ -117,6 +138,9 @@ export type ProjectInput = {
   sector?: string;
   status?: string;
   outcome?: string;
+  problem?: string;
+  approach?: string;
+  highlights?: string[];
   stack?: string[];
   metrics?: ProjectMetric[];
   client_name?: string | null;
@@ -159,6 +183,9 @@ export async function saveProject(
     slug,
     tagline: input.tagline ?? "",
     description: input.description ?? "",
+    problem: input.problem ?? "",
+    approach: input.approach ?? "",
+    highlights: input.highlights ?? [],
     stack: input.stack ?? [],
     metrics: input.metrics ?? [],
     work_category: (input.work_category as WorkCategory) || "government",
@@ -225,8 +252,8 @@ export async function uploadProjectImage(
   formData: FormData,
 ): Promise<UploadResult> {
   const { supabase, user } = await requireAdmin();
-  const file = formData.get("file");
-  if (!(file instanceof File)) return { ok: false, error: "No file provided." };
+  const file = asUploadFile(formData.get("file"));
+  if (!file) return { ok: false, error: "No file provided." };
 
   const uploaded = await uploadImageFile(`projects/${projectId}`, file);
   if (!uploaded.ok) return uploaded;
@@ -291,6 +318,7 @@ export async function saveTestimonial(
     project_id: string;
     author_name: string;
     author_role?: string;
+    author_image_url?: string | null;
     quote: string;
     sort_order?: number;
     is_published?: boolean;
@@ -300,18 +328,29 @@ export async function saveTestimonial(
   if (!input.author_name.trim() || !input.quote.trim()) {
     return { ok: false, error: "Author and quote are required." };
   }
+  const payload = {
+    ...input,
+    author_image_url: input.author_image_url?.trim() || null,
+  };
   if (id) {
     const { error } = await supabase
       .from("testimonials")
-      .update(input)
+      .update(payload)
       .eq("id", id);
     if (error) return { ok: false, error: error.message };
-  } else {
-    const { error } = await supabase.from("testimonials").insert(input);
-    if (error) return { ok: false, error: error.message };
+    revalidatePath("/admin/projects");
+    revalidatePath("/[locale]/portfolio", "page");
+    return { ok: true, id };
   }
+  const { data, error } = await supabase
+    .from("testimonials")
+    .insert(payload)
+    .select("id")
+    .single();
+  if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/projects");
-  return { ok: true };
+  revalidatePath("/[locale]/portfolio", "page");
+  return { ok: true, id: data.id };
 }
 
 export async function deleteTestimonial(id: string): Promise<ActionResult> {
@@ -319,6 +358,7 @@ export async function deleteTestimonial(id: string): Promise<ActionResult> {
   const { error } = await supabase.from("testimonials").delete().eq("id", id);
   if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/projects");
+  revalidatePath("/[locale]/portfolio", "page");
   return { ok: true };
 }
 

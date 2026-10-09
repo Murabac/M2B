@@ -62,6 +62,9 @@ const emptyForm = (): ProjectInput => ({
   sector: "",
   status: "Live",
   outcome: "",
+  problem: "",
+  approach: "",
+  highlights: [],
   stack: [],
   metrics: [],
   client_name: "",
@@ -103,6 +106,9 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
           sector: detail.sector,
           status: detail.status,
           outcome: detail.outcome,
+          problem: detail.problem ?? "",
+          approach: detail.approach ?? "",
+          highlights: detail.highlights ?? [],
           stack: detail.stack ?? [],
           metrics: detail.metrics ?? [],
           client_name: detail.client_name,
@@ -136,6 +142,7 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
   const [testimonialDraft, setTestimonialDraft] = useState({
     author_name: "",
     author_role: "",
+    author_image_url: "",
     quote: "",
   });
 
@@ -177,8 +184,13 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
         setError(result.error);
         return;
       }
-      // Stay on edit so gallery + testimonials can be added right away
-      window.location.href = `/admin/projects?edit=${result.id ?? editingId}`;
+      const id = result.id ?? editingId;
+      // Avoid hard navigation while the Server Action stream is still open
+      // (that races and surfaces as "Error in input stream").
+      if (!editingId && id) {
+        setEditingId(id);
+        window.history.replaceState(null, "", `/admin/projects?edit=${id}`);
+      }
     });
   }
 
@@ -187,25 +199,38 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
     const files = Array.from(fileList);
     startTransition(async () => {
       for (const file of files) {
-        const fd = new FormData();
-        fd.set("file", file);
-        const result = await uploadProjectImage(editingId, fd);
-        if (!result.ok) {
-          setError(result.error);
+        if (file.size > 5 * 1024 * 1024) {
+          setError(`“${file.name}” is over 5MB.`);
           return;
         }
-        if (result.id && result.url) {
-          setImages((prev) => [
-            ...prev,
-            {
-              id: result.id!,
-              project_id: editingId,
-              image_url: result.url,
-              alt_text: file.name,
-              sort_order: prev.length,
-              created_at: new Date().toISOString(),
-            },
-          ]);
+        const fd = new FormData();
+        fd.set("file", file);
+        try {
+          const result = await uploadProjectImage(editingId, fd);
+          if (!result.ok) {
+            setError(result.error);
+            return;
+          }
+          if (result.id && result.url) {
+            setImages((prev) => [
+              ...prev,
+              {
+                id: result.id!,
+                project_id: editingId,
+                image_url: result.url,
+                alt_text: file.name,
+                sort_order: prev.length,
+                created_at: new Date().toISOString(),
+              },
+            ]);
+          }
+        } catch (err) {
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Upload failed. Try a smaller image.",
+          );
+          return;
         }
       }
     });
@@ -515,6 +540,41 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
                   placeholder="What changed after shipping…"
                 />
               </Field>
+              <Field label="The challenge (problem)">
+                <textarea
+                  rows={4}
+                  className={inputClass}
+                  value={form.problem ?? ""}
+                  onChange={(e) => setForm({ ...form, problem: e.target.value })}
+                  placeholder="What was broken / why this product exists…"
+                />
+              </Field>
+              <Field label="How we built it (approach)">
+                <textarea
+                  rows={4}
+                  className={inputClass}
+                  value={form.approach ?? ""}
+                  onChange={(e) => setForm({ ...form, approach: e.target.value })}
+                  placeholder="How the idea was shaped and engineered…"
+                />
+              </Field>
+              <Field label="Interesting points (one per line)">
+                <textarea
+                  rows={5}
+                  className={inputClass}
+                  value={(form.highlights ?? []).join("\n")}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      highlights: e.target.value
+                        .split("\n")
+                        .map((line) => line.trim())
+                        .filter(Boolean),
+                    })
+                  }
+                  placeholder={"3–6 shipped highlights…\nOne point per line"}
+                />
+              </Field>
 
               <SectionTitle>Links & stores</SectionTitle>
               <div className="grid gap-4 sm:grid-cols-3">
@@ -810,24 +870,41 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
 
                   <SectionTitle>Testimonials</SectionTitle>
                   <p className="text-[11px] text-slate-500">
-                    Shown at the bottom of this project’s public case page.
+                    Photo, name, title, and message on the public case page.
+                    Leave empty to hide the section.
                   </p>
                   <div className="space-y-2">
                     {testimonials.map((t) => (
                       <div
                         key={t.id}
-                        className="flex items-start justify-between gap-2 rounded-xl bg-[#051329] p-3 text-xs"
+                        className="flex items-start justify-between gap-3 rounded-xl bg-[#051329] p-3 text-xs"
                       >
-                        <div>
-                          <div className="font-bold">{t.author_name}</div>
-                          {t.author_role ? (
-                            <div className="text-[#D4AF37]">{t.author_role}</div>
-                          ) : null}
-                          <p className="mt-1 text-slate-400">{t.quote}</p>
+                        <div className="flex min-w-0 flex-1 gap-3">
+                          {t.author_image_url ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={t.author_image_url}
+                              alt=""
+                              className="h-10 w-10 shrink-0 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#0B2F6B] font-bold text-[#D4AF37]">
+                              {t.author_name.slice(0, 1).toUpperCase()}
+                            </div>
+                          )}
+                          <div className="min-w-0">
+                            <div className="font-bold">{t.author_name}</div>
+                            {t.author_role ? (
+                              <div className="text-[#D4AF37]">
+                                {t.author_role}
+                              </div>
+                            ) : null}
+                            <p className="mt-1 text-slate-400">{t.quote}</p>
+                          </div>
                         </div>
                         <button
                           type="button"
-                          className="text-red-300"
+                          className="shrink-0 text-red-300"
                           onClick={() =>
                             startTransition(async () => {
                               await deleteTestimonial(t.id);
@@ -843,6 +920,19 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
                     ))}
                   </div>
                   <div className="grid gap-2">
+                    <ImageUploadField
+                      label="Author photo"
+                      value={testimonialDraft.author_image_url}
+                      folder={`testimonials/${editingId}`}
+                      aspect="square"
+                      hint="Square headshot works best"
+                      onChange={(url) =>
+                        setTestimonialDraft({
+                          ...testimonialDraft,
+                          author_image_url: url,
+                        })
+                      }
+                    />
                     <input
                       className={inputClass}
                       placeholder="Author name"
@@ -856,7 +946,7 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
                     />
                     <input
                       className={inputClass}
-                      placeholder="Role / org"
+                      placeholder="Title / role"
                       value={testimonialDraft.author_role}
                       onChange={(e) =>
                         setTestimonialDraft({
@@ -867,7 +957,7 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
                     />
                     <textarea
                       className={inputClass}
-                      placeholder="Quote"
+                      placeholder="Message / quote"
                       rows={3}
                       value={testimonialDraft.quote}
                       onChange={(e) =>
@@ -884,14 +974,38 @@ export function ProjectsManager({ projects, initialOpenNew, detail }: Props) {
                         startTransition(async () => {
                           const result = await saveTestimonial(null, {
                             project_id: editingId,
-                            ...testimonialDraft,
+                            author_name: testimonialDraft.author_name,
+                            author_role: testimonialDraft.author_role,
+                            author_image_url:
+                              testimonialDraft.author_image_url || null,
+                            quote: testimonialDraft.quote,
                             is_published: true,
                           });
                           if (!result.ok) {
                             setError(result.error);
                             return;
                           }
-                          window.location.reload();
+                          setTestimonials((prev) => [
+                            ...prev,
+                            {
+                              id: result.id ?? crypto.randomUUID(),
+                              project_id: editingId,
+                              author_name: testimonialDraft.author_name,
+                              author_role: testimonialDraft.author_role,
+                              author_image_url:
+                                testimonialDraft.author_image_url || null,
+                              quote: testimonialDraft.quote,
+                              sort_order: prev.length,
+                              is_published: true,
+                              created_at: new Date().toISOString(),
+                            },
+                          ]);
+                          setTestimonialDraft({
+                            author_name: "",
+                            author_role: "",
+                            author_image_url: "",
+                            quote: "",
+                          });
                         })
                       }
                     >

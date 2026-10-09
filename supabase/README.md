@@ -47,6 +47,8 @@ Without this, the JS client cannot query `m2b` tables.
    - `supabase/migrations/20260927000014_hero_ekaadh_acu_dugsi_logo.sql`
    - `supabase/migrations/20260927000015_xulka_quraada_rebrand.sql`
    - `supabase/migrations/20260927000016_cilmi_foundation_rebrand.sql`
+   - `supabase/migrations/20260927000017_project_story_fields.sql`
+   - `supabase/migrations/20260927000018_flagship_case_stories.sql`
 
 Or with the CLI:
 

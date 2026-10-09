@@ -28,17 +28,29 @@ export function ImageUploadField({
     const file = fileList?.[0];
     if (!file) return;
     setError(null);
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Image must be under 5MB.");
+      if (inputRef.current) inputRef.current.value = "";
+      return;
+    }
     const fd = new FormData();
     fd.set("file", file);
     fd.set("folder", folder);
     startTransition(async () => {
-      const result = await uploadCmsAsset(fd);
-      if (!result.ok) {
-        setError(result.error);
-        return;
+      try {
+        const result = await uploadCmsAsset(fd);
+        if (!result.ok) {
+          setError(result.error);
+          return;
+        }
+        onChange(result.url);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Upload failed. Try a smaller image.",
+        );
+      } finally {
+        if (inputRef.current) inputRef.current.value = "";
       }
-      onChange(result.url);
-      if (inputRef.current) inputRef.current.value = "";
     });
   }
 

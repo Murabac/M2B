@@ -16,7 +16,7 @@
 - Positioning: **worldwide** engineering studio — do not brand HQ as Hargeisa-only in public UI. City/country in `site_settings` are optional CMS fields; public defaults are “Worldwide” with no city GPS.
 - Goals: showcase portfolio and case studies, generate client leads, build brand credibility.
 - Look and feel: corporate and trustworthy, warm and local, modern and bold, minimal and clean. Light theme only.
-- Leads: WhatsApp, email, phone via `ContactLink`, plus the `/contact` project inquiry form (stored in Supabase `contact_inquiries`).
+- Leads: WhatsApp, email, phone via `ContactLink`, plus the `/contact` inquiry form (opens WhatsApp with a prefilled brief).
 
 ## Stack
 
@@ -29,7 +29,7 @@
 - Locales: `en` (default), `so` (Somali, Latin script), `ar` (Arabic, RTL). Locale-prefixed routes: `/en`, `/so`, `/ar`.
 - Language switcher shows `en` and `ar` only for now; Somali stays routed and translated but the switcher button is hidden.
 - UI strings live in `messages/en.json`, `so.json`, `ar.json`. Write good Somali and Arabic translations for every UI string (a native speaker will review later).
-- CMS content (services, projects, trust sectors, process steps, testimonials) is English only. The interface around it is translated.
+- CMS content (services, projects, trust sectors, process steps, testimonials) is English only by default. The interface around it is translated. Flagship case stories may include locale bodies in `src/data/case-stories.ts` (`so`, `ar`); locale routes use them when present. Somali stays hidden from the language switcher until we surface it; Arabic is public via the switcher.
 - Arabic: set `dir="rtl"`, use logical CSS (Tailwind `ms-`/`me-`/`ps-`/`pe-`/`start`/`end`), mirror directional icons and animations.
 
 ## Brand and design system
@@ -55,10 +55,11 @@
 - `/services`: full services list.
 - `/portfolio`: Work / case studies grid with sector filters and search.
 - `/products`: Product OS pedestal grid (live / mobile / ops filters).
-- `/portfolio/[slug]`: project case study — hero, metrics, detailed story, screenshot carousel, stack, links, and project testimonials.
-- Admin projects editor: full field set (story, links/stores, display, gallery screenshots, testimonials) to feed that page.
+- `/portfolio/[slug]`: project case study — hero, metrics, outcome, **problem → approach → highlights**, gallery carousel, stack, links, testimonials, CTA.
+- Admin projects editor: full field set including `problem` / `approach` / `highlights`, links/stores, display, gallery screenshots, testimonials.
+- Flagship story bodies also live in `src/data/case-stories.ts` and merge when CMS columns are empty (until migration `20260927000017` is applied).
 - `/studio`: studio story, name origin (M2B = Mire + Bulbul + Bille), stats, and team (Design Ref StudioView).
-- `/contact`: project inquiry form (custom investment amount) + HQ / channels (Design Ref ContactView).
+- `/contact`: project inquiry form (WhatsApp handoff) + HQ / channels (Design Ref ContactView).
 - `/admin/*`: single-admin CMS (see Admin).
 - Services to feature: Custom software / web apps; Mobile apps; ERP systems (NOT Odoo); Websites and e-commerce.
 
@@ -106,7 +107,7 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 
 - Floating WhatsApp button on every public page (`wa.me` link with a prefilled message translated per locale).
 - Contact section on Home with WhatsApp, email and phone cards (`ContactLink`).
-- Full inquiry form on `/contact`: project type, custom estimated investment (USD amount the user types), name, email, org, WhatsApp/phone, brief. Submissions go to `m2b.contact_inquiries` (anon insert; admin read/update/delete).
+- Full inquiry form on `/contact`: project type, name, email, org, WhatsApp/phone, brief (no investment amount). Submit opens WhatsApp with a prefilled message to the studio number from `site_settings` / env.
 - Call button in the header on mobile.
 - **Source of truth:** `m2b.site_settings` (email, phone_primary, phone_secondary, whatsapp). Env vars (`NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_CONTACT_EMAIL`, `NEXT_PUBLIC_CONTACT_PHONE`) are bootstrap fallbacks only until settings are seeded.
 
@@ -115,9 +116,9 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - Schema: **`m2b`** (dedicated schema for multi-schema projects; expose it under Project Settings → API).
 - Storage bucket: `m2b-project-images` (public read, admin write).
 - `services`: id, slug, title, description, icon, bullets (jsonb string array), sort_order, is_published.
-- `projects`: id, slug, title, tagline, description (markdown), category (web_app | mobile_app | erp | website_ecommerce), work_category (government | operations | education | faith | commerce | mobile | websites), sector, status, outcome, stack (jsonb string array), client_name, year, live_url, app_store_url, play_store_url, cover_image_url, logo_url, mesh_preview, mesh_category, accent_color, stack_line, metric_label, show_in_hero, hero_sort_order, show_in_bento, bento_sort_order, is_featured, is_published, sort_order.
+- `projects`: id, slug, title, tagline, description (markdown), category (web_app | mobile_app | erp | website_ecommerce), work_category (government | operations | education | faith | commerce | mobile | websites), sector, status, outcome, **problem** (text), **approach** (text), **highlights** (jsonb string array, 3–6 items), stack (jsonb string array), client_name, year, live_url, app_store_url, play_store_url, cover_image_url, logo_url, mesh_preview, mesh_category, accent_color, stack_line, metric_label, show_in_hero, hero_sort_order, show_in_bento, bento_sort_order, is_featured, is_published, sort_order. Migrations: `20260927000017_project_story_fields.sql`, `20260927000018_flagship_case_stories.sql`.
 - `project_images`: id, project_id, image_url, alt_text, sort_order.
-- `testimonials`: id, project_id, author_name, author_role, quote, sort_order, is_published.
+- `testimonials`: id, project_id, author_name, author_role, author_image_url (optional headshot), quote, sort_order, is_published. Shown on `/portfolio/[slug]` only when at least one published testimonial exists. Migration: `20260927000019_testimonial_author_image.sql`.
 - `capability_pillars`: id, slug, title, tagline, icon, technologies (jsonb `{name, desc}` array), sort_order, is_published — Services page Engineer/Operate/Lead columns.
 - `trust_sectors`: id, slug, name, proof, metric, icon, sort_order, is_published (home trust strip).
 - `process_steps`: id, step_key, title, description, deliverables (jsonb string array), sort_order, is_published (home process orbit).
@@ -195,7 +196,9 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - 2026-09-27: Home constellation, trust strip, and process steps are Supabase-backed (`show_in_hero` on projects; `trust_sectors`; `process_steps`). Section chrome stays in next-intl; CMS body copy stays English-only. Migration: `20260927000000_home_content.sql`.
 - 2026-09-28: Portfolio `/portfolio` rebuilt as Design Ref WorkView (dark cinematic, category tabs, search). Projects gained `work_category`, `sector`, `status`, `outcome`, `stack`. Migration: `20260927000004_work_page_fields.sql`.
 - 2026-09-28: Products `/products` rebuilt as Design Ref ProductsView (pedestal cards, live/mobile/ops filters). Projects gained `metrics` jsonb. Migration: `20260927000005_product_metrics.sql`.
-- 2026-09-28: Allowed `/contact` inquiry form (Design Ref ContactView). Estimated investment is a custom USD amount field (not preset ranges). Submissions stored in `m2b.contact_inquiries`. Nav Contact + Start a Project → `/contact`. Migration: `20260927000007_contact_inquiries.sql`.
+- 2026-09-28: Allowed `/contact` inquiry form (Design Ref ContactView). Nav Contact + Start a Project → `/contact`. Migration: `20260927000007_contact_inquiries.sql`.
+- 2026-10-09: Contact form drops estimated investment; submit opens WhatsApp with the filled inquiry instead of inserting into `contact_inquiries`.
+- 2026-10-10: TowerLine case story has Somali (`so`) and Arabic (`ar`) problem/approach/highlights/outcome in `CASE_STORIES`. Served on `/so/...` and `/ar/portfolio/towerline`; switcher still hides Somali.
 - 2026-09-28: Studio team section: Abdirahmaan Mire, Mohamed Bulbul (engineering equals), Adnan Bille (marketing/sales/non-technical). Equal partners framing — no hierarchy.
 - 2026-09-29: Wave 6 Admin CMS from `backend design refrence/`. Contact/studio/announcement owned by `m2b.site_settings` (env = fallback). Inquiries gain status/priority/notes. English-only admin; no bilingual SO project fields.
 - 2026-09-29: CMS image upload via shared `uploadCmsAsset` + `ImageUploadField` for project cover/logo and studio team photos (storage bucket `m2b-project-images`). Services/content keep lucide icon keys (not raster images).
@@ -211,5 +214,15 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - 2026-09-29: Samsung Internet force-dark also muddies gold — use solid `#e5be4a` for `.gold-gradient-text` (no transparent clip), set `color-scheme: dark` under prefers-dark, and emit color-scheme meta tags.
 - 2026-09-29: Renamed **Reer Sh Yoonis** → **Cilmi Foundation**; logo from `cilmi-tree-view/public/logo.png`; family count **328** from live `reer_sh_yoonis.profiles`. Migration `20260927000016_cilmi_foundation_rebrand.sql` (slug stays `reer-sh-yoonis`).
 - 2026-10-09: Public site is `https://m2btek.com`. Page titles lead with `m2btek` so the brand query matches. Favicon is the M2B mark on a white rounded square (`src/app/favicon.ico`, `icon.png`, `apple-icon.png`), not the Next.js triangle.
+- 2026-10-09: Case pages add story arc fields `problem` / `approach` / `highlights`. Flagships (TowerLine, Xulka/qaari, Dugsi, Aragsan/NOVA, Ekaadh, Cilmi) filled via `CASE_STORIES` + gallery under `public/projects/gallery/`. Live Aragsan slug is `NOVA`. Apply SQL 17 then 18 (or `scripts/apply-case-stories.cjs`) for CMS persistence.
+- 2026-10-09: Low-volume social kit in `social/` — templates, 2-week calendar, per-flagship captions. Cap ~5–7 posts/week across LI/IG/FB/X; TikTok 0–1 only when a Reel already exists. Schedule in Meta / LinkedIn / X natives; no paid ads this phase.
+- 2026-10-09: Project testimonials support optional `author_image_url` (photo + name + title + message). Case page hides the testimonials section when none are published.
+
+## Social media (organic, low volume)
+
+- Kit: `social/README.md`, `social/templates.md`, `social/calendar-2-weeks.md`, `social/{towerline,qaari,dugsi-erp,aragsan,ekaadh,cilmi}/captions.md`.
+- Cadence: LinkedIn 2/wk, Instagram 2/wk, Facebook 1/wk, X 1–2/wk, TikTok 0–1/wk (only if Reel exists). Hard cap ~5–7 total posts/week from one weekly kernel.
+- Rhythm: Mon LI case · Wed IG visual · Thu FB reshare · Fri X note · Sat optional Reel/TikTok.
+- Always link `https://m2btek.com/en/portfolio/{slug}`. Brand navy/gold; no daily quotas or per-platform custom creative every day.
 
 

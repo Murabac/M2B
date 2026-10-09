@@ -55,7 +55,7 @@ export default async function ContactPage({ params }: Props) {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <div className="rounded-3xl border border-slate-800 bg-[#081B38] p-8 shadow-xl sm:p-10">
-              <ContactInquiryForm />
+              <ContactInquiryForm whatsappDigits={channels.whatsapp} />
             </div>
           </div>
 

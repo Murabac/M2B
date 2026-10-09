@@ -66,6 +66,9 @@ export type Project = {
   sector: string;
   status: ProjectStatus | string;
   outcome: string;
+  problem: string;
+  approach: string;
+  highlights: string[];
   stack: string[];
   metrics: ProjectMetric[];
   client_name: string | null;
@@ -105,6 +108,7 @@ export type Testimonial = {
   project_id: string;
   author_name: string;
   author_role: string;
+  author_image_url: string | null;
   quote: string;
   sort_order: number;
   is_published: boolean;
@@ -274,6 +278,9 @@ export type Database = {
           sector?: string;
           status?: string;
           outcome?: string;
+          problem?: string;
+          approach?: string;
+          highlights?: string[];
           stack?: string[];
           metrics?: ProjectMetric[];
           client_name?: string | null;
@@ -328,6 +335,7 @@ export type Database = {
           project_id: string;
           author_name: string;
           author_role?: string;
+          author_image_url?: string | null;
           quote: string;
           sort_order?: number;
           is_published?: boolean;

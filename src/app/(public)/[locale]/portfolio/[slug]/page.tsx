@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
@@ -19,6 +20,31 @@ type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };
 
+function SectionHeading({ children }: { children: ReactNode }) {
+  return (
+    <h2 className="mb-4">
+      <span className="inline-flex items-center gap-2.5">
+        <span className="grid shrink-0 grid-cols-2 gap-0.5" aria-hidden>
+          <span className="h-1.5 w-1.5 bg-[#D4AF37]" />
+          <span className="h-1.5 w-1.5 bg-[#D4AF37]/35" />
+          <span className="h-1.5 w-1.5 bg-[#D4AF37]/35" />
+          <span className="h-1.5 w-1.5 bg-[#D4AF37]" />
+        </span>
+        <span className="text-[15px] font-bold tracking-tight text-[#E5BE4A] sm:text-base">
+          {children}
+        </span>
+      </span>
+      <span
+        className="mt-2.5 flex items-center gap-2"
+        aria-hidden
+      >
+        <span className="h-px w-7 bg-[#D4AF37]" />
+        <span className="h-px min-w-0 flex-1 bg-gradient-to-r from-[#D4AF37]/45 via-[#D4AF37]/15 to-transparent" />
+      </span>
+    </h2>
+  );
+}
+
 export const revalidate = 60;
 
 export async function generateStaticParams() {
@@ -33,7 +59,7 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const t = await getTranslations("ProjectPage");
   const tCat = await getTranslations("Categories");
-  const project = await getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug, locale);
 
   if (!project) {
     notFound();
@@ -187,20 +213,54 @@ export default async function ProjectPage({ params }: Props) {
           <div className="space-y-8 lg:col-span-7">
             {project.outcome ? (
               <div>
-                <h2 className="mb-3 font-mono text-xs font-bold tracking-[0.18em] text-[#D4AF37] uppercase">
-                  {t("outcome")}
-                </h2>
+                <SectionHeading>{t("outcome")}</SectionHeading>
                 <p className="text-lg font-medium leading-relaxed text-slate-200">
                   {project.outcome}
                 </p>
               </div>
             ) : null}
 
+            {project.problem ? (
+              <div>
+                <SectionHeading>{t("problem")}</SectionHeading>
+                <p className="whitespace-pre-wrap text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
+                  {project.problem}
+                </p>
+              </div>
+            ) : null}
+
+            {project.approach ? (
+              <div>
+                <SectionHeading>{t("approach")}</SectionHeading>
+                <p className="whitespace-pre-wrap text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
+                  {project.approach}
+                </p>
+              </div>
+            ) : null}
+
+            {project.highlights?.length > 0 ? (
+              <div>
+                <SectionHeading>{t("highlights")}</SectionHeading>
+                <ul className="space-y-3">
+                  {project.highlights.map((point) => (
+                    <li
+                      key={point}
+                      className="flex gap-3 text-sm leading-7 text-slate-300 sm:text-base sm:leading-8"
+                    >
+                      <span
+                        className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37]"
+                        aria-hidden
+                      />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
             {project.description ? (
               <div>
-                <h2 className="mb-3 font-mono text-xs font-bold tracking-[0.18em] text-[#D4AF37] uppercase">
-                  {t("overview")}
-                </h2>
+                <SectionHeading>{t("overview")}</SectionHeading>
                 <p className="whitespace-pre-wrap text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
                   {project.description}
                 </p>
@@ -209,9 +269,7 @@ export default async function ProjectPage({ params }: Props) {
 
             {stackTags.length > 0 ? (
               <div>
-                <h2 className="mb-3 font-mono text-xs font-bold tracking-[0.18em] text-[#D4AF37] uppercase">
-                  {t("stack")}
-                </h2>
+                <SectionHeading>{t("stack")}</SectionHeading>
                 <div className="flex flex-wrap gap-2">
                   {stackTags.map((tag) => (
                     <span
@@ -228,9 +286,7 @@ export default async function ProjectPage({ params }: Props) {
 
           <aside className="lg:col-span-5">
             <div className="rounded-3xl border border-slate-800 bg-[#081B38] p-6 sm:p-8">
-              <h2 className="mb-4 font-mono text-xs font-bold tracking-[0.18em] text-[#D4AF37] uppercase">
-                {t("details")}
-              </h2>
+              <SectionHeading>{t("details")}</SectionHeading>
               <dl className="space-y-3 font-mono text-xs text-slate-400">
                 {project.client_name ? (
                   <div className="flex justify-between gap-4 border-b border-slate-800 pb-3">
@@ -294,7 +350,7 @@ export default async function ProjectPage({ params }: Props) {
       </section>
 
       {project.project_images.length > 0 ? (
-        <section className="border-b border-slate-800 bg-[#040D1D] py-14 sm:py-20">
+        <section className="border-b border-slate-800 bg-[#040D1D] py-10 sm:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <ProjectGalleryCarousel
               images={project.project_images}
@@ -310,34 +366,61 @@ export default async function ProjectPage({ params }: Props) {
       {project.testimonials.length > 0 ? (
         <section className="py-14 sm:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="mb-8 font-mono text-xs font-bold tracking-[0.18em] text-[#D4AF37] uppercase">
-              {t("testimonials")}
-            </h2>
-            <div className="grid gap-6 md:grid-cols-2">
-              {project.testimonials.map((item) => (
-                <blockquote
-                  key={item.id}
-                  className="relative overflow-hidden rounded-3xl border border-slate-800 bg-[#081B38] p-7 sm:p-8"
-                >
-                  <Quote
-                    className="absolute top-5 end-5 h-8 w-8 text-[#D4AF37]/25"
-                    aria-hidden
-                  />
-                  <p className="mb-6 text-base leading-relaxed text-slate-200 sm:text-lg">
-                    “{item.quote}”
-                  </p>
-                  <footer className="border-t border-slate-800 pt-4 font-mono text-xs text-slate-500">
-                    <div className="font-bold text-slate-200">
-                      {item.author_name}
-                    </div>
-                    {item.author_role ? (
-                      <div className="mt-0.5 text-[#D4AF37]">
-                        {item.author_role}
+            <SectionHeading>{t("testimonials")}</SectionHeading>
+            <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-6">
+              {project.testimonials.map((item) => {
+                const initials = item.author_name
+                  .replace(/^(Eng\.|Dr\.|Md\.|Mr\.|Ms\.)\s*/i, "")
+                  .split(/\s+/)
+                  .filter(Boolean)
+                  .slice(0, 2)
+                  .map((part) => part[0]?.toUpperCase() ?? "")
+                  .join("");
+                return (
+                  <blockquote
+                    key={item.id}
+                    className="relative w-full max-w-md overflow-hidden rounded-3xl border border-slate-800 bg-[#081B38] p-6 sm:p-7"
+                  >
+                    <Quote
+                      className="absolute top-5 end-5 h-8 w-8 text-[#D4AF37]/25"
+                      aria-hidden
+                    />
+                    <footer className="mb-5 flex items-center gap-3.5">
+                      {item.author_image_url ? (
+                        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-[#D4AF37]/35 bg-[#051329]">
+                          <Image
+                            src={item.author_image_url}
+                            alt={item.author_name}
+                            fill
+                            className="object-cover object-[center_18%]"
+                            sizes="64px"
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-[#D4AF37]/35 bg-[#0B2F6B] font-mono text-sm font-bold text-[#D4AF37]"
+                          aria-hidden
+                        >
+                          {initials || "•"}
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <div className="text-base font-bold leading-snug text-white">
+                          {item.author_name}
+                        </div>
+                        {item.author_role ? (
+                          <div className="mt-0.5 text-sm leading-snug text-[#D4AF37]">
+                            {item.author_role}
+                          </div>
+                        ) : null}
                       </div>
-                    ) : null}
-                  </footer>
-                </blockquote>
-              ))}
+                    </footer>
+                    <p className="text-sm leading-relaxed text-slate-300 sm:text-base sm:leading-7">
+                      “{item.quote}”
+                    </p>
+                  </blockquote>
+                );
+              })}
             </div>
           </div>
         </section>

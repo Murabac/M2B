@@ -45,6 +45,12 @@ export function buildWhatsAppUrl(whatsappDigits: string, message: string) {
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
+/** Open WhatsApp Web chat directly (skips api.whatsapp.com interstitial). */
+export function buildWhatsAppWebUrl(whatsappDigits: string, message: string) {
+  const digits = whatsappDigits.replace(/\D/g, "");
+  return `https://web.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(message)}`;
+}
+
 export function buildMailtoUrl(email: string, subject?: string) {
   const base = `mailto:${email}`;
   return subject

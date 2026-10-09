@@ -1,3 +1,4 @@
+import { CASE_STORIES, resolveCaseStoryBody } from "@/data/case-stories";
 import { createPublicClient } from "@/lib/supabase/public";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import type {
@@ -127,7 +128,12 @@ function normalizeMetrics(value: unknown): ProjectMetric[] {
 }
 
 function normalizeProject(
-  row: Project & { stack?: unknown; stack_line?: string; metrics?: unknown },
+  row: Project & {
+    stack?: unknown;
+    stack_line?: string;
+    metrics?: unknown;
+    highlights?: unknown;
+  },
 ): Project {
   const stack = normalizeStringArray(row.stack);
   const fromLine =
@@ -143,6 +149,9 @@ function normalizeProject(
     sector: row.sector || row.mesh_category || "",
     status: row.status || "Live",
     outcome: row.outcome || "",
+    problem: row.problem || "",
+    approach: row.approach || "",
+    highlights: normalizeStringArray(row.highlights),
     stack: fromLine,
     metrics: normalizeMetrics(row.metrics),
   };
@@ -295,6 +304,7 @@ export async function getPublishedProcessSteps(): Promise<ProcessStep[]> {
 
 export async function getProjectBySlug(
   slug: string,
+  locale: string = "en",
 ): Promise<ProjectWithRelations | null> {
   const supabase = getPublicClient();
   if (!supabase) return null;
@@ -327,10 +337,60 @@ export async function getProjectBySlug(
       .order("sort_order", { ascending: true }),
   ]);
 
+  const normalized = normalizeProject(
+    project as Project & { stack?: unknown },
+  );
+  const story =
+    CASE_STORIES[normalized.slug] ??
+    CASE_STORIES[normalized.slug.toLowerCase()];
+  const body = resolveCaseStoryBody(story, locale);
+  const useLocalizedBody =
+    (locale === "so" && Boolean(story?.so)) ||
+    (locale === "ar" && Boolean(story?.ar));
+
+  const preferStoryApproach =
+    Boolean(body?.approach) &&
+    (useLocalizedBody ||
+      !normalized.approach ||
+      (normalized.slug === "towerline" &&
+        !normalized.approach.includes("Google Maps")));
+  const preferStoryHighlights =
+    Boolean(body?.highlights?.length) &&
+    (useLocalizedBody ||
+      normalized.highlights.length === 0 ||
+      (normalized.slug === "towerline" &&
+        !normalized.highlights.some((h) => h.includes("Google Maps"))));
+  const preferStoryStack =
+    Boolean(story?.stack?.length) &&
+    (normalized.stack.length === 0 ||
+      normalized.stack.some((s) => /leaflet/i.test(s)));
+  const preferStoryOutcome =
+    Boolean(body?.outcome) &&
+    (useLocalizedBody || !normalized.outcome);
+
   return {
-    ...normalizeProject(project as Project & { stack?: unknown }),
+    ...normalized,
+    outcome: preferStoryOutcome
+      ? (body?.outcome ?? "")
+      : normalized.outcome || body?.outcome || "",
+    problem: useLocalizedBody
+      ? (body?.problem ?? "")
+      : normalized.problem || body?.problem || "",
+    approach: preferStoryApproach
+      ? (body?.approach ?? "")
+      : normalized.approach || body?.approach || "",
+    highlights: preferStoryHighlights
+      ? (body?.highlights ?? [])
+      : normalized.highlights,
+    stack: preferStoryStack ? (story?.stack ?? []) : normalized.stack,
     project_images: images ?? [],
-    testimonials: testimonials ?? [],
+    testimonials: (testimonials ?? []).map((row) => {
+      const item = row as Testimonial;
+      return {
+        ...item,
+        author_image_url: item.author_image_url ?? null,
+      };
+    }),
   };
 }
 

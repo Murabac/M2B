@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ArrowRight, ExternalLink, Search } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -102,6 +103,7 @@ export function WorkGrid({ projects }: Props) {
           {filtered.map((project) => {
             const stack = project.stack.slice(0, 4);
             const extra = Math.max(project.stack.length - 4, 0);
+            const cover = project.cover_image_url || project.logo_url;
 
             return (
               <Link
@@ -114,8 +116,21 @@ export function WorkGrid({ projects }: Props) {
                 }`}
               >
                 <div className="relative flex h-48 flex-col justify-between overflow-hidden bg-gradient-to-br from-[#071C40] to-[#0A3A7A] p-5 sm:h-52">
-                  <div className="pointer-events-none absolute inset-0 bg-dot-pattern-dark opacity-30" />
-                  <div className="pointer-events-none absolute -right-10 -bottom-10 h-32 w-32 rounded-full border border-white/10" />
+                  {cover ? (
+                    <Image
+                      src={cover}
+                      alt=""
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  ) : (
+                    <div className="pointer-events-none absolute inset-0 bg-dot-pattern-dark opacity-30" />
+                  )}
+                  <div
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#040D1D] via-[#051329]/85 to-[#051329]/45"
+                    aria-hidden
+                  />
 
                   <div className="relative z-10 flex items-center justify-between gap-2">
                     <span
@@ -131,13 +146,13 @@ export function WorkGrid({ projects }: Props) {
                   </div>
 
                   <div className="relative z-10">
-                    <span className="block font-mono text-[11px] tracking-widest text-[#D4AF37] uppercase">
+                    <span className="block font-mono text-[11px] tracking-widest text-[#D4AF37] uppercase drop-shadow">
                       {project.sector || project.mesh_category}
                     </span>
-                    <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-white transition-colors group-hover:text-[#D4AF37]">
+                    <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-white drop-shadow-md transition-colors group-hover:text-[#D4AF37]">
                       {project.title}
                     </h2>
-                    <span className="mt-0.5 block font-mono text-xs text-blue-200/80">
+                    <span className="mt-0.5 block font-mono text-xs text-blue-100/90 drop-shadow">
                       {project.client_name ?? "M2B"}
                     </span>
                   </div>
