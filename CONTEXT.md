@@ -210,5 +210,6 @@ Locked visual reference: **`Design Ref/`** (Vite studio prototype). Port its cin
 - 2026-09-29: Android Chrome Auto Dark was muddying gold text — declare `color-scheme: light dark` and mirror brand tokens under `prefers-color-scheme: dark` so the browser skips forced recoloring. Design stays identical.
 - 2026-09-29: Samsung Internet force-dark also muddies gold — use solid `#e5be4a` for `.gold-gradient-text` (no transparent clip), set `color-scheme: dark` under prefers-dark, and emit color-scheme meta tags.
 - 2026-09-29: Renamed **Reer Sh Yoonis** → **Cilmi Foundation**; logo from `cilmi-tree-view/public/logo.png`; family count **328** from live `reer_sh_yoonis.profiles`. Migration `20260927000016_cilmi_foundation_rebrand.sql` (slug stays `reer-sh-yoonis`).
+- 2026-10-09: Public site is `https://m2btek.com`. Page titles lead with `m2btek` so the brand query matches. Favicon is the M2B mark (`src/app/favicon.ico`, `icon.png`, `apple-icon.png`), not the Next.js triangle.
 
 

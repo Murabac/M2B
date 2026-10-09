@@ -4,7 +4,7 @@ export const siteConfig = {
     "M2B is a software and IT services company delivering custom software, mobile apps, ERP systems, and websites.",
   tagline: "Connecting today, building tomorrow",
   positioning: "Technology | Innovation | Solutions",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://m2btek.com",
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "252637744447",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@example.com",
   contactPhone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "(252) 63-7744447",

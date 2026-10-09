@@ -5,6 +5,7 @@ import { FloatingWhatsApp } from "@/components/contact/FloatingWhatsApp";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ibmPlexArabic, kamerik } from "@/config/fonts";
+import { siteConfig } from "@/config/site";
 import { getLocaleFromParams } from "@/i18n/locale";
 import { isRtlLocale, routing } from "@/i18n/routing";
 import {
@@ -40,8 +41,29 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   return {
-    title: t("title"),
+    metadataBase: new URL(siteConfig.url),
+    title: {
+      default: t("title"),
+      template: `%s · ${t("siteName")}`,
+    },
     description: t("description"),
+    applicationName: t("siteName"),
+    openGraph: {
+      type: "website",
+      siteName: t("siteName"),
+      title: t("title"),
+      description: t("description"),
+      locale: locale === "ar" ? "ar" : locale === "so" ? "so" : "en",
+    },
+    twitter: {
+      card: "summary",
+      title: t("title"),
+      description: t("description"),
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
     other: {
       "color-scheme": "light dark",
       "supported-color-schemes": "light dark",
@@ -61,6 +83,26 @@ export default async function LocaleLayout({ children, params }: Props) {
     channels.whatsapp,
     tContact("whatsappMessage"),
   );
+  const siteUrl = siteConfig.url.replace(/\/$/, "");
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        name: "M2B",
+        alternateName: ["m2btek", "M2B Tek"],
+        url: siteUrl,
+        logo: `${siteUrl}/brand/M2B-icon.png`,
+        email: channels.email,
+      },
+      {
+        "@type": "WebSite",
+        name: "m2btek",
+        alternateName: "M2B",
+        url: siteUrl,
+      },
+    ],
+  };
 
   return (
     <html
@@ -72,6 +114,10 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body
         className={`flex min-h-full flex-col ${rtl ? "font-arabic" : "font-sans"}`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <NextIntlClientProvider messages={messages}>
           <Header />
           <div className="flex flex-1 flex-col">{children}</div>
